@@ -1,0 +1,36 @@
+<section class="h-screen flex bg-gradient-to-r from-amber-100 via-orange-200 to-amber-300">
+  <!-- Sección izquierda (2/3) -->
+  <div class="w-2/3 flex flex-col items-center justify-center text-center px-12">
+    <h1 class="text-5xl font-bold text-gray-800">Necesito</h1>
+    <p class="text-lg text-gray-700 mt-4">
+      Tu lugar de confianza para pedir lo que necesitas
+    </p>
+  </div>
+
+  <!-- Sección derecha (1/3) con formulario y navegación -->
+<div class="w-1/3 border-l-2  border-orange-300 flex items-center justify-center my-10">
+
+    <div class="text-center" *ngIf="showIndexAuth">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4">Bienvenido!</h2>
+
+      <!-- Navegación con botones estilizados -->
+      <nav class="flex gap-4">
+        <button routerLink="/auth/sign-in"
+          class="px-5 py-2 text-white bg-orange-600 rounded-lg shadow-md transition-all hover:bg-orange-700">
+          Iniciar Sesión
+        </button>
+
+        <button routerLink="/auth/sign-up"
+        class="px-5 py-2 text-white bg-orange-600 rounded-lg shadow-md transition-all hover:bg-orange-700">
+          Registrarse
+        </button>
+      </nav>
+    </div>
+
+
+    <router-outlet></router-outlet>
+
+  </div>
+
+
+</section>

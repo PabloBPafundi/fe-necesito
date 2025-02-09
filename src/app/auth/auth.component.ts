@@ -1,0 +1,37 @@
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { LoginFormComponent } from './component/login-form/login-form.component';
+import { RouterLink, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { NgIf } from '@angular/common';
+import { Subscription, filter } from 'rxjs';
+
+
+@Component({
+  selector: 'app-auth',
+  imports: [LoginFormComponent, RouterOutlet, RouterLink, NgIf],
+  templateUrl: './auth.component.html',
+  styleUrl: './auth.component.css'
+})
+export class AuthComponent implements OnInit, OnDestroy {
+  showIndexAuth: boolean | null = null;
+  private routerSubscription!: Subscription; 
+
+  constructor(private router: Router) {}
+
+  ngOnInit(): void {
+    this.showIndexAuth = this.router.url === '/auth'
+  
+    this.routerSubscription = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        // Verificamos si la URL es exactamente '/auth' o si es exactamente '/auth' seguido de un "/"
+        this.showIndexAuth = event.url === '/auth' || event.url === '/auth/';
+      });
+  }
+
+  ngOnDestroy(): void {
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
+  }
+}
