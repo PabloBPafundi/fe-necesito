@@ -1,0 +1,10 @@
+{
+  "routes": {
+    "/fe-necesito": {},
+    "/fe-necesito/auth": {},
+    "/fe-necesito/auth/sign-in": {},
+    "/fe-necesito/auth/sign-up": {},
+    "/fe-necesito/product-status": {},
+    "/fe-necesito/profile": {}
+  }
+}
