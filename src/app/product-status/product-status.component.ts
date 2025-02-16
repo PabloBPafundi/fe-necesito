@@ -21,8 +21,8 @@ export class ProductStatusComponent implements OnInit {
    rentals = [
     {
       title: 'Bicicleta de montaña',
-      startDate: "2025-02-07 00:00",  
-      endDate: "2025-02-07 00:00",   
+      startDate: "2025-02-15 00:00",  
+      endDate: "2025-02-18 00:00",   
     },
     {
       title: 'Cámara fotográfica',

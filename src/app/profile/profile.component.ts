@@ -22,7 +22,9 @@ ngOnInit(): void {
 
 
   user = {
-    name: 'Juan Pérez',
+    name: 'Juan',
+    lasName: ' Pérez',
+    lastLocation: 'CABA',
     email: 'juan.perez@example.com'
   };
 
