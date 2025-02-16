@@ -6,6 +6,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { LoginFormComponent } from './auth/component/login-form/login-form.component';
 import { RegisterFormComponent } from './auth/component/register-form/register-form.component';
 import { ProductStatusComponent } from './product-status/product-status.component';
+import { ProductComponent } from './product/product.component';
+import { ProductDetailComponent } from './product-detail/product-detail.component';
 
 
 export const routes: Routes = [
@@ -47,7 +49,21 @@ export const routes: Routes = [
       component: ProductStatusComponent,
       title:'Necesito.com',
       canActivate: [authGuard]    
-  },
+    },
+
+
+    { path: 'product', 
+      component: ProductComponent,
+      title:'Necesito.com',
+      canActivate: [authGuard]    
+    },
+
+    { path: 'product/:id', 
+      component: ProductDetailComponent,
+      title:'Necesito.com',
+      canActivate: [authGuard]    
+    },
+
 
 
 ];

@@ -1,0 +1,21 @@
+<article class="grid grid-cols-3 gap-4  rounded-lg p-2">
+
+  <div *ngFor="let product of paginatedProducts" class="bg-white rounded-lg shadow-lg pb-3 cursor-pointer" routerLink="/product/{{ product.id }}">
+    <div class="hover:-translate-y-2 transition-transform duration-200">
+      <img [src]="product.image" alt="{{ product.name }}" class="w-full h-40 object-cover">
+      <h3 class="text-lg font-bold mt-2">{{ product.name }}</h3>
+      <span class="text-gray-600">${{ product.price }}</span>
+    </div>  
+  </div>
+  
+    <!-- Paginación -->
+    <div class="col-span-3 justify-center mt-4">
+      <button (click)="prevPage()" [disabled]="currentPage === 1" class="p-2 bg-amber-400 rounded">Anterior</button>
+      <span class="inline-block align-middle mx-2">Página {{ currentPage }}</span>
+      <button (click)="nextPage()" [disabled]="currentPage >= (products.length / itemsPerPage)" class=" p-2 bg-amber-400  rounded">Siguiente</button>
+    </div>
+  </article>
+
+
+
+  
