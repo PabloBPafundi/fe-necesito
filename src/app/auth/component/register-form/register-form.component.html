@@ -95,8 +95,8 @@
         placeholder="••••••••"
         [ngClass]="{'border-red-500': signUpForm.get('confirmPassword')?.invalid && signUpForm.get('confirmPassword')?.touched }"
       >
-      <div *ngIf="signUpForm.get('confirmPassword')?.invalid && signUpForm.get('confirmPassword')?.touched" class="text-red-500 text-sm">
-        Las contraseñas no coinciden
+      <div *ngIf="signUpForm.hasError('mismatch')" class="text-red-500 text-sm">
+        Las contraseñas no coinciden.
       </div>
     </div>
 

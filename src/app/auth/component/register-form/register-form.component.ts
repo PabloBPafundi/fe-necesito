@@ -24,33 +24,30 @@ export class RegisterFormComponent {
       validators: this.passwordMatchValidator
     };
 
-
     this.signUpForm = this.fb.group({
-      username: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required]],
       nombre: ['', [Validators.required, Validators.minLength(2)]], 
       apellido: ['', [Validators.required, Validators.minLength(2)]], 
-      dni: ['', [Validators.required, Validators.pattern('^[0-9]{8}$')]] 
-    }, formOptions);
+      dni: ['', [Validators.required, Validators.pattern('^[0-9]{7,8}$')]], 
+      email: ['', [Validators.required, Validators.email]], 
+      password: ['', [Validators.required, Validators.minLength(6)]], 
+      confirmPassword: ['', [Validators.required]]
+    }, { validators: this.passwordMatchValidator });
   }
-
   
   passwordMatchValidator(form: AbstractControl) {
     const password = form.get('password')?.value;
     const confirmPassword = form.get('confirmPassword')?.value;
-    return password === confirmPassword ? null : { mismatch: true };
+    return password && confirmPassword && password !== confirmPassword ? { mismatch: true } : null;
   }
 
   signUp() {
     if (this.signUpForm.valid) {
       this.authService.register(this.signUpForm.value).subscribe({
         next: (response) => {
-          if (!response.success) {
+          if (response.success) {
             this.router.navigate(['/auth/login']);
           } else {
-            this.errorMessage = response.error || 'Hubo un problema con el inicio de sesión';
+            this.errorMessage = response.error || 'Hubo un problema con el registro';
           }
         },
         error: () => {
@@ -60,6 +57,4 @@ export class RegisterFormComponent {
     } else {
       this.errorMessage = 'Por favor, rellena todos los campos correctamente.';
     }
-  }
-}
-
+  }}
