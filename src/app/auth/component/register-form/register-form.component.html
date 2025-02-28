@@ -1,44 +1,125 @@
-<div class="w-full bg-gradient-to-r from-amber-50  to-amber-200 p-8 rounded-lg shadow-lg backdrop-blur-md bg-opacity-70">
+<div class="w-full bg-gradient-to-r from-amber-50 to-amber-200 p-8 rounded-lg shadow-lg backdrop-blur-md bg-opacity-70">
+  
+  <h2 class="text-2xl font-semibold text-gray-800 text-center mb-6">Crear Cuenta</h2>
+
+  <form [formGroup]="signUpForm" (ngSubmit)="signUp()">
     
-    <h2 class="text-2xl font-semibold text-gray-800 text-center mb-6 mx-25">Crear Cuenta</h2>
-  
-    <form>
-      <!-- Usuario -->
-      <div class="mb-4">
-        <label for="username" class="block text-gray-700 font-medium mb-1">Usuario</label>
-        <input type="text" id="username" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500" placeholder="Elige tu usuario" required>
+    <!-- Nombre -->
+    <div class="mb-4">
+      <label for="nombre" class="block text-gray-700 font-medium mb-1">Nombre</label>
+      <input 
+        type="text" 
+        id="nombre" 
+        formControlName="nombre" 
+        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500"
+        placeholder="Tu nombre"
+        [ngClass]="{'border-red-500': signUpForm.get('nombre')?.invalid && signUpForm.get('nombre')?.touched }"
+      >
+      <div *ngIf="signUpForm.get('nombre')?.invalid && signUpForm.get('nombre')?.touched" class="text-red-500 text-sm">
+        El nombre es requerido
       </div>
-  
-      <!-- Correo electrónico -->
-      <div class="mb-4">
-        <label for="email" class="block text-gray-700 font-medium mb-1">Correo Electrónico</label>
-        <input type="email" id="email" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500" placeholder="example@correo.com" required>
+    </div>
+
+    <!-- Apellido -->
+    <div class="mb-4">
+      <label for="apellido" class="block text-gray-700 font-medium mb-1">Apellido</label>
+      <input 
+        type="text" 
+        id="apellido" 
+        formControlName="apellido" 
+        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500"
+        placeholder="Tu apellido"
+        [ngClass]="{'border-red-500': signUpForm.get('apellido')?.invalid && signUpForm.get('apellido')?.touched }"
+      >
+      <div *ngIf="signUpForm.get('apellido')?.invalid && signUpForm.get('apellido')?.touched" class="text-red-500 text-sm">
+        El apellido es requerido
       </div>
-  
-      <!-- Contraseña -->
-      <div class="mb-4">
-        <label for="password" class="block text-gray-700 font-medium mb-1">Contraseña</label>
-        <input type="password" id="password" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500" placeholder="••••••••" required>
+    </div>
+
+    <!-- DNI -->
+    <div class="mb-4">
+      <label for="dni" class="block text-gray-700 font-medium mb-1">DNI</label>
+      <input 
+        type="text" 
+        id="dni" 
+        formControlName="dni" 
+        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500"
+        placeholder="Tu DNI"
+        [ngClass]="{'border-red-500': signUpForm.get('dni')?.invalid && signUpForm.get('dni')?.touched }"
+      >
+      <div *ngIf="signUpForm.get('dni')?.invalid && signUpForm.get('dni')?.touched" class="text-red-500 text-sm">
+        El DNI es requerido
       </div>
-  
-      <!-- Confirmar Contraseña -->
-      <div class="mb-4">
-        <label for="confirmPassword" class="block text-gray-700 font-medium mb-1">Confirmar Contraseña</label>
-        <input type="password" id="confirmPassword" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500" placeholder="••••••••" required>
+    </div>
+
+    <!-- Correo Electrónico -->
+    <div class="mb-4">
+      <label for="email" class="block text-gray-700 font-medium mb-1">Correo Electrónico</label>
+      <input 
+        type="email" 
+        id="email" 
+        formControlName="email" 
+        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500"
+        placeholder="example@correo.com"
+        [ngClass]="{'border-red-500': signUpForm.get('email')?.invalid && signUpForm.get('email')?.touched }"
+      >
+      <div *ngIf="signUpForm.get('email')?.invalid && signUpForm.get('email')?.touched" class="text-red-500 text-sm">
+        Correo inválido
       </div>
-  
-      <!-- Botón de Registro -->
-      <button type="submit" class="w-full bg-orange-600 text-white py-2 rounded-lg shadow-md hover:bg-orange-700 transition-all">
-        Registrarse
-      </button>
-    </form>
-  
-    <!-- Separador -->
-    <div class="my-4 text-center text-gray-600 mt-10">¿Ya tienes una cuenta?</div>
-  
-    <!-- Botón de Iniciar sesión -->
-    <button routerLink="/auth/sign-in" class="w-full bg-orange-500 text-white py-2 rounded-lg shadow-md hover:bg-orange-600 transition-all">
-      Iniciar Sesión
+    </div>
+
+    <!-- Contraseña -->
+    <div class="mb-4">
+      <label for="password" class="block text-gray-700 font-medium mb-1">Contraseña</label>
+      <input 
+        type="password" 
+        id="password" 
+        formControlName="password" 
+        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500"
+        placeholder="••••••••"
+        [ngClass]="{'border-red-500': signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched }"
+      >
+      <div *ngIf="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched" class="text-red-500 text-sm">
+        La contraseña debe tener al menos 6 caracteres
+      </div>
+    </div>
+
+    <!-- Confirmar Contraseña -->
+    <div class="mb-4">
+      <label for="confirmPassword" class="block text-gray-700 font-medium mb-1">Confirmar Contraseña</label>
+      <input 
+        type="password" 
+        id="confirmPassword" 
+        formControlName="confirmPassword" 
+        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500"
+        placeholder="••••••••"
+        [ngClass]="{'border-red-500': signUpForm.get('confirmPassword')?.invalid && signUpForm.get('confirmPassword')?.touched }"
+      >
+      <div *ngIf="signUpForm.get('confirmPassword')?.invalid && signUpForm.get('confirmPassword')?.touched" class="text-red-500 text-sm">
+        Las contraseñas no coinciden
+      </div>
+    </div>
+
+    <!-- Botón de Registro -->
+    <button 
+      type="submit" 
+      class="w-full bg-orange-600 text-white py-2 rounded-lg shadow-md hover:bg-orange-700 transition-all"
+      [disabled]="signUpForm.invalid"
+    >
+      Registrarse
     </button>
+  </form>
+
+  <!-- Mensaje de error -->
+  <div *ngIf="errorMessage" class="mt-4 text-center text-red-500">
+    {{ errorMessage }}
   </div>
-  
+
+  <!-- Separador -->
+  <div class="my-4 text-center text-gray-600 mt-10">¿Ya tienes una cuenta?</div>
+
+  <!-- Botón de Iniciar sesión -->
+  <button routerLink="/auth/sign-in" class="w-full bg-orange-500 text-white py-2 rounded-lg shadow-md hover:bg-orange-600 transition-all">
+    Iniciar Sesión
+  </button>
+</div>

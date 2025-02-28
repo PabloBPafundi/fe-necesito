@@ -20,7 +20,7 @@ export class AppComponent implements OnInit, OnDestroy {
  constructor(public authService: AuthService, private router: Router){}
 ngOnInit(): void {
 
-    this.authService.isAuthenticated.set(true)
+    //this.authService.isAuthenticated.set(true)
 
 
     this.isAuthScreen = this.router.url === '/auth'

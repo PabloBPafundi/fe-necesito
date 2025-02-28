@@ -12,16 +12,22 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
 
 export const routes: Routes = [
 
-    { path: '', 
+    { path: 'home', 
         component: HomeComponent,
         title:'Necesito.com',
         canActivate: [authGuard]    
     },
 
+    { path: '', 
+      component: HomeComponent,
+      title:'Necesito.com',
+      canActivate: [authGuard]    
+  },
+
+
 
     { path: 'auth', 
         component: AuthComponent,
-         canActivate: [authGuard],
          title:'Necesito.com',
          children: [
            {
@@ -58,7 +64,16 @@ export const routes: Routes = [
       canActivate: [authGuard]    
     },
 
+    /*
     { path: 'product/:id', 
+      component: ProductDetailComponent,
+      title:'Necesito.com',
+      canActivate: [authGuard]    
+    },
+*/
+
+    
+    { path: '**', 
       component: ProductDetailComponent,
       title:'Necesito.com',
       canActivate: [authGuard]    

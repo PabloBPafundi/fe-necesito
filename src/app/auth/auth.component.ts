@@ -4,6 +4,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { Subscription, filter } from 'rxjs';
+import { AuthService } from './services/auth.service';
 
 
 @Component({
@@ -24,10 +25,12 @@ export class AuthComponent implements OnInit, OnDestroy {
     this.routerSubscription = this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
-        // Verificamos si la URL es exactamente '/auth' o si es exactamente '/auth' seguido de un "/"
         this.showIndexAuth = event.url === '/auth' || event.url === '/auth/';
       });
   }
+
+
+
 
   ngOnDestroy(): void {
     if (this.routerSubscription) {

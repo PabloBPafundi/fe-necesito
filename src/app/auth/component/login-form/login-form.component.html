@@ -1,33 +1,45 @@
-
 <div class="w-full bg-gradient-to-r from-amber-50  to-amber-200 p-8 rounded-lg shadow-lg backdrop-blur-md bg-opacity-70">
+
+  <h2 class="text-2xl font-semibold text-gray-800 text-center mb-6 mx-25">Iniciar Sesión</h2>
+
+  <form [formGroup]="loginForm" (ngSubmit)="login()"> 
     
-    <h2 class="text-2xl font-semibold text-gray-800 text-center mb-6 mx-25">Iniciar Sesión</h2>
-  
-    <form>
-      <!-- Usuario -->
-      <div class="mb-4">
-        <label for="username" class="block text-gray-700 font-medium mb-1">Usuario</label>
-        <input type="text" id="username" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500" placeholder="Ingresa tu usuario" required>
+    <!-- Usuario -->
+    <div class="mb-4">
+      <label for="username" class="block text-gray-700 font-medium mb-1">Email</label>
+      <input type="email" id="username" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500" 
+             placeholder="Ingresa tu usuario" formControlName="email" required />
+      <!-- Mensaje de error para el campo 'email' -->
+      <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="text-red-600 text-sm">
+        El correo es obligatorio y debe ser válido.
       </div>
-  
-      <!-- Contraseña -->
-      <div class="mb-4">
-        <label for="password" class="block text-gray-700 font-medium mb-1">Contraseña</label>
-        <input type="password" id="password" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500" placeholder="••••••••" required>
+    </div>
+
+    <!-- Contraseña -->
+    <div class="mb-4">
+      <label for="password" class="block text-gray-700 font-medium mb-1">Contraseña</label>
+      <input type="password" id="password" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500"
+             placeholder="••••••••" formControlName="password" required />
+      <!-- Mensaje de error para el campo 'password' -->
+      <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-red-600 text-sm">
+        La contraseña es obligatoria y debe tener al menos 6 caracteres.
       </div>
-  
-      <!-- Botón de Login -->
-      <button type="submit" class="w-full bg-orange-600 text-white py-2 rounded-lg shadow-md hover:bg-orange-700 transition-all">
-        Iniciar Sesión
-      </button>
-    </form>
-  
-    <!-- Separador -->
-    <div class="my-4 text-center text-gray-600 mt-10">¿No tienes una cuenta?</div>
-  
-    <!-- Botón de Registro -->
-    <button routerLink="/auth/sign-up" class="w-full bg-orange-500 text-white py-2 rounded-lg shadow-md hover:bg-orange-600 transition-all">
-      Registrarse
+    </div>
+
+    <!-- Mostrar mensaje de error global -->
+    <div *ngIf="errorMessage" class="text-red-600 text-sm mb-4">{{ errorMessage }}</div>
+
+    <!-- Botón de Login -->
+    <button type="submit" class="w-full bg-orange-600 text-white py-2 rounded-lg shadow-md hover:bg-orange-700 transition-all" [disabled]="loginForm.invalid">
+      Iniciar Sesión
     </button>
-  </div>
-  
+  </form>
+
+  <!-- Separador -->
+  <div class="my-4 text-center text-gray-600 mt-10">¿No tienes una cuenta?</div>
+
+  <!-- Botón de Registro -->
+  <button routerLink="/auth/sign-up" class="w-full bg-orange-500 text-white py-2 rounded-lg shadow-md hover:bg-orange-600 transition-all">
+    Registrarse
+  </button>
+</div>
