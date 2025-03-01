@@ -39,13 +39,16 @@ export class NavBarComponent implements OnInit {
     }
   }
 
+
   ngOnInit(): void {
 
     this.isLoggedIn = true;  
 
   }
 
-  logout(){}
+  logout(){
+    this.authService.logout();
+  }
 
   toggleDropdown() {
     this.dropdownOpen = !this.dropdownOpen;
