@@ -16,7 +16,6 @@ import { FormsModule } from '@angular/forms';
   imports: [LucideAngularModule, NgIf, FormsModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css',
-  providers: [ProfileService, UserService, AuthService]
 })
 export class ProfileComponent implements OnInit {
   readonly User = User;
@@ -106,7 +105,8 @@ export class ProfileComponent implements OnInit {
     try {
       const userId = this.userService.userId();
 
-      if (userId !== -1) {
+
+      if (userId) {
         const userData = await firstValueFrom(this.profileService.getUserProfile(userId));
         
         this.user = {
