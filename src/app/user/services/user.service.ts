@@ -10,4 +10,5 @@ export class UserService {
 
   
   userName = signal<string | null>(null);
+  userId = signal<number | null>(null);
 }

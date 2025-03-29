@@ -41,6 +41,7 @@ export class AuthService {
           const usuario = response.result[0];
           this.isAuthenticated.set(true);
           this.userService.userName.set(usuario.nombre);
+          this.userService.userId.set(usuario.id)
         }
       }),
       catchError((error: HttpErrorResponse) => {

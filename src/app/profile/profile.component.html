@@ -1,41 +1,96 @@
-<section class="bg-white rounded-lg p-6 shadow-lg w-full mx-auto my-8  ">
-    <article class="h-max content-center">
-    <div class="flex flex-col items-center   ">
+<section class="bg-white rounded-lg p-6 shadow-lg w-full mx-auto my-8">
+  <article class="h-max content-center">
+    <div class="flex flex-col items-center">
       <!-- Imagen de perfil -->
-      <div class="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center ">
+      <div class="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center">
         <lucide-icon [img]="User" class="w-12 h-12 text-gray-500"></lucide-icon>
       </div>
     
       <h2 class="mt-4 text-2xl font-semibold text-gray-800">Mi Perfil</h2>
-   
-      <div class="my-5 text-gray-600 grid justify-items-start grid-cols-2 border p-3 rounded-lg gap-6 text-xl">
+      
+      <div *ngIf="isLoading" class="my-5 flex flex-col items-center">
+        <lucide-icon [img]="Loader" class="w-12 h-12 text-blue-500 animate-spin"></lucide-icon>
+        <p class="mt-2 text-gray-600">Cargando información del perfil...</p>
+      </div>
+
+      <div *ngIf="!isLoading && !isEditing" class="my-5 text-gray-600 grid justify-items-start grid-cols-2 border p-3 rounded-lg gap-6 text-xl">
         <p class="font-medium">
           Nombre:
-          <span class="font-normal">{{ user.name }}</span>
+          <span class="font-normal">{{ user.nombre }}</span>
         </p>
 
         <p class="font-medium">
           Apellido:
-          <span class="font-normal">{{ user.lasName }}</span>
+          <span class="font-normal">{{ user.apellido }}</span>
         </p>
 
         <p class="font-medium">
           Ubicación:
-          <span class="font-normal">{{ user.lastLocation }}</span>
+          <span class="font-normal">{{ user.georreferencias }}</span>
         </p>
         <p class="font-medium">
           Correo:
           <span class="font-normal">{{ user.email }}</span>
         </p>
       </div>
-   
-      <button class="mt-4 flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400">
-        <lucide-icon [img]="Edit" class="w-4 h-4"></lucide-icon>
-        Editar Perfil
-      </button>
+
+      <!-- Formulario de edición -->
+      <div *ngIf="!isLoading && isEditing" class="my-5 text-gray-600 grid justify-items-start grid-cols-2 border p-3 rounded-lg gap-6 text-xl">
+        <div class="flex flex-col">
+          <label class="font-medium">Nombre:</label>
+          <input [(ngModel)]="editUserData.nombre" class="border rounded p-1">
+        </div>
+
+        <div class="flex flex-col">
+          <label class="font-medium">Apellido:</label>
+          <input [(ngModel)]="editUserData.apellido" class="border rounded p-1">
+        </div>
+
+        <div class="flex flex-col">
+          <label class="font-medium">Ubicación:</label>
+          <input [(ngModel)]="editUserData.georreferencias" class="border rounded p-1">
+        </div>
+
+        <div class="flex flex-col">
+          <label class="font-medium">Correo:</label>
+          <input [(ngModel)]="editUserData.email" type="email" class="border rounded p-1">
+        </div>
+      </div>
+
+      <div class="flex gap-4 mt-4">
+        <button 
+          *ngIf="!isEditing"
+          (click)="startEditing()"
+          class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          <lucide-icon [img]="Edit" class="w-4 h-4"></lucide-icon>
+          Editar Perfil
+        </button>
+
+        <button 
+          *ngIf="isEditing"
+          (click)="updateUserProfile()"
+          class="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-400"
+        >
+          Guardar Cambios
+        </button>
+
+        <button 
+          *ngIf="isEditing"
+          (click)="cancelEditing()"
+          class="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg shadow-md hover:bg-gray-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400"
+        >
+          Cancelar
+        </button>
+
+        <button 
+          (click)="deleteUserAccount()"
+          class="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-400"
+        >
+          <lucide-icon [img]="Trash2" class="w-4 h-4"></lucide-icon>
+          Eliminar Cuenta
+        </button>
+      </div>
     </div>
-</article>
-
-
-  
-  </section>
+  </article>
+</section>
