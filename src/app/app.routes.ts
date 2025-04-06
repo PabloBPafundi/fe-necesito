@@ -8,6 +8,7 @@ import { RegisterFormComponent } from './auth/component/register-form/register-f
 import { ProductStatusComponent } from './product-status/product-status.component';
 import { ProductComponent } from './product/product.component';
 import { ProductDetailComponent } from './product/product-detail/product-detail.component';
+import { provideServerRendering } from '@angular/platform-server';
 
 
 export const routes: Routes = [
@@ -68,7 +69,10 @@ export const routes: Routes = [
     { path: 'product/:id', 
       component: ProductDetailComponent,
       title:'Necesito.com',
-      //canActivate: [authGuard]    
+      providers: [
+        provideServerRendering(),
+        { provide: 'prerender', useValue: false } 
+      ]  
     },
 
     
