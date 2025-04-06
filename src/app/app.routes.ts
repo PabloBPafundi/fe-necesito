@@ -71,16 +71,6 @@ export const routes: Routes = [
       path: 'product/:id',
       component: ProductDetailComponent,
       title: 'Detalle de producto',
-      providers: [
-        // Solución específica para Angular 19
-        {
-          provide: 'PRERENDER_CONFIG',
-          useValue: {
-            routes: [],
-            discoverRoutes: false 
-          }
-        }
-      ]
     },
     
     { path: '**', 
