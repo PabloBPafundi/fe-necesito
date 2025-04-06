@@ -1,0 +1,11 @@
+<div *ngIf="productDetail; else errorTemplate">
+  <div class="product-detail">
+    <h2>{{ productDetail.nombre }}</h2>
+    <p>{{ productDetail.descripcion }}</p>
+    <span>Precio: {{ productDetail.precio }}</span>
+  </div>
+</div>
+<ng-template #errorTemplate>
+  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+  <p *ngIf="!errorMessage">Cargando producto...</p>
+</ng-template>

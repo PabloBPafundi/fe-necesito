@@ -7,7 +7,7 @@ import { LoginFormComponent } from './auth/component/login-form/login-form.compo
 import { RegisterFormComponent } from './auth/component/register-form/register-form.component';
 import { ProductStatusComponent } from './product-status/product-status.component';
 import { ProductComponent } from './product/product.component';
-import { ProductDetailComponent } from './product-detail/product-detail.component';
+import { ProductDetailComponent } from './product/product-detail/product-detail.component';
 
 
 export const routes: Routes = [
@@ -15,13 +15,13 @@ export const routes: Routes = [
     { path: 'home', 
         component: HomeComponent,
         title:'Necesito.com',
-        canActivate: [authGuard]    
+        //canActivate: [authGuard]    
     },
 
     { path: '', 
       component: HomeComponent,
       title:'Necesito.com',
-      canActivate: [authGuard]    
+      //canActivate: [authGuard]    
   },
 
 
@@ -61,22 +61,21 @@ export const routes: Routes = [
     { path: 'product', 
       component: ProductComponent,
       title:'Necesito.com',
-      canActivate: [authGuard]    
+      //canActivate: [authGuard]    
     },
 
-    /*
+
     { path: 'product/:id', 
       component: ProductDetailComponent,
       title:'Necesito.com',
-      canActivate: [authGuard]    
+      //canActivate: [authGuard]    
     },
-*/
 
     
     { path: '**', 
       component: ProductDetailComponent,
       title:'Necesito.com',
-      canActivate: [authGuard]    
+      //canActivate: [authGuard]    
     },
 
 

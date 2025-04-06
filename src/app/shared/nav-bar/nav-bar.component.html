@@ -1,7 +1,4 @@
-
-
   <header class="bg-gradient-to-r from-amber-100 via-orange-200 to-amber-300 fixed top-0 w-full z-50">
-
 
     <nav class="flex justify-between items-center p-4 max-w-7xl mx-auto">
     
@@ -68,6 +65,18 @@
                   <lucide-icon [img]="User" class="w-5 h-5"></lucide-icon>
                   Perfil
                 </button>
+
+
+                    <!-- Opción: Publicar Producto -->
+                    <button
+                 
+                    class="text-gray-700 flex items-center gap-2 px-4 py-2 text-sm w-full text-left hover:bg-gray-100"
+                    role="menuitem"
+                    (click)="toggleDropdown()"
+                    routerLink="/profile">
+                    <lucide-icon [img]="Package" class="w-5 h-5"></lucide-icon>
+                    Publicar Producto
+                  </button>
 
                   <!-- Opción: Perfil -->
                   <button

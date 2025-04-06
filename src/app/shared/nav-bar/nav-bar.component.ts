@@ -1,7 +1,7 @@
 import { NgClass, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { LucideAngularModule,  LogOut, User, ShoppingCart, ChevronDown, Info} from 'lucide-angular';
+import { LucideAngularModule,  LogOut, User, ShoppingCart, ChevronDown, Info, Package} from 'lucide-angular';
 import { AuthService } from '../../auth/services/auth.service';
 import { UserService } from '../../user/services/user.service';
 
@@ -19,14 +19,17 @@ export class NavBarComponent implements OnInit {
   readonly User = User;
   readonly ShoppingCart = ShoppingCart;
   readonly Info = Info;
-
+  readonly Package = Package;
 
   constructor( private userService: UserService, private authService: AuthService) { }
   
-
   isLoggedIn: boolean = false;  
-   
   dropdownOpen: boolean = false;  
+
+  ngOnInit(): void {
+    this.isUserLogIn();
+  }
+
 
 
   getUserName() :string | null {
@@ -39,12 +42,6 @@ export class NavBarComponent implements OnInit {
     }
   }
 
-
-  ngOnInit(): void {
-
-    this.isLoggedIn = true;  
-
-  }
 
   logout(){
     this.authService.logout();
