@@ -4,10 +4,17 @@ import { provideServerRouting } from '@angular/ssr';
 import { appConfig } from './app.config';
 
 
+
 const serverConfig: ApplicationConfig = {
   providers: [
     provideServerRendering(),
-    { provide: 'DEFAULT_PRERENDER', useValue: true }
+    {
+      provide: 'PRERENDER_STRATEGY',
+      useValue: {
+        default: 'none', 
+        ignoreDynamicRoutes: true
+      }
+    }
   ]
 };
 

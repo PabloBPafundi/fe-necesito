@@ -70,18 +70,18 @@ export const routes: Routes = [
     {
       path: 'product/:id',
       component: ProductDetailComponent,
-      title: 'Necesito.com',
+      title: 'Detalle de producto',
       providers: [
-        // Solución definitiva para Angular 16.2+
-        { 
-          provide: 'PRERENDER_OPTIONS', 
+        // Solución específica para Angular 19
+        {
+          provide: 'PRERENDER_CONFIG',
           useValue: {
-            routes: [] // Lista vacía desactiva prerrenderizado
+            routes: [],
+            discoverRoutes: false 
           }
         }
       ]
     },
-
     
     { path: '**', 
       component: ProductDetailComponent,
