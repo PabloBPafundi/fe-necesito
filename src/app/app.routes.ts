@@ -11,6 +11,7 @@ import { ProductDetailComponent } from './product/product-detail/product-detail.
 import { provideServerRendering } from '@angular/platform-server';
 
 
+
 export const routes: Routes = [
 
     { path: 'home', 
@@ -66,13 +67,19 @@ export const routes: Routes = [
     },
 
 
-    { path: 'product/:id', 
+    {
+      path: 'product/:id',
       component: ProductDetailComponent,
-      title:'Necesito.com',
+      title: 'Necesito.com',
       providers: [
-        provideServerRendering(),
-        { provide: 'prerender', useValue: false } 
-      ]  
+        // Solución definitiva para Angular 16.2+
+        { 
+          provide: 'PRERENDER_OPTIONS', 
+          useValue: {
+            routes: [] // Lista vacía desactiva prerrenderizado
+          }
+        }
+      ]
     },
 
     
