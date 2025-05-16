@@ -9,7 +9,7 @@ import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-auth',
-  imports: [LoginFormComponent, RouterOutlet, RouterLink, NgIf],
+  imports: [RouterOutlet, RouterLink, NgIf],
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.css'
 })

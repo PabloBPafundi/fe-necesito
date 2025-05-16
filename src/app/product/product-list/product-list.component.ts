@@ -1,33 +1,44 @@
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ProductService } from '../services/product.service';
+import { IProductDetailResult } from '../interfaces/IProductDetails';
 
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css'],
-  imports: [NgFor, RouterLink]
+  imports: [NgFor, RouterLink, NgIf]
 })
 export class ProductListComponent implements OnInit {
 
 
-  constructor(private route: ActivatedRoute) {}
+constructor(
+  private route: ActivatedRoute,
+  private productService: ProductService
+) {}
 
-  ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      const category = params['category'] || ''; 
-      const price = params['price'] || ''; 
+products: IProductDetailResult[] = [];
 
-      //this.fetchProducts(category, price);
-    });
-  }
-  products = Array.from({ length: 120 }, (_, i) => ({
-    id: i + 1,
-    name: `Producto ${i + 1}`,
-    price: (Math.random() * 100).toFixed(2),
-    image: 'img.png'
-  }));
+ngOnInit() {
+  this.route.queryParams.subscribe(params => {
+    const category = params['category'] || '';
+    const price = params['price'] || '';
+    this.fetchProducts(); // ← Llamada real
+  });
+}
 
+
+fetchProducts() {
+  this.productService.getAllProducts().subscribe({
+    next: (res) => {
+      this.products = res;
+    },
+    error: (err) => {
+      console.error('Error al cargar productos:', err.message);
+    }
+  });
+}
   currentPage = 1;
   itemsPerPage = 24;
 

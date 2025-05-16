@@ -24,6 +24,7 @@ export interface IProductDetailResult{
 
 
 
+
 export interface IProductDetail extends IApiResponse {
     result: IProductDetailResult
 }
