@@ -10,19 +10,16 @@ export interface IApiResponseError {
     "code": number,
 }
 
-
-export interface IProductDetailResult{
-    "id": number,
-    "nombre": string,
-    "descripcion": string,
-    "precio": number,
-    "activo": boolean,
-    "categoria": number,
-    "arrendador": number,
-    "imagenes": string[]
+export interface IProductDetailResult {
+  id?: number;
+  nombre: string;
+  descripcion: string;
+  precio: number;
+  activo: boolean;
+  categoria?: number | null;
+  arrendador?: number | null;
+  imagenes?: any[]; 
 }
-
-
 
 
 export interface IProductDetail extends IApiResponse {

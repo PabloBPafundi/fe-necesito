@@ -2,7 +2,7 @@ export interface ILoginResponse {
     success: boolean;
     message: string;
     token: string;
-    result: IUserData[];
+    result: IUserData;
   }
 
 export interface IUserData {

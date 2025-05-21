@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ProductListComponent } from './product-list/product-list.component';
-import { ProductFilterComponent } from './product-filter/product-filter.component';
+import { ProductFilterComponent } from './product-filter-categories/product-filter.component';
 
 
 @Component({

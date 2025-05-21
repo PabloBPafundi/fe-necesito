@@ -1,0 +1,44 @@
+<section class="bg-orange-50 p-4 rounded-lg mr-4">
+  <div class="grid grid-cols-1 gap-6">
+
+    <article class="p-4 bg-white rounded-md">
+      <h3 class="text-lg font-semibold text-orange-700 mb-2">Categorías</h3>
+      <ul class="space-y-2">
+        <li *ngFor="let category of categories"
+            (click)="onCategorySelected(category)"
+            class="p-2 bg-white rounded-md shadow cursor-pointer hover:bg-orange-100 transition duration-200 text-gray-700 hover:text-orange-700">
+          {{ category.nombre }}
+        </li>
+      </ul>
+      <div *ngIf="!categories.length && !errorMessage">Cargando categorías...</div>
+      <div *ngIf="errorMessage && !categories.length" class="text-red-500">{{ errorMessage }}</div>
+    </article>
+
+    <article class="p-4 bg-white rounded-md">
+      <h3 class="text-lg font-semibold text-orange-700 mb-2">Localidades</h3>
+      <ul class="space-y-2">
+        <li *ngFor="let localidad of localidades"
+            (click)="onLocalidadSelected(localidad)"
+            class="p-2 bg-white rounded-md shadow cursor-pointer hover:bg-orange-100 transition duration-200 text-gray-700 hover:text-orange-700">
+          {{ localidad.nombre }} ({{ localidad.codigo_postal }})
+        </li>
+      </ul>
+      <div *ngIf="!localidades.length && !errorMessage">Cargando localidades...</div>
+      <div *ngIf="errorMessage && !localidades.length"></div>
+    </article>
+
+    <article class="p-4 bg-white rounded-md">
+      <h3 class="text-lg font-semibold text-orange-700 mb-2">Provincias</h3>
+      <ul class="space-y-2">
+        <li *ngFor="let provincia of provincias"
+            (click)="onProvinciaSelected(provincia)"
+            class="p-2 bg-white rounded-md shadow cursor-pointer hover:bg-orange-100 transition duration-200 text-gray-700 hover:text-orange-700">
+          {{ provincia.nombre }}
+        </li>
+      </ul>
+      <div *ngIf="!provincias.length && !errorMessage">Cargando provincias...</div>
+      <div *ngIf="errorMessage && !provincias.length"></div>
+    </article>
+
+  </div>
+</section>

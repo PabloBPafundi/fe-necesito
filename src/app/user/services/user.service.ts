@@ -6,9 +6,8 @@ import { signal } from '@angular/core';
 })
 export class UserService {
 
-  constructor() { }
-
-  
+  constructor() {}
+ 
   userName = signal<string | null>(null);
   userId = signal<number | null>(null);
 }

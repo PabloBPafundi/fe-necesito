@@ -12,50 +12,49 @@ import { IProductDetailResult } from '../interfaces/IProductDetails';
 })
 export class ProductListComponent implements OnInit {
 
-
-constructor(
-  private route: ActivatedRoute,
-  private productService: ProductService
-) {}
-
-products: IProductDetailResult[] = [];
-
-ngOnInit() {
-  this.route.queryParams.subscribe(params => {
-    const category = params['category'] || '';
-    const price = params['price'] || '';
-    this.fetchProducts(); // ← Llamada real
-  });
-}
-
-
-fetchProducts() {
-  this.productService.getAllProducts().subscribe({
-    next: (res) => {
-      this.products = res;
-    },
-    error: (err) => {
-      console.error('Error al cargar productos:', err.message);
-    }
-  });
-}
+  products: IProductDetailResult[] = [];
   currentPage = 1;
   itemsPerPage = 24;
 
-  get paginatedProducts() {
-    const start = (this.currentPage - 1) * this.itemsPerPage;
-    return this.products.slice(start, start + this.itemsPerPage);
+  constructor(
+    private route: ActivatedRoute,
+    private productService: ProductService
+  ) {}
+
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      // Puedes usar params['category'] o ['price'] para filtrar, si lo deseas
+      this.fetchProducts();
+    });
+  }
+
+  fetchProducts() {
+    this.productService.getIProductDetailResults({
+      page: this.currentPage,
+      maxResults: this.itemsPerPage
+    }).subscribe({
+      next: (res) => {
+        this.products = res;
+      },
+      error: (err) => {
+        console.error('Error al cargar productos:', err.message);
+      }
+    });
   }
 
   nextPage() {
-    if (this.currentPage < Math.ceil(this.products.length / this.itemsPerPage)) {
-      this.currentPage++;
-    }
+    this.currentPage++;
+    this.fetchProducts();
   }
 
   prevPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
+      this.fetchProducts();
     }
+  }
+
+  get paginatedProducts() {
+    return this.products;
   }
 }

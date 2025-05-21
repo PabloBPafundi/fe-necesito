@@ -9,6 +9,7 @@ import { ProductStatusComponent } from './product-status/product-status.componen
 import { ProductComponent } from './product/product.component';
 import { ProductDetailComponent } from './product/product-detail/product-detail.component';
 import { provideServerRendering } from '@angular/platform-server';
+import { ProductAdvertiseComponent } from './product/product-advertise/product-advertise.component';
 
 
 
@@ -17,16 +18,14 @@ export const routes: Routes = [
     { path: 'home', 
         component: HomeComponent,
         title:'Necesito.com',
-        //canActivate: [authGuard]    
+        canActivate: [authGuard]    
     },
 
     { path: '', 
       component: HomeComponent,
       title:'Necesito.com',
-      //canActivate: [authGuard]    
-  },
-
-
+      canActivate: [authGuard]    
+    },
 
     { path: 'auth', 
         component: AuthComponent,
@@ -49,7 +48,13 @@ export const routes: Routes = [
     { path: 'profile', 
         component: ProfileComponent,
         title:'Necesito.com',
-         canActivate: [authGuard]    
+        canActivate: [authGuard]    
+    },
+
+       { path: 'product-advertise', 
+        component: ProductAdvertiseComponent,
+        title:'Necesito.com',
+        canActivate: [authGuard]    
     },
 
 
@@ -63,7 +68,7 @@ export const routes: Routes = [
     { path: 'product', 
       component: ProductComponent,
       title:'Necesito.com',
-      //canActivate: [authGuard]    
+      canActivate: [authGuard]    
     },
 
 
@@ -76,7 +81,7 @@ export const routes: Routes = [
     { path: '**', 
       component: ProductDetailComponent,
       title:'Necesito.com',
-      //canActivate: [authGuard]    
+      canActivate: [authGuard]    
     },
 
 

@@ -63,7 +63,7 @@
               class="text-gray-700 flex items-center gap-2 px-4 py-2 text-sm w-full text-left hover:bg-gray-100"
               role="menuitem"
               (click)="toggleDropdown()"
-              routerLink="/profile"
+              routerLink="/product-advertise"
             >
               <lucide-icon [img]="Package" class="w-5 h-5"></lucide-icon>
               Publicar Producto
@@ -80,15 +80,7 @@
               Estatus de Productos
             </button>
 
-            <!-- Opción: Carrito -->
-            <button
-              class="text-gray-700 flex items-center gap-2 px-4 py-2 text-sm w-full text-left hover:bg-gray-100"
-              role="menuitem"
-              (click)="toggleDropdown()"
-            >
-              <lucide-icon [img]="ShoppingCart" class="w-5 h-5"></lucide-icon>
-              Carrito
-            </button>
+
             <!-- Opción: Logout -->
             <button
               (click)="logout()"

@@ -18,7 +18,7 @@ import { CookieService } from 'ngx-cookie-service';
   providedIn: 'root',
 })
 export class AuthService {
-  isAuthenticated = signal<boolean | null>(null);
+  isAuthenticated = signal<boolean>(false);
   private apiAuthUrl = 'http://localhost:8000/api/usuarios';
   private readonly STORAGE_USER_KEY = 'user_data';
   private isBrowser: boolean;
@@ -61,12 +61,13 @@ export class AuthService {
       .post<ILoginResponse>(`${this.apiAuthUrl}/login`, user, { headers })
       .pipe(
         tap((response) => {
-          if (response.success && response.result.length > 0) {
-            const usuario = response.result[0];
+          if (response.success) {
+            const usuario = response.result;
             this.isAuthenticated.set(true);
             this.userService.userName.set(usuario.nombre);
             this.userService.userId.set(usuario.id);
             this.userService.userId();
+            console.log('aaaa', this.isAuthenticated())
 
             if (this.isBrowser) {
               this.saveUserData(usuario, response.token);

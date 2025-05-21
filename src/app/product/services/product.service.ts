@@ -1,71 +1,91 @@
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpHeaders,
-} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, of, throwError } from 'rxjs';
-import {
-  IProductDetailResult,
-  IProductDetail,
-  IApiResponseError,
-} from '../interfaces/IProductDetails';
+import { catchError, map, Observable, throwError } from 'rxjs';
+import { IProductDetailResult } from '../interfaces/IProductDetails'
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  private domainApi = 'http://127.0.0.1:8000/api';
+  private apiUrl = 'http://127.0.0.1:8000/api/articulos';
 
   constructor(private http: HttpClient) {}
 
-  getProductById(id: number): Observable<IProductDetailResult> {
+  // Obtener lista paginada, con parámetros opcionales page, maxResults, sort
+  getIProductDetailResults(params?: { page?: number; maxResults?: number; sort?: string }): Observable<IProductDetailResult[]> {
     return this.http
-      .get<{ success: boolean; result: IProductDetailResult }>(
-        `${this.domainApi}/articulos/${id}`
-      )
+      .get<{ success: boolean; result: IProductDetailResult[] }>(this.apiUrl, { params: params as any })
       .pipe(
-        map((response) => {
-          if (response.success && response.result) {
-            return response.result;
-          } else {
-            throw new Error('Producto no encontrado.');
+        map((res) => {
+          if (res.success) {
+            return res.result;
           }
+          throw new Error('No se pudieron obtener los artículos');
         }),
-        catchError((error: HttpErrorResponse) => {
-          let errorMsg = 'Error desconocido.';
-          if (error.error && error.error.error) {
-            errorMsg = error.error.error;
-          } else if (error.message) {
-            errorMsg = error.message;
-          }
-          return throwError(() => new Error(errorMsg));
-        })
+        catchError(this.handleError)
       );
   }
 
-  getAllProducts(): Observable<IProductDetailResult[]> {
-    return this.http
-      .get<{ success: boolean; result: IProductDetailResult[] }>(
-        `${this.domainApi}/articulos`
-      )
-      .pipe(
-        map((response) => {
-          if (response.success && response.result) {
-            return response.result;
-          } else {
-            throw new Error('No se pudieron cargar los productos.');
-          }
-        }),
-        catchError((error: HttpErrorResponse) => {
-          let errorMsg = 'Error al obtener los productos.';
-          if (error.error?.error) {
-            errorMsg = error.error.error;
-          } else if (error.message) {
-            errorMsg = error.message;
-          }
-          return throwError(() => new Error(errorMsg));
-        })
-      );
+  // Obtener un artículo por id
+  getIProductDetailResultById(id: number): Observable<IProductDetailResult> {
+    return this.http.get<{ success: boolean; result: IProductDetailResult }>(`${this.apiUrl}/${id}`).pipe(
+      map((res) => {
+        if (res.success) {
+          return res.result;
+        }
+        throw new Error('Artículo no encontrado');
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  // Crear un nuevo artículo
+  createIProductDetailResult(data: IProductDetailResult): Observable<IProductDetailResult> {
+    return this.http.post<{ success: boolean; result: IProductDetailResult }>(this.apiUrl, data).pipe(
+      map((res) => {
+        if (res.success) {
+          return res.result;
+        }
+        throw new Error('Error al crear artículo');
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  // Actualizar artículo (PUT o PATCH)
+  updateIProductDetailResult(id: number, data: Partial<IProductDetailResult>): Observable<IProductDetailResult> {
+    return this.http.put<{ success: boolean; result: IProductDetailResult }>(`${this.apiUrl}/${id}`, data).pipe(
+      map((res) => {
+        if (res.success) {
+          return res.result;
+        }
+        throw new Error('Error al actualizar artículo');
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  // Eliminar artículo
+  deleteIProductDetailResult(id: number): Observable<string> {
+    return this.http.delete<{ success: boolean; result: string }>(`${this.apiUrl}/${id}`).pipe(
+      map((res) => {
+        if (res.success) {
+          return res.result;
+        }
+        throw new Error('Error al eliminar artículo');
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  // Manejo de errores común
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = 'Error desconocido.';
+    if (error.error?.error) {
+      errorMessage = error.error.error;
+    } else if (error.message) {
+      errorMessage = error.message;
+    }
+    return throwError(() => new Error(errorMessage));
   }
 }

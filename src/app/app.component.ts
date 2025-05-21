@@ -6,6 +6,7 @@ import { NgClass, NgIf } from '@angular/common';
 import { AuthService } from './auth/services/auth.service';
 import { Subscription, filter } from 'rxjs';
 import { CategoryComponent } from './categories/category.component';
+import { BackToTopButtonComponent } from './back-to-top-button/back-to-top-button.component';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +17,7 @@ import { CategoryComponent } from './categories/category.component';
     NgIf,
     NgClass,
     CategoryComponent,
+    BackToTopButtonComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
@@ -23,11 +25,10 @@ import { CategoryComponent } from './categories/category.component';
 export class AppComponent implements OnInit, OnDestroy {
   isAuthScreen: boolean | null = null;
   private routerSubscription!: Subscription;
-  isAuth : boolean | null = null;
+  isAuth : boolean = false;
 
   constructor(public authService: AuthService, private router: Router) {}
   ngOnInit(): void {
-    //this.authService.isAuthenticated.set(true)
 
     this.isAuth = this.authService.isAuthenticated()
 

@@ -6,7 +6,7 @@
   >
     <div class="hover:-translate-y-2 transition-transform duration-200">
       <img
-        *ngIf="product.imagenes.length"
+        *ngIf="product.imagenes"
         [src]="product.imagenes[0]"
         alt="{{ product.nombre }}"
         class="w-full h-40 object-cover"

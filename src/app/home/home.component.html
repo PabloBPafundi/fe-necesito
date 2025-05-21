@@ -1,6 +1,38 @@
-<section class="h-screen">
-
-
-<h2>Esto es Home</h2>
-
+<section
+  class="relative h-screen bg-cover bg-center flex items-center justify-center"
+  style="background-image: url('imagenhome.png')"
+>
+  <div class="absolute inset-0 bg-opacity-40 z-0"></div>
+  <div class="relative z-10 text-white text-center max-w-4xl px-8 py-16 md:py-24">
+    <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+      Encuentra lo que necesitas.<br class="hidden md:inline" />
+      Comparte lo que no usas.
+    </h1>
+    <p class="text-lg md:text-xl mb-8 text-gray-200">
+      Descubre una comunidad donde el alquiler es simple y sostenible.
+      Da nueva vida a tus objetos y encuentra justo lo que buscas.
+    </p>
+    <div class="flex flex-col md:flex-row items-center justify-center gap-4 mt-8">
+      <button
+        class="px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white text-lg font-semibold rounded-full shadow-md transition duration-300"
+        [routerLink]="['/product-advertise']"
+      >
+        Publica lo que no usas
+      </button>
+      <button
+        class="px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-lg font-semibold rounded-full shadow-md transition duration-300"
+        [routerLink]="['/product']"
+      >
+        Alquila lo que necesitas
+      </button>
+    </div>
+  </div>
 </section>
+
+
+
+<app-slide-home-capabilities />
+
+
+
+<app-slide-home-random-products />
