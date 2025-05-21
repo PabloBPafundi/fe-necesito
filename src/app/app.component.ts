@@ -23,14 +23,13 @@ import { BackToTopButtonComponent } from './back-to-top-button/back-to-top-butto
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit, OnDestroy {
-  isAuthScreen: boolean | null = null;
+  isAuthScreen: boolean = false;
   private routerSubscription!: Subscription;
-  isAuth : boolean = false;
 
   constructor(public authService: AuthService, private router: Router) {}
+
   ngOnInit(): void {
 
-    this.isAuth = this.authService.isAuthenticated()
 
     this.isAuthScreen = this.router.url === '/auth';
 
