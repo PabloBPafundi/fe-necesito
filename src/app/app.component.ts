@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
-import { NavBarComponent } from './shared/nav-bar/nav-bar.component';
-import { FooterComponent } from './shared/footer/footer.component';
+import { NavBarComponent } from './shared/components/nav-bar/nav-bar.component';
+import { FooterComponent } from './shared/components/footer/footer.component';
 import { NgClass, NgIf } from '@angular/common';
-import { AuthService } from './auth/services/auth.service';
+import { AuthService } from './services/auth.service';
 import { Subscription, filter } from 'rxjs';
-import { CategoryComponent } from './categories/category.component';
-import { BackToTopButtonComponent } from './back-to-top-button/back-to-top-button.component';
+import { CategoryNavComponent } from './shared/components/categories-nav/category-nav.component';
+import { BackToTopButtonComponent } from './shared/components/back-to-top-button/back-to-top-button.component';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +16,7 @@ import { BackToTopButtonComponent } from './back-to-top-button/back-to-top-butto
     FooterComponent,
     NgIf,
     NgClass,
-    CategoryComponent,
+    CategoryNavComponent,
     BackToTopButtonComponent
   ],
   templateUrl: './app.component.html',

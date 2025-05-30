@@ -1,15 +1,15 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './auth/guards/auth-guard.guard';
-import { HomeComponent } from './home/home.component';
-import { AuthComponent } from './auth/auth.component';
-import { ProfileComponent } from './profile/profile.component';
-import { LoginFormComponent } from './auth/component/login-form/login-form.component';
-import { RegisterFormComponent } from './auth/component/register-form/register-form.component';
-import { ProductStatusComponent } from './product-status/product-status.component';
-import { ProductComponent } from './product/product.component';
-import { ProductDetailComponent } from './product/product-detail/product-detail.component';
+import { authGuard } from './guards/auth-guard.guard';
+import { HomeComponent } from './pages/home/home.component';
+import { AuthComponent } from './pages/auth/auth.component';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { LoginFormComponent } from './pages/auth/login-form/login-form.component';
+import { RegisterFormComponent } from './pages/auth/register-form/register-form.component';
+import { ProductStatusComponent } from './pages/product-status/product-status.component';
+import { ProductComponent } from './pages/product/product.component';
+import { ProductDetailComponent } from './pages/product/product-detail/product-detail.component';
 import { provideServerRendering } from '@angular/platform-server';
-import { ProductAdvertiseComponent } from './product/product-advertise/product-advertise.component';
+import { ProductAdvertiseComponent } from './pages/product/product-advertise/product-advertise.component';
 
 
 
