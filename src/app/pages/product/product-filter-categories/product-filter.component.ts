@@ -1,21 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgModule, OnInit } from '@angular/core';
 import { CategoryService } from '../../../services/category.service';
-import { ProductService } from '../services/product.service'; // Importa tu ProductService
+import { ProductService } from '../../../services/product.service'; // Importa tu ProductService
 import { CommonModule } from '@angular/common'; // Importa CommonModule para *ngFor
 import { Category } from '../../../models/ICategory.interface';
-import { FilterProductService } from '../services/filter.service';
+import { FilterProductService } from '../../../services/FilterProduct.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-product-filter',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './product-filter.component.html',
 })
 export class ProductFilterComponent implements OnInit {
   categories: Category[] = [];
-  localidades: { id: number; nombre: string; codigo_postal: string }[] = [];
-  provincias: { id: number; nombre: string }[] = [];
   errorMessage: string = '';
+
+  selectedCategories: number[] = [];
+  selectedPriceRange: { min: number; max: number } | null = null;
+
+  minPrice: number | null = null;
+  maxPrice: number | null = null;
+
+   Infinity = Infinity;
+
 
   constructor(
     private categoryService: CategoryService,
@@ -25,8 +33,6 @@ export class ProductFilterComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCategories();
-    this.loadLocalidades();
-    this.loadProvincias();
   }
 
   loadCategories(): void {
@@ -46,44 +52,20 @@ export class ProductFilterComponent implements OnInit {
     });
   }
 
-  loadLocalidades(): void {
-    this.filterProductService.getLocalidades().subscribe({
-      next: (localidades) => {
-        this.localidades = localidades;
-      },
-      error: (err) => {
-        this.errorMessage = 'Error al cargar las localidades.';
-        console.error('Error cargando localidades', err);
-      },
-    });
-  }
-
-  loadProvincias(): void {
-    this.filterProductService.getProvincias().subscribe({
-      next: (provincias) => {
-        this.provincias = provincias;
-      },
-      error: (err) => {
-        this.errorMessage = 'Error al cargar las provincias.';
-        console.error('Error cargando provincias', err);
-      },
-    });
-  }
-
-  // Métodos para manejar la selección de filtros (puedes agregarlos aquí)
   onCategorySelected(category: Category): void {
-    console.log('Categoría seleccionada:', category);
-    // Aquí puedes implementar la lógica para filtrar productos por categoría
+    const index = this.selectedCategories.indexOf(category.id);
+    if (index > -1) {
+      this.selectedCategories.splice(index, 1);
+    } else {
+      this.selectedCategories.push(category.id);
+    }
+    console.log('Categorías seleccionadas:', this.selectedCategories);
+    // Aquí puedes llamar a un método para filtrar productos con los filtros actuales
   }
 
-  onLocalidadSelected(localidad: { id: number; nombre: string; codigo_postal: string }): void {
-    console.log('Localidad seleccionada:', localidad);
-    // Aquí puedes implementar la lógica para filtrar productos por localidad
-  }
-
-  onProvinciaSelected(provincia: { id: number; nombre: string }): void {
-    console.log('Provincia seleccionada:', provincia);
-    // Aquí puedes implementar la lógica para filtrar productos por provincia
+  onPriceRangeSelected(min: number, max: number): void {
+    this.selectedPriceRange = { min, max };
+    console.log('Rango de precios seleccionado:', this.selectedPriceRange);
+    // Aquí también puedes filtrar productos según el rango
   }
 }
-

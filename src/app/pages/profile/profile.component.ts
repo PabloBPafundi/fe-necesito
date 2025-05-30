@@ -9,11 +9,17 @@ import { UserProfile } from './IProfile';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [LucideAngularModule, NgIf, FormsModule],
+  imports: [LucideAngularModule, NgIf, FormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css',
 })

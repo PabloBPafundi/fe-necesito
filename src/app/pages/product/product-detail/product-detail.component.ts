@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IProductDetailResult } from '../../../models/IProductDetails';
-import { ProductService } from '../services/product.service';
+import { ProductService } from '../../../services/product.service';
 import { ActivatedRoute } from '@angular/router';
 import { NgIf } from '@angular/common';
 

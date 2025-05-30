@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ProductService } from '../../product/services/product.service';
+import { ProductService } from '../../../services/product.service';
 import { CommonModule } from '@angular/common';
 import { IStep } from '../../../models/step.interface'
 

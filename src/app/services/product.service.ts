@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { IProductDetailResult } from '../../../models/IProductDetails'
+import { ICreateProduct, IProductDetailResult } from '../models/IProductDetails'
 
 @Injectable({
   providedIn: 'root',
@@ -40,7 +40,7 @@ export class ProductService {
   }
 
   // Crear un nuevo artículo
-  createIProductDetailResult(data: IProductDetailResult): Observable<IProductDetailResult> {
+  createProduct(data: ICreateProduct): Observable<IProductDetailResult> {
     return this.http.post<{ success: boolean; result: IProductDetailResult }>(this.apiUrl, data).pipe(
       map((res) => {
         if (res.success) {

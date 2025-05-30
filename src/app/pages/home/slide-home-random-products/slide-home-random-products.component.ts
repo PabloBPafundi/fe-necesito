@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ProductService } from '../../product/services/product.service';
+import { ProductService } from '../../../services/product.service';
 import { IProductDetailResult } from '../../../models/IProductDetails'; // Ensure this path is correct
 import { CommonModule } from '@angular/common'; // Import CommonModule for ngIf, ngFor
 import { interval, Subscription } from 'rxjs';

@@ -1,7 +1,7 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { ProductService } from '../services/product.service';
+import { ProductService } from '../../../services/product.service';
 import { IProductDetailResult } from '../../../models/IProductDetails';
 
 @Component({
