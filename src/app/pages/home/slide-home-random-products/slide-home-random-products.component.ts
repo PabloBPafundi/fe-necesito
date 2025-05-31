@@ -39,18 +39,27 @@ export class SlideHomeRandomProductsComponent implements OnInit, OnDestroy {
   fetchProducts(): void {
     this.isLoading = true;
     this.errorMessage = null;
-    this.productService.getIProductDetailResults({ maxResults: this.totalProductsToFetch })
+
+    this.productService
+      .getProductsFiltered({ maxResults: this.totalProductsToFetch })
       .subscribe({
-        next: (data: IProductDetailResult[]) => {
-          this.products = data;
+        next: (response) => {
+          if (response.success) {
+            this.products = response.result;
+            this.startAutoSlide();
+          } else {
+            this.errorMessage = 'No se pudieron cargar los productos.';
+            this.products = [];
+          }
           this.isLoading = false;
-          this.startAutoSlide();
         },
         error: (err) => {
           console.error('Error fetching products:', err);
-          this.errorMessage = 'Failed to load products. Please try again later.';
+          this.errorMessage =
+            'Failed to load products. Please try again later.';
           this.isLoading = false;
-        }
+          this.products = [];
+        },
       });
   }
 
@@ -84,7 +93,8 @@ export class SlideHomeRandomProductsComponent implements OnInit, OnDestroy {
     if (this.autoSlideSubscription) {
       this.autoSlideSubscription.unsubscribe(); // Stop auto-slide on manual interaction
     }
-    this.currentSlideIndex = (this.currentSlideIndex - 1 + this.totalSlides) % this.totalSlides;
+    this.currentSlideIndex =
+      (this.currentSlideIndex - 1 + this.totalSlides) % this.totalSlides;
     this.startAutoSlide(); // Restart auto-slide
   }
 

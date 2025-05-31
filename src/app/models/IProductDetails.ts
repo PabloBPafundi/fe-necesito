@@ -6,9 +6,8 @@ export interface IProductDetailResult {
   activo: boolean;
   categoria?: number | null;
   arrendador?: number | null;
-  imagenes?: any[]; 
+  imagenes?: any[];
 }
-
 
 export interface ICreateProduct {
   nombre: string;
@@ -17,6 +16,18 @@ export interface ICreateProduct {
   activo: boolean;
   categoria?: number | null;
   arrendador?: number | null;
-  imagenes?: any[]; 
+  imagenes?: any[];
 }
 
+export interface IProductQueryParamsSearch {
+  page?: number;
+  maxResults?: number;
+  sort?: string;
+  nombre?: string;
+  descripcion?: string;
+  activo?: 0 | 1;
+  categoria?: number;
+  arrendador?: number;
+  precioMin?: number;
+  precioMax?: number;
+}

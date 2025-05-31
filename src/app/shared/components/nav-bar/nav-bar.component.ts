@@ -4,10 +4,11 @@ import { RouterLink } from '@angular/router';
 import { LucideAngularModule,  LogOut, User, ShoppingCart, ChevronDown, Info, Package} from 'lucide-angular';
 import { AuthService } from '../../../services/auth.service';
 import { UserService } from '../../../services/user.service';
+import { SearchBarComponent } from '../search-bar/search-bar.component';
 
 @Component({
   selector: 'app-nav-bar',
-  imports: [LucideAngularModule, NgIf, RouterLink, NgClass],
+  imports: [LucideAngularModule, NgIf, RouterLink, NgClass, SearchBarComponent],
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.css'
 })

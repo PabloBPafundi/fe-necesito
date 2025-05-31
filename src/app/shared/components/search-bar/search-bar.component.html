@@ -1,0 +1,13 @@
+<input
+  type="text"
+  [(ngModel)]="searchTerm"
+  placeholder="Buscar productos..."
+  class="px-4 py-2 pr-10 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 w-124"
+/>
+<button
+  class="bg-orange-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-orange-700 transition-all"
+  (click)="onSearch()"
+>
+  Buscar
+</button>
+

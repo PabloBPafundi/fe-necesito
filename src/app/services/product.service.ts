@@ -1,7 +1,20 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+  HttpParams,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { ICreateProduct, IProductDetailResult } from '../models/IProductDetails'
+import {
+  ICreateProduct,
+  IProductDetailResult,
+  IProductQueryParamsSearch,
+} from '../models/IProductDetails';
+import {
+  IApiResponseError,
+  IApiResponseSucces,
+} from '../models/IApiBackend.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -11,71 +24,125 @@ export class ProductService {
 
   constructor(private http: HttpClient) {}
 
-  // Obtener lista paginada, con parámetros opcionales page, maxResults, sort
-  getIProductDetailResults(params?: { page?: number; maxResults?: number; sort?: string }): Observable<IProductDetailResult[]> {
+  getProductsFiltered(
+    params: IProductQueryParamsSearch
+  ): Observable<
+    IApiResponseSucces<IProductDetailResult[]> | IApiResponseError
+  > {
+    let httpParams = new HttpParams();
+
+    if (params.page !== undefined) {
+      httpParams = httpParams.set('page', params.page.toString());
+    }
+
+    if (params.maxResults !== undefined) {
+      httpParams = httpParams.set('maxResults', params.maxResults.toString());
+    }
+
+    // Agregar parámetros opcionales solo si existen
+    if (params.sort) httpParams = httpParams.set('sort', params.sort);
+    if (params.nombre) httpParams = httpParams.set('nombre', params.nombre);
+    if (params.descripcion)
+      httpParams = httpParams.set('descripcion', params.descripcion);
+    if (params.activo !== undefined)
+      httpParams = httpParams.set('activo', params.activo.toString());
+    if (params.categoria !== undefined)
+      httpParams = httpParams.set('categoria', params.categoria.toString());
+    if (params.arrendador !== undefined)
+      httpParams = httpParams.set('arrendador', params.arrendador.toString());
+    if (params.precioMin !== undefined)
+      httpParams = httpParams.set('precioMin', params.precioMin.toString());
+    if (params.precioMax !== undefined)
+      httpParams = httpParams.set('precioMax', params.precioMax.toString());
+
     return this.http
-      .get<{ success: boolean; result: IProductDetailResult[] }>(this.apiUrl, { params: params as any })
+      .get<IApiResponseSucces<IProductDetailResult[]> | IApiResponseError>(
+        this.apiUrl,
+        { params: httpParams }
+      )
       .pipe(
         map((res) => {
           if (res.success) {
-            return res.result;
+            return res as IApiResponseSucces<IProductDetailResult[]>;
           }
-          throw new Error('No se pudieron obtener los artículos');
+          return res as IApiResponseError;
         }),
-        catchError(this.handleError)
+        catchError((err) => {
+          console.error('HTTP Error', err);
+          return throwError(() => err);
+        })
       );
   }
 
   // Obtener un artículo por id
   getIProductDetailResultById(id: number): Observable<IProductDetailResult> {
-    return this.http.get<{ success: boolean; result: IProductDetailResult }>(`${this.apiUrl}/${id}`).pipe(
-      map((res) => {
-        if (res.success) {
-          return res.result;
-        }
-        throw new Error('Artículo no encontrado');
-      }),
-      catchError(this.handleError)
-    );
+    return this.http
+      .get<{ success: boolean; result: IProductDetailResult }>(
+        `${this.apiUrl}/${id}`
+      )
+      .pipe(
+        map((res) => {
+          if (res.success) {
+            return res.result;
+          }
+          throw new Error('Artículo no encontrado');
+        }),
+        catchError(this.handleError)
+      );
   }
 
   // Crear un nuevo artículo
   createProduct(data: ICreateProduct): Observable<IProductDetailResult> {
-    return this.http.post<{ success: boolean; result: IProductDetailResult }>(this.apiUrl, data).pipe(
-      map((res) => {
-        if (res.success) {
-          return res.result;
-        }
-        throw new Error('Error al crear artículo');
-      }),
-      catchError(this.handleError)
-    );
+    return this.http
+      .post<{ success: boolean; result: IProductDetailResult }>(
+        this.apiUrl,
+        data
+      )
+      .pipe(
+        map((res) => {
+          if (res.success) {
+            return res.result;
+          }
+          throw new Error('Error al crear artículo');
+        }),
+        catchError(this.handleError)
+      );
   }
 
   // Actualizar artículo (PUT o PATCH)
-  updateIProductDetailResult(id: number, data: Partial<IProductDetailResult>): Observable<IProductDetailResult> {
-    return this.http.put<{ success: boolean; result: IProductDetailResult }>(`${this.apiUrl}/${id}`, data).pipe(
-      map((res) => {
-        if (res.success) {
-          return res.result;
-        }
-        throw new Error('Error al actualizar artículo');
-      }),
-      catchError(this.handleError)
-    );
+  updateIProductDetailResult(
+    id: number,
+    data: Partial<IProductDetailResult>
+  ): Observable<IProductDetailResult> {
+    return this.http
+      .put<{ success: boolean; result: IProductDetailResult }>(
+        `${this.apiUrl}/${id}`,
+        data
+      )
+      .pipe(
+        map((res) => {
+          if (res.success) {
+            return res.result;
+          }
+          throw new Error('Error al actualizar artículo');
+        }),
+        catchError(this.handleError)
+      );
   }
 
   // Eliminar artículo
   deleteIProductDetailResult(id: number): Observable<string> {
-    return this.http.delete<{ success: boolean; result: string }>(`${this.apiUrl}/${id}`).pipe(
-      map((res) => {
-        if (res.success) {
-          return res.result;
-        }
-        throw new Error('Error al eliminar artículo');
-      }),
-      catchError(this.handleError)
-    );
+    return this.http
+      .delete<{ success: boolean; result: string }>(`${this.apiUrl}/${id}`)
+      .pipe(
+        map((res) => {
+          if (res.success) {
+            return res.result;
+          }
+          throw new Error('Error al eliminar artículo');
+        }),
+        catchError(this.handleError)
+      );
   }
 
   // Manejo de errores común

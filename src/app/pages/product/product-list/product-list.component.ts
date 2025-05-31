@@ -2,7 +2,8 @@ import { NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ProductService } from '../../../services/product.service';
-import { IProductDetailResult } from '../../../models/IProductDetails';
+import { IProductDetailResult, IProductQueryParamsSearch } from '../../../models/IProductDetails';
+import { parseActivo } from '../../../shared/utils/parseActivo';
 
 @Component({
   selector: 'app-product-list',
@@ -15,6 +16,12 @@ export class ProductListComponent implements OnInit {
   products: IProductDetailResult[] = [];
   currentPage = 1;
   itemsPerPage = 24;
+  totalPages = 1;
+
+  lastParams: IProductQueryParamsSearch = {
+    page: 1,
+    maxResults: 24
+  };
 
   constructor(
     private route: ActivatedRoute,
@@ -23,34 +30,58 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
-      // Puedes usar params['category'] o ['price'] para filtrar, si lo deseas
-      this.fetchProducts();
+      this.currentPage = +params['page'] || 1;
+      this.itemsPerPage = +params['maxResults'] || 24;
+
+      // Guardamos los parámetros convertidos en la interfaz
+      this.lastParams = {
+        page: this.currentPage,
+        maxResults: this.itemsPerPage,
+        sort: params['sort'],
+        nombre: params['nombre'],
+        descripcion: params['descripcion'],
+        activo: parseActivo(params['activo']),
+        categoria: params['categoria'] !== undefined ? +params['categoria'] : undefined,
+        arrendador: params['arrendador'] !== undefined ? +params['arrendador'] : undefined,
+        precioMin: params['precioMin'] !== undefined ? +params['precioMin'] : undefined,
+        precioMax: params['precioMax'] !== undefined ? +params['precioMax'] : undefined,
+      };
+
+      this.fetchProducts(this.lastParams);
     });
   }
 
-  fetchProducts() {
-    this.productService.getIProductDetailResults({
-      page: this.currentPage,
-      maxResults: this.itemsPerPage
-    }).subscribe({
+  fetchProducts(params: IProductQueryParamsSearch) {
+    this.productService.getProductsFiltered(params).subscribe({
       next: (res) => {
-        this.products = res;
+        if ('result' in res) {
+          this.products = res.result;
+          this.totalPages = res.pages;
+        } else {
+          console.error('Error de respuesta:', res);
+          this.products = [];
+        }
       },
       error: (err) => {
-        console.error('Error al cargar productos:', err.message);
+        console.error('Error al cargar productos:', err);
+        this.products = [];
       }
     });
   }
 
   nextPage() {
-    this.currentPage++;
-    this.fetchProducts();
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.lastParams.page = this.currentPage;
+      this.fetchProducts(this.lastParams);
+    }
   }
 
   prevPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.fetchProducts();
+      this.lastParams.page = this.currentPage;
+      this.fetchProducts(this.lastParams);
     }
   }
 
