@@ -21,7 +21,9 @@
         class="w-14 h-14 text-blue-600 animate-spin"
         aria-hidden="true"
       ></lucide-icon>
-      <p class="mt-3 text-gray-700 text-lg font-medium">Cargando información...</p>
+      <p class="mt-3 text-gray-700 text-lg font-medium">
+        Cargando información...
+      </p>
     </div>
 
     <!-- Vista de datos -->
@@ -35,12 +37,18 @@
         <p class="text-xl font-semibold text-gray-800">{{ user.nombre }}</p>
       </article>
       <article>
-        <label class="block text-gray-500 text-sm font-semibold">Apellido</label>
+        <label class="block text-gray-500 text-sm font-semibold"
+          >Apellido</label
+        >
         <p class="text-xl font-semibold text-gray-800">{{ user.apellido }}</p>
       </article>
       <article>
-        <label class="block text-gray-500 text-sm font-semibold">Ubicación</label>
-        <p class="text-xl font-semibold text-gray-800">{{ user.georreferencias }}</p>
+        <label class="block text-gray-500 text-sm font-semibold"
+          >Ubicación</label
+        >
+        <p class="text-xl font-semibold text-gray-800">
+          {{ user.georreferencias }}
+        </p>
       </article>
       <article>
         <label class="block text-gray-500 text-sm font-semibold">Correo</label>
@@ -56,7 +64,12 @@
       (ngSubmit)="updateUserProfile()"
     >
       <div class="flex flex-col">
-        <label mat-label for="nombre" class="text-gray-600 text-sm font-medium mb-1">Nombre</label>
+        <label
+          mat-label
+          for="nombre"
+          class="text-gray-600 text-sm font-medium mb-1"
+          >Nombre</label
+        >
         <mat-form-field appearance="outline" class="w-full">
           <input
             id="nombre"
@@ -70,7 +83,12 @@
       </div>
 
       <div class="flex flex-col">
-        <label mat-label for="apellido" class="text-gray-600 text-sm font-medium mb-1">Apellido</label>
+        <label
+          mat-label
+          for="apellido"
+          class="text-gray-600 text-sm font-medium mb-1"
+          >Apellido</label
+        >
         <mat-form-field appearance="outline" class="w-full">
           <input
             id="apellido"
@@ -84,7 +102,12 @@
       </div>
 
       <div class="flex flex-col">
-        <label mat-label for="ubicacion" class="text-gray-600 text-sm font-medium mb-1">Ubicación</label>
+        <label
+          mat-label
+          for="ubicacion"
+          class="text-gray-600 text-sm font-medium mb-1"
+          >Ubicación</label
+        >
         <mat-form-field appearance="outline" class="w-full">
           <input
             id="ubicacion"
@@ -97,7 +120,12 @@
       </div>
 
       <div class="flex flex-col">
-        <label mat-label for="email" class="text-gray-600 text-sm font-medium mb-1">Correo</label>
+        <label
+          mat-label
+          for="email"
+          class="text-gray-600 text-sm font-medium mb-1"
+          >Correo</label
+        >
         <mat-form-field appearance="outline" class="w-full">
           <input
             id="email"
@@ -112,7 +140,9 @@
       </div>
 
       <!-- Botones de acción alineados al final -->
-      <div class="col-span-full flex flex-wrap gap-4 justify-center md:justify-start mt-6">
+      <div
+        class="col-span-full flex flex-wrap gap-4 justify-center md:justify-start mt-6"
+      >
         <button
           mat-raised-button
           color="accent"
@@ -142,6 +172,66 @@
       </div>
     </form>
 
+
+        <!-- Formulario de cambio de contraseña -->
+      <div *ngIf="showPasswordForm" class="w-full mt-8">
+        <form
+          class="grid grid-cols-1 md:grid-cols-2 gap-6"
+          (ngSubmit)="onSubmitPasswordChange()"
+          aria-label="Formulario de cambio de contraseña"
+        >
+          <div class="flex flex-col col-span-1 md:col-span-2">
+            <label
+              for="newPassword"
+              class="text-gray-600 text-sm font-medium mb-1"
+              >Nueva contraseña</label
+            >
+            <mat-form-field appearance="outline" class="w-full">
+              <input
+                id="newPassword"
+                type="password"
+                matInput
+                [(ngModel)]="newPassword"
+                name="newPassword"
+                required
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="flex flex-col col-span-1 md:col-span-2">
+            <label
+              for="confirmPassword"
+              class="text-gray-600 text-sm font-medium mb-1"
+              >Confirmar contraseña</label
+            >
+            <mat-form-field appearance="outline" class="w-full">
+              <input
+                id="confirmPassword"
+                type="password"
+                matInput
+                [(ngModel)]="confirmPassword"
+                name="confirmPassword"
+                required
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="col-span-full flex gap-4 mt-4 justify-end">
+            <button mat-raised-button color="primary" type="submit">
+              Cambiar
+            </button>
+            <button
+              mat-stroked-button
+              color="warn"
+              type="button"
+              (click)="showPasswordForm = false"
+            >
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+
     <!-- Botones vista normal -->
     <div
       *ngIf="!isEditing && !isLoading"
@@ -162,6 +252,15 @@
         (click)="deleteUserAccount()"
       >
         Eliminar Cuenta
+      </button>
+
+      <button
+        mat-flat-button
+        color="warn"
+        class="flex-grow md:flex-none px-8"
+        (click)="showPasswordForm = !showPasswordForm"
+      >
+        Cambiar Contraseña
       </button>
     </div>
   </div>

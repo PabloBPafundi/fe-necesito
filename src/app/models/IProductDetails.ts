@@ -1,15 +1,3 @@
-export interface IApiResponse {
-    "success": boolean,
-    "pages": number,
-    "count": number,
-}
-
-export interface IApiResponseError {
-    "success": boolean,
-    "error": number,
-    "code": number,
-}
-
 export interface IProductDetailResult {
   id?: number;
   nombre: string;
@@ -32,8 +20,3 @@ export interface ICreateProduct {
   imagenes?: any[]; 
 }
 
-
-
-export interface IProductDetail extends IApiResponse {
-    result: IProductDetailResult
-}
