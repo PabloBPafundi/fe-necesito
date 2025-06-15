@@ -8,6 +8,17 @@
   <div class="flex items-center space-x-2 w-3/6">
     <app-search-bar />
   </div>
+
+  <div class="flex items-center space-x-4">
+    <a
+      routerLink="/calendar-orders"
+      class="flex items-center gap-2 px-3 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition"
+      aria-label="Acceso al calendario"
+    >
+      <lucide-icon [img]="Calendar" class="w-5 h-5"></lucide-icon>
+      <span>Calendario</span>
+    </a>
+  </div>
   <div class="">
     <!--  -->
     <ng-container *ngIf="isLoggedIn; else loggedOut">
@@ -59,7 +70,7 @@
               Publicar Producto
             </button>
 
-                 <!-- Opción: Mis productos Publicados -->
+            <!-- Opción: Mis productos Publicados -->
             <button
               class="text-gray-700 flex items-center gap-2 px-4 py-2 text-sm w-full text-left hover:bg-gray-100"
               role="menuitem"

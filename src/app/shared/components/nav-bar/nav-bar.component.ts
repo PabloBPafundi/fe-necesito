@@ -1,7 +1,7 @@
 import { NgClass, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { LucideAngularModule,  LogOut, User, ShoppingCart, ChevronDown, Info, Package} from 'lucide-angular';
+import { LucideAngularModule,  LogOut, User, ShoppingCart, ChevronDown, Info, Package, Calendar} from 'lucide-angular';
 import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
@@ -13,7 +13,7 @@ import { SearchBarComponent } from '../search-bar/search-bar.component';
 })
 export class NavBarComponent implements OnInit {
 
-
+  readonly Calendar = Calendar;
   readonly LogOut = LogOut;
   readonly ChevronDown = ChevronDown;
   readonly User = User;
