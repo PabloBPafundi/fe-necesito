@@ -1,10 +1,11 @@
 import { Component, NgModule, OnInit } from '@angular/core';
-import { CategoryService } from '../../../services/category.service';
-import { ProductService } from '../../../services/product.service'; // Importa tu ProductService
-import { CommonModule } from '@angular/common'; // Importa CommonModule para *ngFor
-import { Category } from '../../../models/ICategory.interface';
-import { FilterProductService } from '../../../services/FilterProduct.service';
+import { CategoryService } from '../../../shared/services/category.service';
+import { ProductService } from '../../../shared/services/product.service';
+import { CommonModule } from '@angular/common';
+import { Category } from '../../../shared/types/ICategory.interface';
+import { FilterProductService } from '../../../shared/services/FilterProduct.service';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-filter',
@@ -22,17 +23,33 @@ export class ProductFilterComponent implements OnInit {
   minPrice: number | null = null;
   maxPrice: number | null = null;
 
-   Infinity = Infinity;
-
+  Infinity = Infinity;
 
   constructor(
     private categoryService: CategoryService,
     private productService: ProductService,
-    private filterProductService: FilterProductService
+    private filterProductService: FilterProductService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.loadCategories();
+
+    this.route.queryParamMap.subscribe((params) => {
+      const categoriasParam = params.get('categoria');
+      if (categoriasParam) {
+        this.selectedCategories = categoriasParam
+          .split(',')
+          .map((id) => Number(id))
+          .filter((id) => !isNaN(id));
+      }
+
+      const precioMin = params.get('precioMin');
+      const precioMax = params.get('precioMax');
+      if (precioMin) this.minPrice = +precioMin;
+      if (precioMax) this.maxPrice = +precioMax;
+    });
   }
 
   loadCategories(): void {
@@ -59,13 +76,41 @@ export class ProductFilterComponent implements OnInit {
     } else {
       this.selectedCategories.push(category.id);
     }
-    console.log('Categorías seleccionadas:', this.selectedCategories);
-    // Aquí puedes llamar a un método para filtrar productos con los filtros actuales
+
+    const queryParams: any = {
+      page: 1,
+      categoria:
+        this.selectedCategories.length > 0
+          ? this.selectedCategories.join(',')
+          : null, // Esto borra el parámetro de la URL
+    };
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams,
+      queryParamsHandling: 'merge',
+    });
   }
 
   onPriceRangeSelected(min: number, max: number): void {
     this.selectedPriceRange = { min, max };
-    console.log('Rango de precios seleccionado:', this.selectedPriceRange);
-    // Aquí también puedes filtrar productos según el rango
+
+    const queryParams: any = {
+      page: 1,
+    };
+
+    if (min != null && !isNaN(min)) {
+      queryParams['precioMin'] = min;
+    }
+
+    if (max != null && isFinite(max)) {
+      queryParams['precioMax'] = max;
+    }
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams,
+      queryParamsHandling: 'merge',
+    });
   }
 }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../../services/auth.service'; 
+import { AuthService } from '../../../shared/services/auth.service'; 
 import { Router, RouterLink } from '@angular/router'; 
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, AbstractControl, AbstractControlOptions   } from '@angular/forms'; 
 import { NgClass, NgIf } from '@angular/common';

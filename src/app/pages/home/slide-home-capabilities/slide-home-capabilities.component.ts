@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ProductService } from '../../../services/product.service';
+import { ProductService } from '../../../shared/services/product.service';
 import { CommonModule } from '@angular/common';
-import { IStep } from '../../../models/step.interface'
+import { IStep } from '../../../shared/types/step.interface'
 
 @Component({
   selector: 'app-slide-home-capabilities',

@@ -2,8 +2,8 @@ import { NgClass, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LucideAngularModule,  LogOut, User, ShoppingCart, ChevronDown, Info, Package} from 'lucide-angular';
-import { AuthService } from '../../../services/auth.service';
-import { UserService } from '../../../services/user.service';
+import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
 
 @Component({

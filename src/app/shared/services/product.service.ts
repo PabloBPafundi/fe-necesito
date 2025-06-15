@@ -10,11 +10,11 @@ import {
   ICreateProduct,
   IProductDetailResult,
   IProductQueryParamsSearch,
-} from '../models/IProductDetails';
+} from '../types/IProductDetails';
 import {
   IApiResponseError,
   IApiResponseSucces,
-} from '../models/IApiBackend.interface';
+} from '../types/IApiBackend.interface';
 
 @Injectable({
   providedIn: 'root',

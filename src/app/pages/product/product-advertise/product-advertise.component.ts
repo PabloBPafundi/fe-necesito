@@ -1,11 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ProductService } from '../../../services/product.service';
-import { UserService } from '../../../services/user.service';
+import { ProductService } from '../../../shared/services/product.service';
+import { UserService } from '../../../shared/services/user.service';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { CategoryService } from '../../../services/category.service';
+import { CategoryService } from '../../../shared/services/category.service';
 import { Observable } from 'rxjs';
-import { ICategoryResponse } from '../../../models/ICategory.interface';
-import { ICreateProduct } from '../../../models/IProductDetails';
+import { ICategoryResponse } from '../../../shared/types/ICategory.interface';
+import { ICreateProduct } from '../../../shared/types/IProductDetails';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';

@@ -7,12 +7,12 @@ import {
   Loader,
   Trash2,
 } from 'lucide-angular';
-import { ProfileService } from '../../services/profile.service';
-import { UserService } from '../../services/user.service';
+import { ProfileService } from '../../shared/services/profile.service';
+import { UserService } from '../../shared/services/user.service';
 import { catchError, EMPTY, firstValueFrom, map, Observable, tap, throwError } from 'rxjs';
-import { IUserProfile } from '../../models/IProfile';
+import { IUserProfile } from '../../shared/types/IProfile';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../shared/services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';

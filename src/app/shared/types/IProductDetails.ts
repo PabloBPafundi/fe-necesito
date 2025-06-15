@@ -26,7 +26,7 @@ export interface IProductQueryParamsSearch {
   nombre?: string;
   descripcion?: string;
   activo?: 0 | 1;
-  categoria?: number;
+  categoria?: number[];
   arrendador?: number;
   precioMin?: number;
   precioMax?: number;

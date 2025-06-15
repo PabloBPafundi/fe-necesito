@@ -1,0 +1,65 @@
+<div class="container mx-auto p-4">
+  <div *ngIf="!calificaciones || calificaciones.length === 0" class="text-center text-gray-500 py-8">
+    <mat-icon class="text-4xl text-gray-400">info_outline</mat-icon>
+    <p class="mt-2 text-gray-500">Aún no hay calificaciones para mostrar.</p>
+  </div>
+
+  <div *ngIf="calificaciones && calificaciones.length > 0" class="space-y-6">
+    <mat-card *ngFor="let calificacion of calificaciones; let i = index"
+              class="shadow-lg rounded-xl overflow-hidden transition-shadow duration-300 hover:shadow-2xl bg-white">
+      <mat-card-content class="p-6">
+
+        <div *ngIf="calificacion.calificacion_arrendatario || calificacion.descripcion_arrendatario" class="mb-5">
+          <h3 class="text-lg font-semibold text-gray-800 mb-2">Evaluación del Arrendatario</h3>
+          <div *ngIf="calificacion.calificacion_arrendatario" class="flex items-center mb-1">
+            <ng-container *ngFor="let star of getStarsArray()">
+              <mat-icon class="text-xl align-middle" [ngClass]="star <= getNumericRating(calificacion.calificacion_arrendatario) ? 'text-yellow-500' : 'text-gray-300'">
+                {{ star <= getNumericRating(calificacion.calificacion_arrendatario) ? 'star' : 'star_border' }}
+              </mat-icon>
+            </ng-container>
+            <span class="ml-2 text-sm text-gray-600">({{ calificacion.calificacion_arrendatario }}/5)</span>
+          </div>
+          <p *ngIf="calificacion.descripcion_arrendatario" class="text-gray-600 text-sm italic leading-relaxed"> "{{ calificacion.descripcion_arrendatario }}"
+          </p>
+        </div>
+
+        <mat-divider *ngIf="shouldShowDivider(calificacion, 'arrendatario')" class="my-4"></mat-divider>
+
+        <div *ngIf="calificacion.calificacion_arrendador || calificacion.descripcion_arrendador" class="mb-5">
+          <h3 class="text-lg font-semibold text-gray-800 mb-2">Evaluación del Arrendador</h3>
+          <div *ngIf="calificacion.calificacion_arrendador" class="flex items-center mb-1">
+            <ng-container *ngFor="let star of getStarsArray()">
+              <mat-icon class="text-xl align-middle"
+                        [ngClass]="star <= getNumericRating(calificacion.calificacion_arrendador) ? 'text-yellow-500' : 'text-gray-300'">
+                {{ star <= getNumericRating(calificacion.calificacion_arrendador) ? 'star' : 'star_border' }}
+              </mat-icon>
+            </ng-container>
+            <span class="ml-2 text-sm text-gray-600">({{ calificacion.calificacion_arrendador }}/5)</span>
+          </div>
+          <p *ngIf="calificacion.descripcion_arrendador" class="text-gray-600 text-sm italic leading-relaxed">
+            "{{ calificacion.descripcion_arrendador }}"
+          </p>
+        </div>
+
+        <mat-divider *ngIf="shouldShowDivider(calificacion, 'arrendador')" class="my-4"></mat-divider>
+
+        <div *ngIf="calificacion.calificacion_articulo || calificacion.descripcion_articulo" class="mb-2">
+          <h3 class="text-lg font-semibold text-gray-800 mb-2">Evaluación del Artículo</h3>
+          <div *ngIf="calificacion.calificacion_articulo" class="flex items-center mb-1">
+            <ng-container *ngFor="let star of getStarsArray()">
+              <mat-icon class="text-xl align-middle"
+                        [ngClass]="star <= getNumericRating(calificacion.calificacion_articulo) ? 'text-yellow-500' : 'text-gray-300'">
+                {{ star <= getNumericRating(calificacion.calificacion_articulo) ? 'star' : 'star_border' }}
+              </mat-icon>
+            </ng-container>
+            <span class="ml-2 text-sm text-gray-600">({{ calificacion.calificacion_articulo }}/5)</span>
+          </div>
+          <p *ngIf="calificacion.descripcion_articulo" class="text-gray-600 text-sm italic leading-relaxed">
+            "{{ calificacion.descripcion_articulo }}"
+          </p>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

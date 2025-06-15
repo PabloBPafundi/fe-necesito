@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { ApiResponse, Localidad, Provincia } from '../models/IFilterProduct.interface';
+import { ApiResponse, Localidad, Provincia } from '../types/IFilterProduct.interface';
 @Injectable({
   providedIn: 'root',
 })

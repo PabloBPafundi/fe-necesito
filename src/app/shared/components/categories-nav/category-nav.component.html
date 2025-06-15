@@ -3,7 +3,7 @@
     <button
       *ngFor="let cat of parentCategories"
       class="px-4 py-2 text-gray-700 hover:bg-orange-100 rounded-lg"
-      [routerLink]="['/product', cat.codigo]"
+      (click)="goToCategory(cat.id)"
     >
       {{ cat.nombre }}
     </button>

@@ -1,18 +1,20 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { ProductService } from '../../../services/product.service';
-import { IProductDetailResult, IProductQueryParamsSearch } from '../../../models/IProductDetails';
+import { ProductService } from '../../../shared/services/product.service';
+import {
+  IProductDetailResult,
+  IProductQueryParamsSearch,
+} from '../../../shared/types/IProductDetails';
 import { parseActivo } from '../../../shared/utils/parseActivo';
 
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css'],
-  imports: [NgFor, RouterLink, NgIf]
+  imports: [NgFor, RouterLink, NgIf],
 })
 export class ProductListComponent implements OnInit {
-
   products: IProductDetailResult[] = [];
   currentPage = 1;
   itemsPerPage = 24;
@@ -20,7 +22,7 @@ export class ProductListComponent implements OnInit {
 
   lastParams: IProductQueryParamsSearch = {
     page: 1,
-    maxResults: 24
+    maxResults: 24,
   };
 
   constructor(
@@ -29,7 +31,7 @@ export class ProductListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       this.currentPage = +params['page'] || 1;
       this.itemsPerPage = +params['maxResults'] || 24;
 
@@ -41,10 +43,18 @@ export class ProductListComponent implements OnInit {
         nombre: params['nombre'],
         descripcion: params['descripcion'],
         activo: parseActivo(params['activo']),
-        categoria: params['categoria'] !== undefined ? +params['categoria'] : undefined,
-        arrendador: params['arrendador'] !== undefined ? +params['arrendador'] : undefined,
-        precioMin: params['precioMin'] !== undefined ? +params['precioMin'] : undefined,
-        precioMax: params['precioMax'] !== undefined ? +params['precioMax'] : undefined,
+        categoria:
+          params['categoria'] !== undefined
+            ? params['categoria'].split(',').map((id: string) => +id)
+            : undefined,
+        arrendador:
+          params['arrendador'] !== undefined
+            ? +params['arrendador']
+            : undefined,
+        precioMin:
+          params['precioMin'] !== undefined ? +params['precioMin'] : undefined,
+        precioMax:
+          params['precioMax'] !== undefined ? +params['precioMax'] : undefined,
       };
 
       this.fetchProducts(this.lastParams);
@@ -65,7 +75,7 @@ export class ProductListComponent implements OnInit {
       error: (err) => {
         console.error('Error al cargar productos:', err);
         this.products = [];
-      }
+      },
     });
   }
 

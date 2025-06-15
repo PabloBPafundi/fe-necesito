@@ -5,11 +5,11 @@ import {
   IUserPassword,
   IUserProfile,
   IUserProfileResult,
-} from '../models/IProfile';
+} from '../types/IProfile';
 import {
   IApiResponseError,
   IApiResponseSucces,
-} from '../models/IApiBackend.interface';
+} from '../types/IApiBackend.interface';
 
 @Injectable({
   providedIn: 'root',

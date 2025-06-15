@@ -4,15 +4,18 @@ import {
   HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http';
-import { IUserLogin } from '../models/IUserLogin';
-import { IUserRegister } from '../models/IUserRegister';
+import { IUserLogin } from '../types/IUserLogin';
+import { IUserRegister } from '../types/IUserRegister';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
-import { UserService } from '../services/user.service';
-import { ILoginResponse, ILoginError } from '../models/ILoginResponse';
+import { UserService } from './user.service';
+import { ILoginResponse, ILoginError } from '../types/ILoginResponse';
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID, Inject } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
+import { jwtDecode } from 'jwt-decode';
+import { IDecodedToken } from '../types/IDecodedToken';
+
 
 @Injectable({
   providedIn: 'root',
@@ -151,4 +154,26 @@ export class AuthService {
       console.error('Error removing from localStorage:', e);
     }
   }
+
+
+
+  public isTokenValid(): boolean {
+  if (!this.isBrowser) return false;
+
+  const storedData = localStorage.getItem(this.STORAGE_USER_KEY);
+  if (!storedData) return false;
+
+  try {
+    const userData = JSON.parse(storedData);
+    const token = userData.token;
+
+    const decoded: IDecodedToken = jwtDecode(token);
+    const currentTime = Math.floor(Date.now() / 1000);
+
+    return decoded.exp > currentTime;
+  } catch (e) {
+    console.error('Error al validar token:', e);
+    return false;
+  }
+}
 }

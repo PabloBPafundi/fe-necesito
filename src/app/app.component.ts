@@ -3,7 +3,7 @@ import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { NavBarComponent } from './shared/components/nav-bar/nav-bar.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { NgClass, NgIf } from '@angular/common';
-import { AuthService } from './services/auth.service';
+import { AuthService } from './shared/services/auth.service';
 import { Subscription, filter } from 'rxjs';
 import { CategoryNavComponent } from './shared/components/categories-nav/category-nav.component';
 import { BackToTopButtonComponent } from './shared/components/back-to-top-button/back-to-top-button.component';
