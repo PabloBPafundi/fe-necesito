@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ProductService } from '../../../shared/services/product.service';
-import { IProductDetailResult } from '../../../shared/types/IProductDetails'; // Ensure this path is correct
+import { IArticuloResponse } from '../../../shared/types/IProductDetails'; // Ensure this path is correct
 import { CommonModule } from '@angular/common'; // Import CommonModule for ngIf, ngFor
 import { interval, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -12,7 +12,7 @@ import { take } from 'rxjs/operators';
   templateUrl: './slide-home-random-products.component.html',
 })
 export class SlideHomeRandomProductsComponent implements OnInit, OnDestroy {
-  products: IProductDetailResult[] = [];
+  products: IArticuloResponse[] = [];
   currentSlideIndex: number = 0;
   productsPerSlide: number = 5;
   totalProductsToFetch: number = 20;
@@ -79,7 +79,7 @@ export class SlideHomeRandomProductsComponent implements OnInit, OnDestroy {
    * Slices the products array based on currentSlideIndex and productsPerSlide.
    * @returns An array of products for the current slide.
    */
-  get visibleProducts(): IProductDetailResult[] {
+  get visibleProducts(): IArticuloResponse[] {
     const startIndex = this.currentSlideIndex * this.productsPerSlide;
     const endIndex = startIndex + this.productsPerSlide;
     return this.products.slice(startIndex, endIndex);

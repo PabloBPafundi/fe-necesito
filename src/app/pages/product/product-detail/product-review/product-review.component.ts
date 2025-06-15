@@ -6,7 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatChipsModule } from '@angular/material/chips';
-import { Calificacion } from '../../../../shared/types/ICalificacion.interface';
+import { ICalificacion } from '../../../../shared/types/ICalificacion.interface';
 
 @Component({
   selector: 'app-product-review',
@@ -20,7 +20,7 @@ import { Calificacion } from '../../../../shared/types/ICalificacion.interface';
   templateUrl: './product-review.component.html',
 })
 export class ProductReviewComponent {
-  @Input() calificaciones: Calificacion[] = [];
+  @Input() calificaciones: ICalificacion[] = [];
 
   getNumericRating(rating: string | null | undefined): number {
     return rating ? parseInt(rating, 10) : 0;
@@ -32,7 +32,7 @@ export class ProductReviewComponent {
       .map((_, i) => i + 1);
   }
   shouldShowDivider(
-    calificacion: Calificacion,
+    calificacion: ICalificacion,
     currentSection: 'arrendatario' | 'arrendador'
   ): boolean {
     if (currentSection === 'arrendatario') {

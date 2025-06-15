@@ -1,4 +1,4 @@
-export interface Calificacion {
+export interface ICalificacion {
   id?: number | null;
   calificacion_arrendatario?: string | null;
   descripcion_arrendatario?: string | null;

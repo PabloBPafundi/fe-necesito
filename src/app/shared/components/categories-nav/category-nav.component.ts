@@ -9,7 +9,7 @@ import { Router, RouterLink } from '@angular/router';
   selector: 'app-nav-category',
   templateUrl: './category-nav.component.html',
   standalone: true,
-  imports: [NgFor, RouterLink],
+  imports: [NgFor],
 })
 export class CategoryNavComponent implements OnInit {
   parentCategories: Category[] = [];

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { IProductDetailResult } from '../../../shared/types/IProductDetails';
+import { IArticuloResponse } from '../../../shared/types/IProductDetails';
 import { ProductService } from '../../../shared/services/product.service';
 import { ActivatedRoute } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { ProductReviewComponent } from './product-review/product-review.component';
-import { Calificacion } from '../../../shared/types/ICalificacion.interface';
+import { ICalificacion } from '../../../shared/types/ICalificacion.interface';
 
 
 @Component({
@@ -14,9 +14,9 @@ import { Calificacion } from '../../../shared/types/ICalificacion.interface';
   styleUrls: ['./product-detail.component.css']
 })
 export class ProductDetailComponent implements OnInit {
-  productDetail: IProductDetailResult | null = null;
+  productDetail: IArticuloResponse | null = null;
   errorMessage: string | null = null;
-   listaDeCalificacionesDelProducto: Calificacion[] = [];
+   listaDeCalificacionesDelProducto: ICalificacion[] = [];
 
   constructor(private productService: ProductService, private route: ActivatedRoute) {}
 

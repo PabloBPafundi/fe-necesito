@@ -1,4 +1,5 @@
-export interface IProductDetailResult {
+
+export interface IArticuloResponse {
   id?: number;
   nombre: string;
   descripcion: string;

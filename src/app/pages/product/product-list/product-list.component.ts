@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ProductService } from '../../../shared/services/product.service';
 import {
-  IProductDetailResult,
+  IArticuloResponse,
   IProductQueryParamsSearch,
 } from '../../../shared/types/IProductDetails';
 import { parseActivo } from '../../../shared/utils/parseActivo';
@@ -15,7 +15,7 @@ import { parseActivo } from '../../../shared/utils/parseActivo';
   imports: [NgFor, RouterLink, NgIf],
 })
 export class ProductListComponent implements OnInit {
-  products: IProductDetailResult[] = [];
+  products: IArticuloResponse[] = [];
   currentPage = 1;
   itemsPerPage = 24;
   totalPages = 1;

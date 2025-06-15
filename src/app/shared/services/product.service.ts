@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import {
   ICreateProduct,
-  IProductDetailResult,
+  IArticuloResponse,
   IProductQueryParamsSearch,
 } from '../types/IProductDetails';
 import {
@@ -27,7 +27,7 @@ export class ProductService {
   getProductsFiltered(
     params: IProductQueryParamsSearch
   ): Observable<
-    IApiResponseSucces<IProductDetailResult[]> | IApiResponseError
+    IApiResponseSucces<IArticuloResponse[]> | IApiResponseError
   > {
     let httpParams = new HttpParams();
 
@@ -56,14 +56,14 @@ export class ProductService {
       httpParams = httpParams.set('precio_maximo', params.precioMax.toString());
 
     return this.http
-      .get<IApiResponseSucces<IProductDetailResult[]> | IApiResponseError>(
+      .get<IApiResponseSucces<IArticuloResponse[]> | IApiResponseError>(
         this.apiUrl,
         { params: httpParams }
       )
       .pipe(
         map((res) => {
           if (res.success) {
-            return res as IApiResponseSucces<IProductDetailResult[]>;
+            return res as IApiResponseSucces<IArticuloResponse[]>;
           }
           return res as IApiResponseError;
         }),
@@ -75,9 +75,9 @@ export class ProductService {
   }
 
   // Obtener un artículo por id
-  getIProductDetailResultById(id: number): Observable<IProductDetailResult> {
+  getIProductDetailResultById(id: number): Observable<IArticuloResponse> {
     return this.http
-      .get<{ success: boolean; result: IProductDetailResult }>(
+      .get<{ success: boolean; result: IArticuloResponse }>(
         `${this.apiUrl}/${id}`
       )
       .pipe(
@@ -92,9 +92,9 @@ export class ProductService {
   }
 
   // Crear un nuevo artículo
-  createProduct(data: ICreateProduct): Observable<IProductDetailResult> {
+  createProduct(data: ICreateProduct): Observable<IArticuloResponse> {
     return this.http
-      .post<{ success: boolean; result: IProductDetailResult }>(
+      .post<{ success: boolean; result: IArticuloResponse }>(
         this.apiUrl,
         data
       )
@@ -112,10 +112,10 @@ export class ProductService {
   // Actualizar artículo (PUT o PATCH)
   updateIProductDetailResult(
     id: number,
-    data: Partial<IProductDetailResult>
-  ): Observable<IProductDetailResult> {
+    data: Partial<IArticuloResponse>
+  ): Observable<IArticuloResponse> {
     return this.http
-      .put<{ success: boolean; result: IProductDetailResult }>(
+      .put<{ success: boolean; result: IArticuloResponse }>(
         `${this.apiUrl}/${id}`,
         data
       )
