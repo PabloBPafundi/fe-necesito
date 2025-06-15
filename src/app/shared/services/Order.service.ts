@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { catchError, map, Observable } from 'rxjs';
 import { HandleErrorService } from './HandleError.service';
 import { UserService } from './user.service';
-import { IOrder, IReservaResponse } from '../types/IOrder.interface';
+import { IReserva, IReservaResponse } from '../types/IOrder.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +21,7 @@ export class OrderService {
    * Obtiene las órdenes asociadas al arrendador actual.
    * @returns Observable<IOrder[]>
    */
-  getOrderFromUser(): Observable<IOrder[]> {
+  getOrderFromUser(): Observable<IReserva[]> {
     const userId = this.userService.userId(); 
 
     const url = `${this.apiUrlOrdenes}?arrendador=${userId}`;

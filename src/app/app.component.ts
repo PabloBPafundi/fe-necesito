@@ -8,6 +8,8 @@ import { Subscription, filter } from 'rxjs';
 import { CategoryNavComponent } from './shared/components/categories-nav/category-nav.component';
 import { BackToTopButtonComponent } from './shared/components/back-to-top-button/back-to-top-button.component';
 
+
+
 @Component({
   selector: 'app-root',
   imports: [

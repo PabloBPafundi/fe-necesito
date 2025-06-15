@@ -4,11 +4,11 @@ import { IArticuloResponse } from "./IProductDetails";
 import { IUsuario } from "./IUser.interface";
 
 // Respuesta final
-export type IReservaResponse = IApiResponseSucces<IOrder[]>;
+export type IReservaResponse = IApiResponseSucces<IReserva[]>;
 
 // Interfaces auxiliares
 
-export interface IOrder {
+export interface IReserva {
   id: number;
   fecha_desde: string; 
   fecha_hasta: string;

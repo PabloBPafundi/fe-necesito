@@ -77,6 +77,7 @@ export const routes: Routes = [
       path: 'product/:id',
       component: ProductDetailComponent,
       title: 'Detalle de producto',
+       canActivate: [authGuard]
     },
 
 
@@ -84,6 +85,7 @@ export const routes: Routes = [
       path: 'calendar-orders',
       component: CalendarOrdersComponent,
       title: 'Calendar Orders',
+       canActivate: [authGuard]
     },
 
 
