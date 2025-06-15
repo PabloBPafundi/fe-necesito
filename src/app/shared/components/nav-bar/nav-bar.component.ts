@@ -10,7 +10,6 @@ import { SearchBarComponent } from '../search-bar/search-bar.component';
   selector: 'app-nav-bar',
   imports: [LucideAngularModule, NgIf, RouterLink, NgClass, SearchBarComponent],
   templateUrl: './nav-bar.component.html',
-  styleUrl: './nav-bar.component.css'
 })
 export class NavBarComponent implements OnInit {
 

@@ -10,6 +10,7 @@ import { ProductComponent } from './pages/product/product.component';
 import { ProductDetailComponent } from './pages/product/product-detail/product-detail.component';
 import { provideServerRendering } from '@angular/platform-server';
 import { ProductAdvertiseComponent } from './pages/product/product-advertise/product-advertise.component';
+import { CalendarOrdersComponent } from './pages/calendar-orders/calendar-orders.component';
 
 
 
@@ -77,6 +78,17 @@ export const routes: Routes = [
       component: ProductDetailComponent,
       title: 'Detalle de producto',
     },
+
+
+    {
+      path: 'calendar-orders',
+      component: CalendarOrdersComponent,
+      title: 'Calendar Orders',
+    },
+
+
+
+    
     
     { path: '**', 
       component: ProductDetailComponent,

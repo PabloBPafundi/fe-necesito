@@ -47,13 +47,13 @@ export class ProductService {
     if (params.activo !== undefined)
       httpParams = httpParams.set('activo', params.activo.toString());
     if (params.categoria !== undefined)
-      httpParams = httpParams.set('categoria', params.categoria.toString());
+      httpParams = httpParams.set('categoria_anidada', params.categoria.toString());
     if (params.arrendador !== undefined)
       httpParams = httpParams.set('arrendador', params.arrendador.toString());
     if (params.precioMin !== undefined)
-      httpParams = httpParams.set('precioMin', params.precioMin.toString());
+      httpParams = httpParams.set('precio_minimo', params.precioMin.toString());
     if (params.precioMax !== undefined)
-      httpParams = httpParams.set('precioMax', params.precioMax.toString());
+      httpParams = httpParams.set('precio_maximo', params.precioMax.toString());
 
     return this.http
       .get<IApiResponseSucces<IProductDetailResult[]> | IApiResponseError>(

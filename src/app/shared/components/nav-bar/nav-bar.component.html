@@ -59,12 +59,23 @@
               Publicar Producto
             </button>
 
+                 <!-- Opción: Mis productos Publicados -->
+            <button
+              class="text-gray-700 flex items-center gap-2 px-4 py-2 text-sm w-full text-left hover:bg-gray-100"
+              role="menuitem"
+              (click)="toggleDropdown()"
+              routerLink="/product-advertise"
+            >
+              <lucide-icon [img]="Package" class="w-5 h-5"></lucide-icon>
+              Ver mis Productos
+            </button>
+
             <!-- Opción: Perfil -->
             <button
               class="text-gray-700 flex items-center gap-2 px-4 py-2 text-sm w-full text-left hover:bg-gray-100"
               role="menuitem"
               (click)="toggleDropdown()"
-              routerLink="/product-status"
+              routerLink="/my-product"
             >
               <lucide-icon [img]="Info" class="w-5 h-5"></lucide-icon>
               Estatus de Productos
