@@ -12,7 +12,8 @@ import { CommonModule } from '@angular/common';
 import esLocale from '@fullcalendar/core/locales/es';
 import { StateReservationColourEnum } from '../../shared/enums/StateReservationEnum';
 import { normalizarEstado } from '../../shared/utils/normalizarEstado';
-
+import { MatDialog } from '@angular/material/dialog';
+import { OrderDetailsDialogComponent } from './order-details-dialog/order-details-dialog.component';
 @Component({
   selector: 'app-calendar-orders',
   standalone: true,
@@ -20,7 +21,6 @@ import { normalizarEstado } from '../../shared/utils/normalizarEstado';
   templateUrl: './calendar-orders.component.html',
 })
 export class CalendarOrdersComponent implements OnInit {
-
   stateCounts: Record<string, number> = {};
 
   calendarOptions: CalendarOptions = {
@@ -36,6 +36,7 @@ export class CalendarOrdersComponent implements OnInit {
     locales: [esLocale],
     locale: 'es',
     events: [],
+    eventClick: this.onEventClick.bind(this),
     eventContent: function (arg) {
       return {
         html: `<b>${arg.event.title}</b>`,
@@ -45,10 +46,25 @@ export class CalendarOrdersComponent implements OnInit {
 
   events$: Observable<EventInput[]> = new Observable();
 
-  constructor(private orderService: OrderService) {}
+  onEventClick(arg: any): void {
+    const event = arg.event;
+
+    this.dialog.open(OrderDetailsDialogComponent, {
+      data: {
+        title: event.title,
+        start: event.start,
+        end: event.end,
+        description: event.extendedProps?.description,
+      },
+      width: '400px', 
+      maxHeight: '80vh',
+      autoFocus: false,
+    });
+  }
+
+  constructor(private orderService: OrderService, private dialog: MatDialog) {}
   ngOnInit(): void {
     this.orderService.getOrderFromUser().subscribe((ordenes: IReserva[]) => {
-    
       this.stateCounts = this.contarEstados(ordenes);
 
       const events = this.mapOrdersToEvents(ordenes);
@@ -92,8 +108,7 @@ export class CalendarOrdersComponent implements OnInit {
     }, {} as Record<string, number>);
   }
 
-
-    getColorForState(estado: string): string {
+  getColorForState(estado: string): string {
     const key = normalizarEstado(estado);
     return (
       StateReservationColourEnum[

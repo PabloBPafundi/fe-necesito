@@ -1,0 +1,26 @@
+
+<div class="m-3">
+
+<h2 mat-dialog-title class="text-xl font-semibold text-gray-900 mb-2">
+  Detalle de Orden
+</h2>
+
+<div mat-dialog-content class="max-h-[60vh] overflow-y-auto space-y-3 text-gray-700 p-10" >
+  <p><span class="font-semibold">Artículo:</span> {{ data.title }}</p>
+  <p><span class="font-semibold">Desde:</span> {{ data.start | date:'mediumDate' }}</p>
+  <p><span class="font-semibold">Hasta:</span> {{ data.end | date:'mediumDate' }}</p>
+  <p><span class="font-semibold">Observaciones:</span> {{ data.description || 'Sin observaciones' }}</p>
+</div>
+
+<div mat-dialog-actions class="mt-6 flex justify-end space-x-3">
+  <button
+    mat-stroked-button
+    color="primary"
+    mat-dialog-close
+    class="px-4 py-2 hover:bg-blue-100 transition"
+  >
+    Cerrar
+  </button>
+</div>
+
+</div>
