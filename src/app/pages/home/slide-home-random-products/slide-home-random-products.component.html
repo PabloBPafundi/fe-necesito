@@ -15,7 +15,7 @@
       <div *ngFor="let product of visibleProducts"
            class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden flex flex-col justify-between">
         <div class="w-full h-48 bg-gray-200 flex items-center justify-center rounded-t-xl overflow-hidden">
-          <img [src]="product.imagenes && product.imagenes.length > 0 ? product.imagenes[0].url : 'https://placehold.co/400x300/E0E0E0/666666?text=No+Image'"
+          <img [src]="getProductImage(product)"
                alt="{{ product.nombre }}"
                class="w-full h-full object-cover"
                onerror="this.onerror=null;this.src='https://placehold.co/400x300/E0E0E0/666666?text=No+Image';"

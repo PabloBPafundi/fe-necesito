@@ -8,6 +8,7 @@ import {
 } from '../../../shared/types/IProductDetails';
 import { parseActivo } from '../../../shared/utils/parseActivo';
 import { UserService } from '../../../shared/services/user.service';
+import { getBase64ImageUrl } from '../../../shared/utils/getBase64ImageUrl';
 
 @Component({
   selector: 'app-product-list',
@@ -75,8 +76,6 @@ export class ProductListComponent implements OnInit {
       };
     }
 
-console.log('Hola', params)
-
     this.productService.getProductsFiltered(params).subscribe({
       next: (res) => {
         if ('result' in res) {
@@ -94,6 +93,14 @@ console.log('Hola', params)
     });
   }
 
+
+    getProductImage(product: IArticuloResponse): string {
+    if (product.imagenes && product.imagenes.length > 0 && product.imagenes[0].url) {
+      return getBase64ImageUrl(product.imagenes[0].url);
+    }
+    return 'https://placehold.co/400x300/E0E0E0/666666?text=No+Image';
+  }
+  
   nextPage() {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;

@@ -6,20 +6,32 @@
   >
     <div class="hover:-translate-y-2 transition-transform duration-200">
       <img
-        *ngIf="product.imagenes"
-        [src]="product.imagenes[0]"
+        [src]="getProductImage(product)"
         alt="{{ product.nombre }}"
         class="w-full h-40 object-cover"
+        onerror="this.onerror=null;this.src='https://placehold.co/400x300/E0E0E0/666666?text=No+Image';"
       />
       <h3 class="text-lg font-bold mt-2">{{ product.nombre }}</h3>
       <span class="text-gray-600">${{ product.precio }}</span>
-    </div>  
+    </div>
   </div>
 
   <!-- Paginación -->
   <div class="col-span-3 justify-center mt-4">
-    <button (click)="prevPage()" [disabled]="currentPage === 1" class="p-2 bg-amber-400 rounded">Anterior</button>
+    <button
+      (click)="prevPage()"
+      [disabled]="currentPage === 1"
+      class="p-2 bg-amber-400 rounded"
+    >
+      Anterior
+    </button>
     <span class="inline-block align-middle mx-2">Página {{ currentPage }}</span>
-    <button (click)="nextPage()" [disabled]="currentPage >= (products.length / itemsPerPage)" class="p-2 bg-amber-400 rounded">Siguiente</button>
+    <button
+      (click)="nextPage()"
+      [disabled]="currentPage >= products.length / itemsPerPage"
+      class="p-2 bg-amber-400 rounded"
+    >
+      Siguiente
+    </button>
   </div>
 </article>
