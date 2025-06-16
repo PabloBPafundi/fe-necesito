@@ -17,9 +17,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { LucideAngularModule, UploadCloud } from 'lucide-angular';
-import { AsyncPipe, NgFor } from '@angular/common';
+// Importa los íconos de Lucide Angular que usarás
+import { LucideAngularModule, UploadCloud, Image, ImagePlus, CheckCircle } from 'lucide-angular';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common'; // Agrega NgIf para la lógica de la imagen
 import { Router } from '@angular/router';
+import { MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
+
 
 @Component({
   selector: 'app-product-advertise',
@@ -32,9 +35,15 @@ import { Router } from '@angular/router';
     MatCheckboxModule,
     MatButtonModule,
     MatSnackBarModule,
-    LucideAngularModule,
+    LucideAngularModule, // Asegúrate de que este módulo esté importado
     AsyncPipe,
     NgFor,
+    NgIf, // Agrega NgIf aquí
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardSubtitle,
+    MatCardContent
   ],
   templateUrl: './product-advertise.component.html',
 })
@@ -44,8 +53,14 @@ export class ProductAdvertiseComponent implements OnInit {
   private fb = inject(FormBuilder);
   private categoriesService = inject(CategoryService);
   private snackBar = inject(MatSnackBar);
-  readonly UploadCloud = UploadCloud;
+  readonly UploadCloud = UploadCloud; 
+  readonly Image = Image; 
+  readonly ImagePlus = ImagePlus; 
+  readonly CheckCircle = CheckCircle;
   private router = inject(Router);
+
+  imagenBase64: string | null = null;
+  selectedFileName: string | null = null; // Para mostrar el nombre del archivo seleccionado
 
   form!: FormGroup;
   categories$!: Observable<ICategoryResponse>;
@@ -64,6 +79,24 @@ export class ProductAdvertiseComponent implements OnInit {
     });
   }
 
+  onFileSelected(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    if (target.files && target.files.length > 0) {
+      const file = target.files[0];
+      this.selectedFileName = file.name; // Guarda el nombre del archivo
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagenBase64 = reader.result as string;
+      };
+
+      reader.readAsDataURL(file);
+    } else {
+      this.imagenBase64 = null;
+      this.selectedFileName = null;
+    }
+  }
+
   createProductAdvertise(): void {
     if (this.form.invalid) {
       this.snackBar.open(
@@ -78,6 +111,15 @@ export class ProductAdvertiseComponent implements OnInit {
       ...this.form.value,
       arrendador: this.userId,
     };
+
+    if (this.imagenBase64) {
+      productData.imagenes = [
+        {
+          posicion: 1,
+          data: this.imagenBase64,
+        },
+      ];
+    }
 
     this.productService.createProduct(productData).subscribe({
       next: (result) => {

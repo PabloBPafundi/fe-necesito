@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common'; // Import CommonModule for ngIf,
 import { interval, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { UserService } from '../../../shared/services/user.service';
-import { getBase64ImageUrl } from '../../../shared/utils/getBase64ImageUrl';
+import { getBase64ImageUrl } from '../../../shared/utils/getImageType';
 
 @Component({
   selector: 'app-slide-home-random-products',

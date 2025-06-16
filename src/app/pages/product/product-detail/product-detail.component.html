@@ -1,25 +1,38 @@
 <!-- Si hay detalle del producto -->
-<div *ngIf="productDetail; else errorTemplate">
-  <div class="max-w-md mx-auto bg-white rounded-xl shadow-md p-6 space-y-4 border border-gray-100">
+<div *ngIf="productDetail; else errorTemplate" class="mt-5">
+  <div
+    class="max-w-md mx-auto bg-white rounded-xl shadow-md p-6 space-y-4 border border-gray-100"
+  >
+    <img
+      [src]="getProductImage(productDetail)"
+      alt="{{ productDetail.nombre }}"
+      class="w-full h-40 object-cover"
+      onerror="this.onerror=null;this.src='https://placehold.co/400x300/E0E0E0/666666?text=No+Image';"
+    />
     <h2 class="text-2xl font-bold text-gray-800">{{ productDetail.nombre }}</h2>
     <p class="text-gray-600">{{ productDetail.descripcion }}</p>
-    <span class="block text-lg font-semibold text-orange-600">Precio: {{ productDetail.precio }}</span>
+    <span class="block text-lg font-semibold text-orange-600"
+      >Precio: {{ productDetail.precio }}</span
+    >
   </div>
 </div>
 
 <!-- Plantilla para errores o carga -->
 <ng-template #errorTemplate>
-  <div class="max-w-md mx-auto mt-6 p-4 text-center rounded-lg bg-red-50 border border-red-200" *ngIf="errorMessage">
+  <div
+    class="max-w-md mx-auto mt-6 p-4 text-center rounded-lg bg-red-50 border border-red-200"
+    *ngIf="errorMessage"
+  >
     <p class="text-red-600 font-semibold">{{ errorMessage }}</p>
   </div>
-  <div class="max-w-md mx-auto mt-6 p-4 text-center rounded-lg bg-yellow-50 border border-yellow-200" *ngIf="!errorMessage">
+  <div
+    class="max-w-md mx-auto mt-6 p-4 text-center rounded-lg bg-yellow-50 border border-yellow-200"
+    *ngIf="!errorMessage"
+  >
     <p class="text-yellow-700">Cargando producto...</p>
   </div>
 </ng-template>
 
 <div>
-
-
-<app-product-review [calificaciones]="listaDeCalificacionesDelProducto"/>
-
+  <app-product-review [calificaciones]="listaDeCalificacionesDelProducto" />
 </div>

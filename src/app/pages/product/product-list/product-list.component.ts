@@ -8,7 +8,11 @@ import {
 } from '../../../shared/types/IProductDetails';
 import { parseActivo } from '../../../shared/utils/parseActivo';
 import { UserService } from '../../../shared/services/user.service';
-import { getBase64ImageUrl } from '../../../shared/utils/getBase64ImageUrl';
+import {
+  getBase64ImageUrl,
+  isBase64Image,
+} from '../../../shared/utils/getImageType';
+import { cleanEscapedUrl } from '../../../shared/utils/cleanEscapedUrl';
 
 @Component({
   selector: 'app-product-list',
@@ -67,9 +71,7 @@ export class ProductListComponent implements OnInit {
   fetchProducts(params: IProductQueryParamsSearch) {
     const userId = this.userService.userId();
 
-   
     if (userId !== null && userId !== undefined) {
-       
       params = {
         ...params,
         no_arrendador: userId,
@@ -93,14 +95,24 @@ export class ProductListComponent implements OnInit {
     });
   }
 
+  getProductImage(product: IArticuloResponse): string {
+    const rawData = product.imagenes?.[0]?.data;
 
-    getProductImage(product: IArticuloResponse): string {
-    if (product.imagenes && product.imagenes.length > 0 && product.imagenes[0].data) {
-      return getBase64ImageUrl(product.imagenes[0].data);
+    if (!rawData) {
+      return 'https://placehold.co/400x300/E0E0E0/666666?text=No+Image';
     }
-    return 'https://placehold.co/400x300/E0E0E0/666666?text=No+Image';
+
+    const isProbablyEscapedUrl = rawData.startsWith('https:\\');
+
+    if (isProbablyEscapedUrl) {
+      return cleanEscapedUrl(rawData);
+    }
+
+    const isUrl =
+      rawData.startsWith('http://') || rawData.startsWith('https://');
+
+    return isUrl ? rawData : `data:image/jpeg;base64,${rawData}`;
   }
-  
   nextPage() {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
