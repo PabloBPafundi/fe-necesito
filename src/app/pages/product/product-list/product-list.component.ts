@@ -95,8 +95,8 @@ export class ProductListComponent implements OnInit {
 
 
     getProductImage(product: IArticuloResponse): string {
-    if (product.imagenes && product.imagenes.length > 0 && product.imagenes[0].url) {
-      return getBase64ImageUrl(product.imagenes[0].url);
+    if (product.imagenes && product.imagenes.length > 0 && product.imagenes[0].data) {
+      return getBase64ImageUrl(product.imagenes[0].data);
     }
     return 'https://placehold.co/400x300/E0E0E0/666666?text=No+Image';
   }

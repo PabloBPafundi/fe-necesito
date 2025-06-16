@@ -1,3 +1,5 @@
+import { IImagenes } from "./IImagenes.interface";
+
 export interface IArticuloResponse {
   id?: number;
   nombre: string;
@@ -6,7 +8,7 @@ export interface IArticuloResponse {
   activo: boolean;
   categoria?: number | null;
   arrendador?: number | null;
-  imagenes?: any[];
+  imagenes?: IImagenes[];
 }
 
 export interface ICreateProduct {
@@ -16,7 +18,7 @@ export interface ICreateProduct {
   activo: boolean;
   categoria?: number | null;
   arrendador?: number | null;
-  imagenes?: any[];
+  imagenes?: IImagenes[];
 }
 
 export interface IProductQueryParamsSearch {
