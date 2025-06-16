@@ -1,40 +1,24 @@
 <form
   [formGroup]="form"
   (ngSubmit)="createProductAdvertise()"
-  class="w-full max-w-2xl mx-auto p-8 bg-orange-50 rounded-2xl shadow-lg space-y-6 border border-orange-200"
+  class="bg-white shadow-lg rounded-2xl p-8 max-w-2xl mx-auto space-y-6"
 >
-
-  <h2 class="text-2xl font-semibold text-orange-700">Publicar nuevo producto</h2>
+  <h2 class="text-2xl font-bold text-indigo-700">Publicar nuevo producto</h2>
+  <p class="text-gray-600 text-sm mb-4">Completa los campos obligatorios para publicar tu producto.</p>
 
   <mat-form-field appearance="fill" class="w-full">
     <mat-label>Nombre del producto</mat-label>
-    <input
-      matInput
-      placeholder="Ej. Bicicleta de montaña"
-      formControlName="nombre"
-      class="focus:outline-none"
-    />
+    <input matInput formControlName="nombre" placeholder="Ej. Bicicleta de montaña" />
   </mat-form-field>
 
   <mat-form-field appearance="fill" class="w-full">
     <mat-label>Descripción</mat-label>
-    <textarea
-      matInput
-      placeholder="Agrega detalles relevantes del producto"
-      formControlName="descripcion"
-      class="focus:outline-none"
-    ></textarea>
+    <textarea matInput rows="3" formControlName="descripcion" placeholder="Agrega detalles del producto"></textarea>
   </mat-form-field>
 
   <mat-form-field appearance="fill" class="w-full">
     <mat-label>Precio</mat-label>
-    <input
-      matInput
-      type="number"
-      placeholder="Precio en pesos"
-      formControlName="precio"
-      class="focus:outline-none"
-    />
+    <input matInput type="number" formControlName="precio" />
   </mat-form-field>
 
   <mat-form-field appearance="fill" class="w-full">
@@ -47,14 +31,15 @@
   </mat-form-field>
 
   <div class="flex items-center justify-between">
-    <mat-checkbox formControlName="activo" class="text-orange-600">Activo</mat-checkbox>
+    <mat-checkbox formControlName="activo" color="primary">Activo</mat-checkbox>
 
     <button
       mat-raised-button
+      color="primary"
       type="submit"
-      class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-full transition-all duration-300 flex items-center gap-2 shadow-md"
+      class="rounded-full px-6 py-2 font-semibold flex items-center gap-2"
     >
-      <lucide-icon name="upload-cloud" class="w-5 h-5"></lucide-icon>
+      <i-lucide [img]="UploadCloud" size="18" class="inline"></i-lucide>
       Publicar producto
     </button>
   </div>

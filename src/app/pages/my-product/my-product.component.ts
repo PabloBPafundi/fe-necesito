@@ -17,6 +17,9 @@ import {
   PlusCircle,
   PencilLine,
 } from 'lucide-angular';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog.component';
+
 
 @Component({
   selector: 'app-my-product',
@@ -49,7 +52,8 @@ export class MyProductComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -62,7 +66,7 @@ export class MyProductComponent implements OnInit {
     const userId = this.userService.userId();
     if (userId) {
       params = {
-        no_arrendador: userId,
+        arrendador: userId,
         page: this.currentPage,
         maxResults: this.itemsPerPage,
       };
@@ -91,14 +95,23 @@ export class MyProductComponent implements OnInit {
     this.router.navigate(['/product', p.id]);
   }
 
-  onDelete(p: IArticuloResponse) {
-    if (p.id && confirm('¿Seguro querés eliminarlo?')) {
+onDelete(p: IArticuloResponse) {
+  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    data: {
+      title: '¿Estás seguro?',
+      message: `Vas a eliminar el producto "${p.nombre}". Esta acción no se puede deshacer.`,
+    },
+    panelClass: 'rounded-xl',
+  });
+
+  dialogRef.afterClosed().subscribe((confirmed) => {
+    if (confirmed && p.id) {
       this.productService.deleteIProductDetailResult(p.id).subscribe(() => {
         this.fetchUserProduct();
       });
     }
-  }
-
+  });
+}
   onNew() {
     this.router.navigate(['/product-advertise']);
   }

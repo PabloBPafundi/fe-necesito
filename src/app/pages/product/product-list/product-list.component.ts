@@ -14,7 +14,7 @@ import { getBase64ImageUrl } from '../../../shared/utils/getBase64ImageUrl';
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css'],
-  imports: [NgFor, RouterLink, NgIf],
+  imports: [NgFor, RouterLink],
 })
 export class ProductListComponent implements OnInit {
   products: IArticuloResponse[] = [];

@@ -1,7 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ProductService } from '../../../shared/services/product.service';
 import { UserService } from '../../../shared/services/user.service';
-import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { CategoryService } from '../../../shared/services/category.service';
 import { Observable } from 'rxjs';
 import { ICategoryResponse } from '../../../shared/types/ICategory.interface';
@@ -14,13 +19,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { LucideAngularModule, UploadCloud } from 'lucide-angular';
 import { AsyncPipe, NgFor } from '@angular/common';
-
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-advertise',
   standalone: true,
-    imports: [
+  imports: [
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -30,19 +34,18 @@ import { AsyncPipe, NgFor } from '@angular/common';
     MatSnackBarModule,
     LucideAngularModule,
     AsyncPipe,
-    NgFor
+    NgFor,
   ],
   templateUrl: './product-advertise.component.html',
-  styleUrl: './product-advertise.component.css'
 })
 export class ProductAdvertiseComponent implements OnInit {
-
   private productService = inject(ProductService);
   private userService = inject(UserService);
   private fb = inject(FormBuilder);
   private categoriesService = inject(CategoryService);
   private snackBar = inject(MatSnackBar);
   readonly UploadCloud = UploadCloud;
+  private router = inject(Router);
 
   form!: FormGroup;
   categories$!: Observable<ICategoryResponse>;
@@ -57,13 +60,17 @@ export class ProductAdvertiseComponent implements OnInit {
       descripcion: ['', Validators.required],
       precio: [null, [Validators.required, Validators.min(0)]],
       categoria: [null, Validators.required],
-      activo: [true, Validators.required]
+      activo: [true, Validators.required],
     });
   }
 
   createProductAdvertise(): void {
     if (this.form.invalid) {
-      this.snackBar.open('Por favor, completa todos los campos obligatorios.', 'Cerrar', { duration: 3000 });
+      this.snackBar.open(
+        'Por favor, completa todos los campos obligatorios.',
+        'Cerrar',
+        { duration: 3000 }
+      );
       return;
     }
 
@@ -74,12 +81,17 @@ export class ProductAdvertiseComponent implements OnInit {
 
     this.productService.createProduct(productData).subscribe({
       next: (result) => {
-        this.snackBar.open('Producto creado con éxito.', 'Cerrar', { duration: 3000 });
-        this.form.reset();
+        this.snackBar.open('Producto creado con éxito.', 'Cerrar', {
+          duration: 3000,
+          panelClass: ['bg-green-600', 'text-white'],
+        });
+        this.router.navigate(['/my-product']);
       },
       error: () => {
-        this.snackBar.open('Error al crear el producto.', 'Cerrar', { duration: 3000 });
-      }
+        this.snackBar.open('Error al crear el producto.', 'Cerrar', {
+          duration: 3000,
+        });
+      },
     });
   }
 }
