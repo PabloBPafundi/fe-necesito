@@ -7,6 +7,7 @@ import { AuthService } from './shared/services/auth.service';
 import { Subscription, filter } from 'rxjs';
 import { CategoryNavComponent } from './shared/components/categories-nav/category-nav.component';
 import { BackToTopButtonComponent } from './shared/components/back-to-top-button/back-to-top-button.component';
+import { UserService } from './shared/services/user.service';
 
 
 
@@ -27,13 +28,15 @@ import { BackToTopButtonComponent } from './shared/components/back-to-top-button
 export class AppComponent implements OnInit, OnDestroy {
   isAuthScreen: boolean = false;
   private routerSubscription!: Subscription;
+  userIsLogIn: boolean = false;
 
   constructor(public authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
 
-
     this.isAuthScreen = this.router.url === '/auth';
+
+    this.userIsLogIn = this.authService.isAuthenticated();
 
     this.routerSubscription = this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
