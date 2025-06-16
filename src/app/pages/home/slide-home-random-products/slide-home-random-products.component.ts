@@ -1,9 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ProductService } from '../../../shared/services/product.service';
-import { IArticuloResponse } from '../../../shared/types/IProductDetails'; // Ensure this path is correct
+import {
+  IArticuloResponse,
+  IProductQueryParamsSearch,
+} from '../../../shared/types/IProductDetails'; // Ensure this path is correct
 import { CommonModule } from '@angular/common'; // Import CommonModule for ngIf, ngFor
 import { interval, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { UserService } from '../../../shared/services/user.service';
 
 @Component({
   selector: 'app-slide-home-random-products',
@@ -20,7 +24,10 @@ export class SlideHomeRandomProductsComponent implements OnInit, OnDestroy {
   errorMessage: string | null = null;
   private autoSlideSubscription: Subscription | undefined;
 
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {
     this.fetchProducts();
@@ -40,27 +47,36 @@ export class SlideHomeRandomProductsComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.errorMessage = null;
 
-    this.productService
-      .getProductsFiltered({ maxResults: this.totalProductsToFetch })
-      .subscribe({
-        next: (response) => {
-          if (response.success) {
-            this.products = response.result;
-            this.startAutoSlide();
-          } else {
-            this.errorMessage = 'No se pudieron cargar los productos.';
-            this.products = [];
-          }
-          this.isLoading = false;
-        },
-        error: (err) => {
-          console.error('Error fetching products:', err);
-          this.errorMessage =
-            'Failed to load products. Please try again later.';
-          this.isLoading = false;
+    let params: IProductQueryParamsSearch = {
+      maxResults: this.totalProductsToFetch,
+    };
+
+    const userId = this.userService.userId();
+    if (userId !== null && userId !== undefined) {
+      params = {
+        ...params,
+        no_arrendador: userId,
+      };
+    }
+
+    this.productService.getProductsFiltered(params).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.products = response.result;
+          this.startAutoSlide();
+        } else {
+          this.errorMessage = 'No se pudieron cargar los productos.';
           this.products = [];
-        },
-      });
+        }
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error fetching products:', err);
+        this.errorMessage = 'Failed to load products. Please try again later.';
+        this.isLoading = false;
+        this.products = [];
+      },
+    });
   }
 
   /**

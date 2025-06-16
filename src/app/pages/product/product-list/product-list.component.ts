@@ -7,6 +7,7 @@ import {
   IProductQueryParamsSearch,
 } from '../../../shared/types/IProductDetails';
 import { parseActivo } from '../../../shared/utils/parseActivo';
+import { UserService } from '../../../shared/services/user.service';
 
 @Component({
   selector: 'app-product-list',
@@ -27,7 +28,8 @@ export class ProductListComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private productService: ProductService
+    private productService: ProductService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -62,6 +64,19 @@ export class ProductListComponent implements OnInit {
   }
 
   fetchProducts(params: IProductQueryParamsSearch) {
+    const userId = this.userService.userId();
+
+   
+    if (userId !== null && userId !== undefined) {
+       
+      params = {
+        ...params,
+        no_arrendador: userId,
+      };
+    }
+
+console.log('Hola', params)
+
     this.productService.getProductsFiltered(params).subscribe({
       next: (res) => {
         if ('result' in res) {

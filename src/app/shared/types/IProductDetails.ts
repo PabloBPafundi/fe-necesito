@@ -1,4 +1,3 @@
-
 export interface IArticuloResponse {
   id?: number;
   nombre: string;
@@ -31,4 +30,5 @@ export interface IProductQueryParamsSearch {
   arrendador?: number;
   precioMin?: number;
   precioMax?: number;
+  no_arrendador?: number;
 }

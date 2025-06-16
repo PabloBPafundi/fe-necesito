@@ -54,6 +54,8 @@ export class ProductService {
       httpParams = httpParams.set('precio_minimo', params.precioMin.toString());
     if (params.precioMax !== undefined)
       httpParams = httpParams.set('precio_maximo', params.precioMax.toString());
+     if (params.no_arrendador !== undefined)
+      httpParams = httpParams.set('no_arrendador', params.no_arrendador.toString());
 
     return this.http
       .get<IApiResponseSucces<IArticuloResponse[]> | IApiResponseError>(
