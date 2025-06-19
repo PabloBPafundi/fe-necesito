@@ -104,7 +104,7 @@ export class MyProductComponent implements OnInit {
   }
 
   onEdit(p: IArticuloResponse) {
-    this.router.navigate(['/product', p.id]);
+    this.router.navigate(['/product/edit', p.id]);
   }
 
   onDelete(p: IArticuloResponse) {
