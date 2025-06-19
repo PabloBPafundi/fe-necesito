@@ -1,29 +1,46 @@
+<!-- product-list.component.html -->
 <div class="p-6 max-w-7xl mx-auto">
-<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-  <h2 class="text-3xl font-extrabold text-indigo-700">Mis Productos Publicados</h2>
-  <button
-    mat-raised-button
-    color="primary"
-    (click)="onNew()"
-    class="flex items-center text-center rounded-full shadow-md hover:shadow-lg transition-all py-2">
-    <i-lucide [img]="PlusCircle" size="20" class="inline mr-1"></i-lucide>
-    <span class="font-medium inline">Publicar Nuevo Producto</span>
-  </button>
-</div>
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+    <h2 class="text-3xl font-extrabold text-indigo-700">Mis Productos Publicados</h2>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="onNew()"
+      class="flex items-center text-center rounded-full shadow-md hover:shadow-lg transition-all py-2">
+      <i-lucide [img]="PlusCircle" size="20" class="inline mr-1"></i-lucide>
+      <span class="font-medium inline">Publicar Nuevo Producto</span>
+    </button>
+  </div>
 
   <ng-container *ngIf="products.length; else empty">
     <table mat-table [dataSource]="products" class="w-full shadow-lg rounded-lg overflow-hidden">
 
+      <!-- Thumbnail column -->
+      <ng-container matColumnDef="imagen">
+        <th mat-header-cell *matHeaderCellDef class="px-4 py-3 bg-gray-100"></th>
+        <td mat-cell *matCellDef="let p" class="px-4 py-3 border-b border-gray-200">
+          <img 
+            [src]="getProductThumbnail(p)" 
+            alt="{{ p.nombre }}" 
+            class="w-16 h-16 object-cover rounded-lg shadow-sm"
+            onerror="this.onerror=null;this.src='https://placehold.co/64x64/E0E0E0/666666?text=No+Image';"
+          />
+        </td>
+      </ng-container>
+
+      <!-- Nombre -->
       <ng-container matColumnDef="nombre">
         <th mat-header-cell *matHeaderCellDef class="px-4 py-3 text-left font-semibold text-gray-700 bg-gray-100">Nombre</th>
         <td mat-cell *matCellDef="let p" class="px-4 py-3 border-b border-gray-200">{{ p.nombre }}</td>
       </ng-container>
 
+      <!-- Precio -->
       <ng-container matColumnDef="precio">
         <th mat-header-cell *matHeaderCellDef class="px-4 py-3 text-left font-semibold text-gray-700 bg-gray-100">Precio</th>
         <td mat-cell *matCellDef="let p" class="px-4 py-3 border-b border-gray-200">{{ p.precio | currency:'ARS':'symbol':'1.2-2' }}</td>
       </ng-container>
 
+      <!-- Activo -->
       <ng-container matColumnDef="activo">
         <th mat-header-cell *matHeaderCellDef class="px-4 py-3 text-left font-semibold text-gray-700 bg-gray-100">Activo</th>
         <td mat-cell *matCellDef="let p" class="px-4 py-3 border-b border-gray-200">
@@ -33,6 +50,7 @@
         </td>
       </ng-container>
 
+      <!-- Acciones -->
       <ng-container matColumnDef="acciones">
         <th mat-header-cell *matHeaderCellDef class="px-4 py-3 text-left font-semibold text-gray-700 bg-gray-100">Acciones</th>
         <td mat-cell *matCellDef="let p" class="px-4 py-3 border-b border-gray-200">

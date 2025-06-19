@@ -82,6 +82,13 @@ export const routes: Routes = [
       .then(m => m.CalendarOrdersComponent),
   },
   {
+    path: 'product/edit/:id',
+    title: 'Edición de producto',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/product/product-edit/product-edit.component')
+      .then(m => m.ProductEditComponent),
+  },
+  {
     path: '**',
     title: 'Necesito.com',
     canActivate: [authGuard],
