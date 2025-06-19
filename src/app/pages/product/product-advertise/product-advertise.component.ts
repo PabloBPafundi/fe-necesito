@@ -59,12 +59,12 @@ export class ProductAdvertiseComponent implements OnInit {
   readonly CheckCircle = CheckCircle;
   private router = inject(Router);
 
-  imagenBase64: string | null = null;
-  selectedFileName: string | null = null; // Para mostrar el nombre del archivo seleccionado
-
   form!: FormGroup;
   categories$!: Observable<ICategoryResponse>;
   userId: number | null = null;
+
+  selectedFiles: File[] = [];
+  previewImages: string[] = [];
 
   ngOnInit(): void {
     this.userId = this.userService.userId();
@@ -80,21 +80,31 @@ export class ProductAdvertiseComponent implements OnInit {
   }
 
   onFileSelected(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    if (target.files && target.files.length > 0) {
-      const file = target.files[0];
-      this.selectedFileName = file.name; // Guarda el nombre del archivo
+    const input = event.target as HTMLInputElement;
+
+    if (!input.files) return;
+
+    const files = Array.from(input.files);
+
+    if (this.selectedFiles.length + files.length > 10) {
+      this.snackBar.open('Máximo 10 imágenes permitidas.', 'Cerrar', { duration: 3000 });
+      return;
+    }
+
+    files.forEach(file => {
+      this.selectedFiles.push(file);
 
       const reader = new FileReader();
-      reader.onload = () => {
-        this.imagenBase64 = reader.result as string;
+      reader.onload = (e: any) => {
+        this.previewImages.push(e.target.result);
       };
-
       reader.readAsDataURL(file);
-    } else {
-      this.imagenBase64 = null;
-      this.selectedFileName = null;
-    }
+    });
+  }
+
+  removeImage(index: number): void {
+    this.selectedFiles.splice(index, 1);
+    this.previewImages.splice(index, 1);
   }
 
   createProductAdvertise(): void {
@@ -107,22 +117,19 @@ export class ProductAdvertiseComponent implements OnInit {
       return;
     }
 
+    const imagenes = this.previewImages.map((base64, index) => ({
+      data: base64,
+      posicion: index + 1
+    }));
+
     const productData: ICreateProduct = {
       ...this.form.value,
       arrendador: this.userId,
+      imagenes: imagenes
     };
 
-    if (this.imagenBase64) {
-      productData.imagenes = [
-        {
-          posicion: 1,
-          data: this.imagenBase64,
-        },
-      ];
-    }
-
     this.productService.createProduct(productData).subscribe({
-      next: (result) => {
+      next: () => {
         this.snackBar.open('Producto creado con éxito.', 'Cerrar', {
           duration: 3000,
           panelClass: ['bg-green-600', 'text-white'],

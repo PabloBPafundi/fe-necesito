@@ -20,7 +20,6 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog.component';
 
-
 @Component({
   selector: 'app-my-product',
   standalone: true,
@@ -89,29 +88,43 @@ export class MyProductComponent implements OnInit {
     });
   }
 
-  displayedColumns = ['nombre', 'precio', 'activo', 'acciones'];
+  displayedColumns = ['imagen', 'nombre', 'precio', 'activo', 'acciones'];
+
+  getProductThumbnail(product: IArticuloResponse): string {
+    const rawData = product.imagenes?.[0]?.data;
+    if (!rawData) {
+      return 'https://placehold.co/64x64/E0E0E0/666666?text=No+Image';
+    }
+    const isEscapedUrl = rawData.startsWith('https:\\');
+    if (isEscapedUrl) {
+      return rawData.replace('\\', '');
+    }
+    const isUrl = rawData.startsWith('http://') || rawData.startsWith('https://');
+    return isUrl ? rawData : `data:image/jpeg;base64,${rawData}`;
+  }
 
   onEdit(p: IArticuloResponse) {
     this.router.navigate(['/product', p.id]);
   }
 
-onDelete(p: IArticuloResponse) {
-  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-    data: {
-      title: '¿Estás seguro?',
-      message: `Vas a eliminar el producto "${p.nombre}". Esta acción no se puede deshacer.`,
-    },
-    panelClass: 'rounded-xl',
-  });
+  onDelete(p: IArticuloResponse) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: '¿Estás seguro?',
+        message: `Vas a eliminar el producto "${p.nombre}". Esta acción no se puede deshacer.`,
+      },
+      panelClass: 'rounded-xl',
+    });
 
-  dialogRef.afterClosed().subscribe((confirmed) => {
-    if (confirmed && p.id) {
-      this.productService.deleteIProductDetailResult(p.id).subscribe(() => {
-        this.fetchUserProduct();
-      });
-    }
-  });
-}
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (confirmed && p.id) {
+        this.productService.deleteIProductDetailResult(p.id).subscribe(() => {
+          this.fetchUserProduct();
+        });
+      }
+    });
+  }
+
   onNew() {
     this.router.navigate(['/product-advertise']);
   }

@@ -1,91 +1,177 @@
-import { Component, OnInit } from '@angular/core';
-import { IArticuloResponse } from '../../../shared/types/IProductDetails';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ProductService } from '../../../shared/services/product.service';
-import { ActivatedRoute } from '@angular/router';
-import { NgIf } from '@angular/common';
-import { ProductReviewComponent } from './product-review/product-review.component';
-import { ICalificacion } from '../../../shared/types/ICalificacion.interface';
-import { getBase64ImageUrl, isBase64Image } from '../../../shared/utils/getImageType';
-import { cleanEscapedUrl } from '../../../shared/utils/cleanEscapedUrl';
+import { CategoryService } from '../../../shared/services/category.service';
+import { UserService } from '../../../shared/services/user.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { Observable } from 'rxjs';
+import { ICategoryResponse } from '../../../shared/types/ICategory.interface';
+import { IArticuloResponse } from '../../../shared/types/IProductDetails';
+import { AsyncPipe, NgFor } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
 
 @Component({
   selector: 'app-product-detail',
-  imports: [NgIf, ProductReviewComponent],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatButtonModule,
+    MatSnackBarModule,
+    AsyncPipe,
+    NgFor,
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardSubtitle,
+    MatCardContent
+  ],
   templateUrl: './product-detail.component.html',
 })
 export class ProductDetailComponent implements OnInit {
-  productDetail: IArticuloResponse | null = null;
-  errorMessage: string | null = null;
-  listaDeCalificacionesDelProducto: ICalificacion[] = [];
+  form!: FormGroup;
+  categories$!: Observable<ICategoryResponse>;
+  productId!: number;
+  productDetail!: IArticuloResponse;
 
-  constructor(
-    private productService: ProductService,
-    private route: ActivatedRoute
-  ) {}
+  existingImages: { url: string; posicion: number }[] = [];
+  newImages: { base64: string; posicion: number }[] = [];
+  deletedImages: { posicion: number }[] = [];
 
-  ngOnInit() {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.productService.getIProductDetailResultById(id).subscribe({
-      next: (product) => {
-        this.productDetail = product;
-        this.errorMessage = null;
-      },
-      error: (error) => {
-        this.errorMessage = error.message;
-        this.productDetail = null;
-      },
+  private fb = inject(FormBuilder);
+  private productService = inject(ProductService);
+  private categoryService = inject(CategoryService);
+  private userService = inject(UserService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private snackBar = inject(MatSnackBar);
+
+  ngOnInit(): void {
+    this.productId = Number(this.route.snapshot.paramMap.get('id'));
+    this.categories$ = this.categoryService.getCategories();
+
+    this.form = this.fb.group({
+      nombre: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      precio: [0, [Validators.required, Validators.min(0)]],
+      categoria: [null, Validators.required],
+      activo: [true, Validators.required]
     });
 
-    this.listaDeCalificacionesDelProducto = [
-      {
-        id: 1,
-        calificacion_arrendatario: '5',
-        descripcion_arrendatario:
-          'El arrendatario fue muy cuidadoso y puntual.',
-        calificacion_arrendador: '4',
-        descripcion_arrendador: 'El arrendador explicó todo claramente.',
-        calificacion_articulo: '5',
-        descripcion_articulo:
-          'El artículo estaba en perfectas condiciones, como nuevo.',
-      },
-      {
-        id: 2,
-        calificacion_arrendatario: null, // No siempre estarán todas las calificaciones
-        descripcion_arrendatario: null,
-        calificacion_arrendador: '5',
-        descripcion_arrendador:
-          'Proceso de entrega y devolución muy eficiente.',
-        calificacion_articulo: '4',
-        descripcion_articulo:
-          'Buen estado general, algunos signos menores de uso.',
-      },
-      {
-        id: 3,
-        calificacion_articulo: '3',
-        descripcion_articulo: 'Funcionó bien, pero la batería no duraba mucho.',
-        // Las otras calificaciones y descripciones son null o undefined en este caso
-      },
-      // ... más calificaciones
-    ];
+    this.loadProductDetail();
   }
 
-getProductImage(product: IArticuloResponse): string {
-  const rawData = product.imagenes?.[0]?.data;
+  loadProductDetail(): void {
+    this.productService.getIProductDetailResultById(this.productId).subscribe({
+      next: (product) => {
+        this.productDetail = product;
+        this.form.patchValue({
+          nombre: product.nombre,
+          descripcion: product.descripcion,
+          precio: product.precio,
+          categoria:
+            typeof product.categoria === 'object' && product.categoria !== null
+              ? product.categoria
+              : typeof product.categoria === 'number'
+              ? product.categoria
+              : null,
+          activo: product.activo,
+        });
 
-  if (!rawData) {
-    return 'https://placehold.co/400x300/E0E0E0/666666?text=No+Image';
+        this.existingImages = (product.imagenes ?? [])
+          .filter(img => img.data.startsWith('http'))
+          .map((img, index) => ({ url: img.data, posicion: index + 1 }));
+      },
+      error: () => {
+        this.snackBar.open('Error al cargar el producto.', 'Cerrar', { duration: 3000 });
+      }
+    });
   }
 
-  const isProbablyEscapedUrl = rawData.startsWith('https:\\');
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files) return;
 
-  if (isProbablyEscapedUrl) {
-    return cleanEscapedUrl(rawData);
+    const files = Array.from(input.files);
+
+    if ((this.existingImages.length + this.newImages.length + files.length) > 10) {
+      this.snackBar.open('Máximo 10 imágenes permitidas.', 'Cerrar', { duration: 3000 });
+      return;
+    }
+
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.newImages.push({ base64: e.target.result, posicion: 0 });
+      };
+      reader.readAsDataURL(file);
+    });
   }
 
-  const isUrl = rawData.startsWith('http://') || rawData.startsWith('https://');
+  removeExistingImage(index: number): void {
+      const removed = this.existingImages.splice(index, 1)[0];
+    if (removed) {
+      this.deletedImages.push({ posicion: removed.posicion });
+    }
+  }
 
-  return isUrl ? rawData : `data:image/jpeg;base64,${rawData}`;
-}
+  removeNewImage(index: number): void {
+    this.newImages.splice(index, 1);
+  }
 
+  updateProduct(): void {
+    if (this.form.invalid) {
+      this.snackBar.open('Por favor, completa todos los campos.', 'Cerrar', { duration: 3000 });
+      return;
+    }
 
+    const deleteImagesPayload = this.deletedImages.map(img => ({
+      data: 'delete',
+      posicion: img.posicion
+    }));
+
+    const deletedPositions = this.deletedImages.map(img => img.posicion);
+    const existingPositions = this.existingImages.map(img => img.posicion);
+
+    let maxPosition = existingPositions.length > 0 ? Math.max(...existingPositions) : 0;
+
+    const newImagesPayload: { data: string; posicion: number }[] = [];
+
+    let freePositions = [...deletedPositions].sort((a,b) => a - b);
+
+    this.newImages.forEach((img) => {
+      if (freePositions.length > 0) {
+        const pos = freePositions.shift()!;
+        newImagesPayload.push({ data: img.base64, posicion: pos });
+      } else {
+        newImagesPayload.push({ data: img.base64, posicion: ++maxPosition });
+      }
+    });
+
+    const imagenesPayload = [...deleteImagesPayload, ...newImagesPayload];
+
+    const productData = {
+      ...this.form.value,
+      imagenes: imagenesPayload
+    };
+
+    this.productService.updateIProductDetailResult(this.productId, productData).subscribe({
+      next: () => {
+        this.snackBar.open('Producto actualizado con éxito.', 'Cerrar', { duration: 3000 });
+        this.router.navigate(['/my-product']);
+      },
+      error: () => {
+        this.snackBar.open('Error al actualizar el producto.', 'Cerrar', { duration: 3000 });
+      }
+    });
+  }
 }
