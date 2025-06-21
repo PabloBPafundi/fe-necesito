@@ -1,0 +1,59 @@
+<h1 class="title">Consultas sin responder</h1>
+
+<div *ngIf="isLoading" class="loading">Cargando...</div>
+<div *ngIf="errorMsg" class="error">{{ errorMsg }}</div>
+
+<table mat-table [dataSource]="consultas" *ngIf="consultas.length > 0" class="mat-elevation-z8">
+
+  <!-- Consultante -->
+  <ng-container matColumnDef="consultante">
+    <th mat-header-cell *matHeaderCellDef>Consultante</th>
+    <td mat-cell *matCellDef="let c">
+        {{ c.arrendatario?.nombre }} {{ c.arrendatario?.apellido }}
+    </td>
+  </ng-container>
+
+  <!-- Pregunta -->
+  <ng-container matColumnDef="pregunta">
+    <th mat-header-cell *matHeaderCellDef> Pregunta </th>
+    <td mat-cell *matCellDef="let c"> {{ c.pregunta }} </td>
+  </ng-container>
+
+  <!-- Respuesta -->
+  <ng-container matColumnDef="respuesta">
+    <th mat-header-cell *matHeaderCellDef> Responder </th>
+    <td mat-cell *matCellDef="let c">
+      <textarea
+        [(ngModel)]="respuestaMap[c.id]"
+        rows="3"
+        class="respuesta-textarea"
+        placeholder="Escribí tu respuesta aquí..."></textarea>
+    </td>
+  </ng-container>
+
+  <!-- Acción -->
+  <ng-container matColumnDef="accion">
+    <th mat-header-cell *matHeaderCellDef> Acción </th>
+    <td mat-cell *matCellDef="let c">
+      <button
+        mat-icon-button
+        color="primary"
+        (click)="responder(c)"
+        matTooltip="Enviar respuesta"
+        aria-label="Enviar respuesta">
+        <mat-icon>send</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="['consultante', 'pregunta', 'respuesta', 'accion']"></tr>
+  <tr mat-row *matRowDef="let row; columns: ['consultante', 'pregunta', 'respuesta', 'accion']"></tr>
+</table>
+
+<mat-paginator
+  [length]="totalPages * itemsPerPage"
+  [pageSize]="itemsPerPage"
+  [pageIndex]="currentPage - 1"
+  [pageSizeOptions]="[5, 10, 20]"
+  (page)="onPageChange($event)">
+</mat-paginator>

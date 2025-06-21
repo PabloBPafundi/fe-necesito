@@ -57,6 +57,9 @@
           <button mat-icon-button color="primary" (click)="onEdit(p)" aria-label="Editar producto" class="hover:bg-blue-100 rounded-full">
             <i-lucide [img]="PencilLine" class="pencil-line" size="20"></i-lucide>
           </button>
+          <button mat-icon-button color="accent" (click)="onAnswer(p)" aria-label="Contestar consultas" class="ml-2 hover:bg-green-100 rounded-full">
+            <i-lucide [img]="MessageCircle" size="20"></i-lucide>
+          </button>
           <button mat-icon-button color="warn" (click)="onDelete(p)" aria-label="Eliminar producto" class="ml-2 hover:bg-red-100 rounded-full">
             <i-lucide [img]="Trash" class="trash" size="20"></i-lucide>
           </button>

@@ -17,6 +17,10 @@ export class OrderService {
     private userService: UserService
   ) {}
 
+  crearOrden(body: any): Observable<IReservaResponse> {
+    return this.http.post<IReservaResponse>(this.apiUrlOrdenes, body);
+  }
+  
   /**
    * Obtiene las órdenes asociadas al arrendador actual.
    * @returns Observable<IOrder[]>

@@ -89,6 +89,13 @@ export const routes: Routes = [
       .then(m => m.ProductEditComponent),
   },
   {
+    path: 'product-answer/:id',
+    title: 'Contestar Consultas',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/product/product-answer/product-answer.component')
+      .then(m => m.ProductAnswerComponent)
+  },
+  {
     path: '**',
     title: 'Necesito.com',
     canActivate: [authGuard],

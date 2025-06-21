@@ -8,6 +8,7 @@ import { Subscription, filter } from 'rxjs';
 import { CategoryNavComponent } from './shared/components/categories-nav/category-nav.component';
 import { BackToTopButtonComponent } from './shared/components/back-to-top-button/back-to-top-button.component';
 import { UserService } from './shared/services/user.service';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -15,6 +16,7 @@ import { UserService } from './shared/services/user.service';
   selector: 'app-root',
   imports: [
     RouterOutlet,
+    FormsModule,
     NavBarComponent,
     FooterComponent,
     NgIf,
