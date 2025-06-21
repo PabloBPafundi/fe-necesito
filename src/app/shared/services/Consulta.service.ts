@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams  } from '@angular/common/http';
 import { IConsultaResponse } from '../types/IConsulta.interface';
 import { Observable } from 'rxjs';
 
@@ -18,4 +18,21 @@ export class ConsultaService {
   crearConsulta(data: any): Observable<any> {
     return this.http.post(this.apiUrl, data);
   }
+
+  responderConsulta(id: number, respuesta: string) {
+    return this.http.patch<any>(`${this.apiUrl}/${id}`, { respuesta });
+  }
+
+  getConsultasSinResponder(params: { articulo: number, page: number, maxResults: number }) {
+    let httpParams = new HttpParams()
+      .set('articulo', params.articulo.toString())
+      .set('page', params.page.toString())
+      .set('maxResults', params.maxResults.toString())
+      .set('sin_responder', 'true');
+
+    return this.http.get<IConsultaResponse>(this.apiUrl, { params: httpParams });
+  }
+
+
+
 }

@@ -12,7 +12,6 @@ export interface IConsulta {
     nombre: string;
     apellido: string;
     dni?: number;
-    // otros campos que tengas
   };
   arrendatario: {
     id: number;
