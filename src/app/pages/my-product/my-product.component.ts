@@ -16,6 +16,7 @@ import {
   Trash,
   PlusCircle,
   PencilLine,
+  MessageCircle
 } from 'lucide-angular';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog.component';
@@ -37,6 +38,7 @@ export class MyProductComponent implements OnInit {
   readonly Trash = Trash;
   readonly PlusCircle = PlusCircle;
   readonly PencilLine = PencilLine;
+  readonly MessageCircle = MessageCircle;
 
   products: IArticuloResponse[] = [];
   currentPage = 1;
@@ -59,6 +61,10 @@ export class MyProductComponent implements OnInit {
     this.fetchUserProduct();
   }
 
+  onAnswer(p: IArticuloResponse) {
+    this.router.navigate(['/product-answer', p.id]);
+  }
+  
   fetchUserProduct() {
     let params: IProductQueryParamsSearch = {};
 

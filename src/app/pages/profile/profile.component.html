@@ -47,7 +47,9 @@
           >Ubicación</label
         >
         <p class="text-xl font-semibold text-gray-800">
-          {{ user.georreferencias }}
+          <ng-container *ngFor="let geo of user.georreferencias; let last = last">
+            {{ geo.calle }} {{ geo.altura }}, {{ geo.localidad.nombre }}<span *ngIf="!last"> | </span>
+          </ng-container>
         </p>
       </article>
       <article>
@@ -104,24 +106,6 @@
       <div class="flex flex-col">
         <label
           mat-label
-          for="ubicacion"
-          class="text-gray-600 text-sm font-medium mb-1"
-          >Ubicación</label
-        >
-        <mat-form-field appearance="outline" class="w-full">
-          <input
-            id="ubicacion"
-            matInput
-            [(ngModel)]="editUserData.georreferencias"
-            name="georreferencias"
-            autocomplete="street-address"
-          />
-        </mat-form-field>
-      </div>
-
-      <div class="flex flex-col">
-        <label
-          mat-label
           for="email"
           class="text-gray-600 text-sm font-medium mb-1"
           >Correo</label
@@ -137,6 +121,41 @@
             autocomplete="email"
           />
         </mat-form-field>
+      </div>
+
+      <div class="col-span-full">
+        <label class="text-gray-600 text-sm font-medium mb-1">Ubicaciones</label>
+        <div *ngFor="let geo of editUserData.georreferencias; let i = index" 
+            class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4 items-center">
+
+          <mat-form-field appearance="outline" class="w-full">
+            <input matInput placeholder="Calle" [(ngModel)]="geo.calle" name="calle{{i}}" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-full">
+            <input matInput placeholder="Altura" [(ngModel)]="geo.altura" name="altura{{i}}" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select [(ngModel)]="geo.localidadId" name="localidad{{i}}" required>
+              <mat-option *ngFor="let loc of localidades" [value]="loc.id">{{ loc.nombre }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-full">
+            <input matInput placeholder="Nombre" [(ngModel)]="geo.nombre" name="nombre{{i}}" required>
+          </mat-form-field>
+
+          <button mat-icon-button color="warn" type="button" (click)="removeGeorreferencia(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+
+        <div class="flex justify-end mt-2">
+          <button type="button" mat-flat-button color="primary" (click)="addGeorreferencia()">
+            Agregar ubicación
+          </button>
+        </div>
       </div>
 
       <!-- Botones de acción alineados al final -->
