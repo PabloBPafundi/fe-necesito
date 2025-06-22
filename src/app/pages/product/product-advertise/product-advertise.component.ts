@@ -1,4 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ProductService } from '../../../shared/services/product.service';
 import { UserService } from '../../../shared/services/user.service';
 import {
@@ -18,11 +24,23 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 // Importa los íconos de Lucide Angular que usarás
-import { LucideAngularModule, UploadCloud, Image, ImagePlus, CheckCircle } from 'lucide-angular';
+import {
+  LucideAngularModule,
+  UploadCloud,
+  Image,
+  ImagePlus,
+  CheckCircle,
+} from 'lucide-angular';
 import { AsyncPipe, NgFor, NgIf } from '@angular/common'; // Agrega NgIf para la lógica de la imagen
 import { Router } from '@angular/router';
-import { MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
-
+import {
+  MatCard,
+  MatCardContent,
+  MatCardHeader,
+  MatCardSubtitle,
+  MatCardTitle,
+} from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-product-advertise',
@@ -38,12 +56,13 @@ import { MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle }
     LucideAngularModule, // Asegúrate de que este módulo esté importado
     AsyncPipe,
     NgFor,
-    NgIf, // Agrega NgIf aquí
+    NgIf,
     MatCard,
     MatCardHeader,
     MatCardTitle,
     MatCardSubtitle,
-    MatCardContent
+    MatCardContent,
+    MatIcon
   ],
   templateUrl: './product-advertise.component.html',
 })
@@ -53,9 +72,9 @@ export class ProductAdvertiseComponent implements OnInit {
   private fb = inject(FormBuilder);
   private categoriesService = inject(CategoryService);
   private snackBar = inject(MatSnackBar);
-  readonly UploadCloud = UploadCloud; 
-  readonly Image = Image; 
-  readonly ImagePlus = ImagePlus; 
+  readonly UploadCloud = UploadCloud;
+  readonly Image = Image;
+  readonly ImagePlus = ImagePlus;
   readonly CheckCircle = CheckCircle;
   private router = inject(Router);
 
@@ -79,6 +98,11 @@ export class ProductAdvertiseComponent implements OnInit {
     });
   }
 
+  @ViewChild('imageInputRef') imageInputRef!: ElementRef<HTMLInputElement>;
+
+  triggerImageUpload(): void {
+    this.imageInputRef.nativeElement.click();
+  }
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
 
@@ -87,11 +111,13 @@ export class ProductAdvertiseComponent implements OnInit {
     const files = Array.from(input.files);
 
     if (this.selectedFiles.length + files.length > 10) {
-      this.snackBar.open('Máximo 10 imágenes permitidas.', 'Cerrar', { duration: 3000 });
+      this.snackBar.open('Máximo 10 imágenes permitidas.', 'Cerrar', {
+        duration: 3000,
+      });
       return;
     }
 
-    files.forEach(file => {
+    files.forEach((file) => {
       this.selectedFiles.push(file);
 
       const reader = new FileReader();
@@ -119,13 +145,13 @@ export class ProductAdvertiseComponent implements OnInit {
 
     const imagenes = this.previewImages.map((base64, index) => ({
       data: base64,
-      posicion: index + 1
+      posicion: index + 1,
     }));
 
     const productData: ICreateProduct = {
       ...this.form.value,
       arrendador: this.userId,
-      imagenes: imagenes
+      imagenes: imagenes,
     };
 
     this.productService.createProduct(productData).subscribe({
