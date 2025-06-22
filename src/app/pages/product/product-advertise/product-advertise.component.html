@@ -1,21 +1,23 @@
 <form
   [formGroup]="form"
   (ngSubmit)="createProductAdvertise()"
-  class="max-w-3xl mx-auto p-8 bg-white rounded-3xl shadow-xl space-y-8 relative"
+  class="max-w-3xl mx-auto p-6 sm:p-10 bg-white rounded-3xl shadow-xl space-y-8"
 >
-  <mat-card class="rounded-2xl shadow-lg overflow-hidden">
-    <mat-card-header class="p-6 pb-4 flex flex-col items-center text-center">
-      <mat-card-title class="text-4xl font-extrabold text-violet-700">
+  <mat-card class="rounded-2xl overflow-hidden shadow-md">
+    <mat-card-header class="flex flex-col items-center py-6 mb-2">
+      <mat-card-title
+        class="text-3xl sm:text-4xl font-bold text-violet-700 text-center"
+      >
         Publicar nuevo producto
       </mat-card-title>
-      <mat-card-subtitle class="text-gray-700 mt-1">
+      <mat-card-subtitle class="text-sm sm:text-base text-gray-600 ">
         Completa los campos obligatorios para publicar tu producto.
       </mat-card-subtitle>
     </mat-card-header>
 
-    <mat-card-content class="p-6 space-y-6">
-      <!-- Nombre del producto -->
-      <mat-form-field appearance="outline" class="w-full">
+    <mat-card-content class="space-y-6 px-6 py-8">
+      <!-- Nombre -->
+      <mat-form-field class="w-full">
         <mat-label>Nombre del producto</mat-label>
         <input
           matInput
@@ -26,7 +28,7 @@
       </mat-form-field>
 
       <!-- Descripción -->
-      <mat-form-field appearance="outline" class="w-full">
+      <mat-form-field class="w-full">
         <mat-label>Descripción</mat-label>
         <textarea
           matInput
@@ -36,9 +38,9 @@
         ></textarea>
       </mat-form-field>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Precio -->
-        <mat-form-field appearance="outline" class="w-full">
+      <!-- Precio y categoría -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <mat-form-field class="w-full">
           <mat-label>Precio</mat-label>
           <input
             matInput
@@ -49,8 +51,7 @@
           />
         </mat-form-field>
 
-        <!-- Categoría -->
-        <mat-form-field appearance="outline" class="w-full">
+        <mat-form-field class="w-full">
           <mat-label>Categoría</mat-label>
           <mat-select formControlName="categoria">
             <mat-option
@@ -63,18 +64,20 @@
         </mat-form-field>
       </div>
 
-      <!-- Imágenes del producto (Múltiples) -->
-      <div class="w-full">
-        <label
-          for="imageInput"
-          class="block mb-3 font-semibold text-gray-700 cursor-pointer"
-        >
+      <!-- Subida de imágenes -->
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-gray-700">
           <span class="flex items-center gap-2">
-            <i-lucide [img]="Image" size="20" class="inline text-violet-500"></i-lucide>
+            <i-lucide
+              [img]="Image"
+              size="20"
+              class="text-violet-500"
+            ></i-lucide>
             Imágenes del producto (máx. 10)
           </span>
         </label>
         <input
+          #imageInputRef
           id="imageInput"
           type="file"
           (change)="onFileSelected($event)"
@@ -83,37 +86,56 @@
           class="hidden"
         />
         <div
-          class="w-full flex flex-col items-center justify-center p-6 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors duration-200 ease-in-out text-center"
-          onclick="document.getElementById('imageInput').click()"
+          class="w-full flex flex-col items-center justify-center text-center p-6 border-2 border-dashed border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 cursor-pointer transition"
+          (click)="triggerImageUpload()"
           tabindex="0"
           role="button"
           aria-labelledby="imageInput"
         >
-          <i-lucide [img]="ImagePlus" size="36" class="text-gray-400 mb-2"></i-lucide>
-          <p class="text-gray-600 font-medium">
-            Arrastra y suelta o <span class="text-violet-600 font-semibold">haz click para seleccionar imágenes</span>
+          <i-lucide
+            [img]="ImagePlus"
+            size="36"
+            class="text-gray-400 mb-2"
+          ></i-lucide>
+          <p class="text-gray-600">
+            Arrastra y suelta o
+            <span class="text-violet-600 font-semibold"
+              >haz click para seleccionar imágenes</span
+            >
           </p>
-          <p class="text-sm text-gray-500 mt-1">Máximo 10 imágenes permitidas.</p>
+          <p class="text-xs text-gray-500 mt-1">
+            Máximo 10 imágenes permitidas.
+          </p>
         </div>
       </div>
 
-      <!-- Preview de imágenes seleccionadas -->
-      <div class="flex flex-wrap gap-4 mt-4" *ngIf="previewImages.length > 0">
-        <div *ngFor="let img of previewImages; let i = index" class="relative">
-          <img [src]="img" alt="Preview" class="w-24 h-24 object-cover rounded-lg border" />
+      <!-- Previsualización -->
+      <div *ngIf="previewImages.length > 0" class="flex flex-wrap gap-4 mt-4">
+        <div
+          *ngFor="let img of previewImages; let i = index"
+          class="relative group"
+        >
+          <img
+            [src]="img"
+            alt="Imagen seleccionada"
+            class="w-24 h-24 object-cover rounded-lg border border-gray-200 shadow-sm"
+          />
           <button
             type="button"
             (click)="removeImage(i)"
-            class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center"
+            class="absolute top-1 right-1 bg-red-600 hover:bg-red-700 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center shadow"
+            aria-label="Eliminar imagen"
           >
             ×
           </button>
         </div>
       </div>
 
-      <!-- Activo y Botón de Publicar -->
-      <div class="flex flex-col sm:flex-row items-center justify-between mt-6 gap-4">
-        <mat-checkbox formControlName="activo" color="primary" class="text-gray-700">
+      <!-- Activo + botón -->
+      <div
+        class="flex flex-col sm:flex-row items-center justify-between pt-4 gap-4"
+      >
+        <mat-checkbox formControlName="activo" color="primary" class="text-sm">
           Activo
         </mat-checkbox>
 
@@ -121,7 +143,7 @@
           mat-raised-button
           color="primary"
           type="submit"
-          class="rounded-full px-8 py-3 font-semibold flex items-center gap-3 hover:brightness-110 transition-all duration-200 shadow-xl hover:shadow-2xl bg-violet-600 text-white"
+          class="rounded-full px-6 py-3 font-semibold flex items-center gap-2 bg-violet-600 text-white hover:brightness-110 shadow-lg hover:shadow-xl transition-all"
           [disabled]="form.invalid"
         >
           <i-lucide [img]="UploadCloud" size="20" class="inline"></i-lucide>
