@@ -1,11 +1,13 @@
 <div class="bg-white shadow-md p-2">
-  <div class="max-w-7xl mx-auto flex justify-center space-x-6">
-    <button
-      *ngFor="let cat of parentCategories"
-      class="px-4 py-2 text-gray-700 hover:bg-orange-100 rounded-lg"
-      (click)="goToCategory(cat.id)"
-    >
-      {{ cat.nombre }}
-    </button>
+  <div class="max-w-7xl mx-auto">
+    <div class="flex overflow-x-auto flex-nowrap sm:justify-center space-x-4 scrollbar-thin scrollbar-thumb-orange-200 scrollbar-track-transparent px-2">
+      <button
+        *ngFor="let cat of parentCategories"
+        class="flex-shrink-0 px-4 py-2 text-sm sm:text-base text-gray-700 hover:bg-orange-100 rounded-lg whitespace-nowrap"
+        (click)="goToCategory(cat.id)"
+      >
+        {{ cat.nombre }}
+      </button>
+    </div>
   </div>
 </div>

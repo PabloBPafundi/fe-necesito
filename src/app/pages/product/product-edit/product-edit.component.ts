@@ -1,5 +1,10 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { ProductService } from '../../../shared/services/product.service';
 import { CategoryService } from '../../../shared/services/category.service';
 import { UserService } from '../../../shared/services/user.service';
@@ -14,7 +19,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
+import {
+  MatCard,
+  MatCardContent,
+  MatCardHeader,
+  MatCardSubtitle,
+  MatCardTitle,
+} from '@angular/material/card';
 
 @Component({
   selector: 'app-product-edit',
@@ -33,7 +44,7 @@ import { MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle }
     MatCardHeader,
     MatCardTitle,
     MatCardSubtitle,
-    MatCardContent
+    MatCardContent,
   ],
   templateUrl: './product-edit.component.html',
 })
@@ -56,7 +67,8 @@ export class ProductEditComponent implements OnInit {
   private snackBar = inject(MatSnackBar);
 
   ngOnInit(): void {
-    this.productId = Number(this.route.snapshot.paramMap.get('id'));
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.loadProductDetail(id);
     this.categories$ = this.categoryService.getCategories();
 
     this.form = this.fb.group({
@@ -64,13 +76,11 @@ export class ProductEditComponent implements OnInit {
       descripcion: ['', Validators.required],
       precio: [0, [Validators.required, Validators.min(0)]],
       categoria: [null, Validators.required],
-      activo: [true, Validators.required]
+      activo: [true, Validators.required],
     });
-
-    this.loadProductDetail();
   }
 
-  loadProductDetail(): void {
+  loadProductDetail(id: number): void {
     this.productService.getIProductDetailResultById(this.productId).subscribe({
       next: (product) => {
         this.productDetail = product;
@@ -88,12 +98,14 @@ export class ProductEditComponent implements OnInit {
         });
 
         this.existingImages = (product.imagenes ?? [])
-          .filter(img => img.data.startsWith('http'))
+          .filter((img) => img.data.startsWith('http'))
           .map((img, index) => ({ url: img.data, posicion: index + 1 }));
       },
       error: () => {
-        this.snackBar.open('Error al cargar el producto.', 'Cerrar', { duration: 3000 });
-      }
+        this.snackBar.open('Error al cargar el producto.', 'Cerrar', {
+          duration: 3000,
+        });
+      },
     });
   }
 
@@ -103,12 +115,17 @@ export class ProductEditComponent implements OnInit {
 
     const files = Array.from(input.files);
 
-    if ((this.existingImages.length + this.newImages.length + files.length) > 10) {
-      this.snackBar.open('Máximo 10 imágenes permitidas.', 'Cerrar', { duration: 3000 });
+    if (
+      this.existingImages.length + this.newImages.length + files.length >
+      10
+    ) {
+      this.snackBar.open('Máximo 10 imágenes permitidas.', 'Cerrar', {
+        duration: 3000,
+      });
       return;
     }
 
-    files.forEach(file => {
+    files.forEach((file) => {
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.newImages.push({ base64: e.target.result, posicion: 0 });
@@ -118,7 +135,7 @@ export class ProductEditComponent implements OnInit {
   }
 
   removeExistingImage(index: number): void {
-      const removed = this.existingImages.splice(index, 1)[0];
+    const removed = this.existingImages.splice(index, 1)[0];
     if (removed) {
       this.deletedImages.push({ posicion: removed.posicion });
     }
@@ -130,23 +147,26 @@ export class ProductEditComponent implements OnInit {
 
   updateProduct(): void {
     if (this.form.invalid) {
-      this.snackBar.open('Por favor, completa todos los campos.', 'Cerrar', { duration: 3000 });
+      this.snackBar.open('Por favor, completa todos los campos.', 'Cerrar', {
+        duration: 3000,
+      });
       return;
     }
 
-    const deleteImagesPayload = this.deletedImages.map(img => ({
+    const deleteImagesPayload = this.deletedImages.map((img) => ({
       data: 'delete',
-      posicion: img.posicion
+      posicion: img.posicion,
     }));
 
-    const deletedPositions = this.deletedImages.map(img => img.posicion);
-    const existingPositions = this.existingImages.map(img => img.posicion);
+    const deletedPositions = this.deletedImages.map((img) => img.posicion);
+    const existingPositions = this.existingImages.map((img) => img.posicion);
 
-    let maxPosition = existingPositions.length > 0 ? Math.max(...existingPositions) : 0;
+    let maxPosition =
+      existingPositions.length > 0 ? Math.max(...existingPositions) : 0;
 
     const newImagesPayload: { data: string; posicion: number }[] = [];
 
-    let freePositions = [...deletedPositions].sort((a,b) => a - b);
+    let freePositions = [...deletedPositions].sort((a, b) => a - b);
 
     this.newImages.forEach((img) => {
       if (freePositions.length > 0) {
@@ -161,17 +181,23 @@ export class ProductEditComponent implements OnInit {
 
     const productData = {
       ...this.form.value,
-      imagenes: imagenesPayload
+      imagenes: imagenesPayload,
     };
 
-    this.productService.updateIProductDetailResult(this.productId, productData).subscribe({
-      next: () => {
-        this.snackBar.open('Producto actualizado con éxito.', 'Cerrar', { duration: 3000 });
-        this.router.navigate(['/my-product']);
-      },
-      error: () => {
-        this.snackBar.open('Error al actualizar el producto.', 'Cerrar', { duration: 3000 });
-      }
-    });
+    this.productService
+      .updateIProductDetailResult(this.productId, productData)
+      .subscribe({
+        next: () => {
+          this.snackBar.open('Producto actualizado con éxito.', 'Cerrar', {
+            duration: 3000,
+          });
+          this.router.navigate(['/my-product']);
+        },
+        error: () => {
+          this.snackBar.open('Error al actualizar el producto.', 'Cerrar', {
+            duration: 3000,
+          });
+        },
+      });
   }
 }

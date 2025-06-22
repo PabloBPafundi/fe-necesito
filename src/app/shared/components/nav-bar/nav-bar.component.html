@@ -1,15 +1,31 @@
-<nav class="flex justify-between items-center p-4 max-w-7xl mx-auto">
-  <div class="text-3xl font-bold text-gray-800 w-1/6">
+<nav class="flex justify-between items-center p-4 max-w-7xl mx-auto relative">
+  <!-- Logo -->
+  <div class="text-3xl font-bold text-gray-800 w-1/6 flex items-center gap-2">
     <a href="/" class="flex items-center gap-2">
       <span>Necesito</span>
     </a>
   </div>
 
-  <div class="flex items-center space-x-2 w-3/6">
-    <app-search-bar />
+  <!-- Botón menú hamburguesa (visible en md o menos) -->
+  <button
+    class="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-600"
+    (click)="toggleMobileMenu()"
+    aria-label="Abrir menú"
+  >
+    <svg class="h-6 w-6 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none"
+      viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  </button>
+
+  <!-- Barra de búsqueda (solo desktop md+) -->
+  <div class="hidden md:flex items-center space-x-2 w-3/6">
+    <app-search-bar></app-search-bar>
   </div>
 
-  <div class="flex items-center space-x-4">
+  <!-- Botón Calendario (solo desktop md+) -->
+  <div class="hidden md:flex items-center space-x-4">
     <a
       routerLink="/calendar-orders"
       class="flex items-center gap-2 px-3 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition"
@@ -19,115 +35,82 @@
       <span>Calendario</span>
     </a>
   </div>
-  <div class="">
-    <!--  -->
+
+  <!-- Menú usuario o login (solo desktop md+) -->
+  <div class="hidden md:block relative">
     <ng-container *ngIf="isLoggedIn; else loggedOut">
-      <div class="relative inline-block text-left" id="user-menu">
-        <!-- Botón que despliega el menú -->
-        <button
-          (click)="toggleDropdown()"
-          type="button"
-          class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
-          aria-haspopup="true"
-          [attr.aria-expanded]="dropdownOpen"
-        >
-          Hola, {{ getUserName() }}
-          <lucide-icon
-            [img]="ChevronDown"
-            class="w-8 h-4 ml-2 transition-transform duration-200"
-            [ngClass]="{ 'rotate-180': dropdownOpen }"
-          ></lucide-icon>
-        </button>
+      <!-- Botón de usuario con dropdown -->
+      <button
+        (click)="toggleDropdown()"
+        type="button"
+        class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
+        aria-haspopup="true"
+        [attr.aria-expanded]="dropdownOpen"
+      >
+        Hola, {{ getUserName() }}
+        <lucide-icon
+          [img]="ChevronDown"
+          class="w-8 h-4 ml-2 transition-transform duration-200"
+          [ngClass]="{ 'rotate-180': dropdownOpen }"
+        ></lucide-icon>
+      </button>
 
-        <!-- Menú desplegable -->
-        <div
-          *ngIf="dropdownOpen"
-          class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10"
-          role="menu"
-          aria-orientation="vertical"
-          aria-labelledby="user-menu-button"
-        >
-          <div class="py-1" role="none">
-            <!-- Opción: Perfil -->
-            <button
-              class="text-gray-700 flex items-center gap-2 px-4 py-2 text-sm w-full text-left hover:bg-gray-100"
-              role="menuitem"
-              (click)="toggleDropdown()"
-              routerLink="/profile"
-            >
-              <lucide-icon [img]="User" class="w-5 h-5"></lucide-icon>
-              Perfil
-            </button>
-
-            <!-- Opción: Publicar Producto -->
-            <button
-              class="text-gray-700 flex items-center gap-2 px-4 py-2 text-sm w-full text-left hover:bg-gray-100"
-              role="menuitem"
-              (click)="toggleDropdown()"
-              routerLink="/product-advertise"
-            >
-              <lucide-icon [img]="Package" class="w-5 h-5"></lucide-icon>
-              Publicar Producto
-            </button>
-
-            <!-- Opción: Mis productos Publicados -->
-            <button
-              class="text-gray-700 flex items-center gap-2 px-4 py-2 text-sm w-full text-left hover:bg-gray-100"
-              role="menuitem"
-              (click)="toggleDropdown()"
-              routerLink="/my-product"
-            >
-              <lucide-icon [img]="Package" class="w-5 h-5"></lucide-icon>
-              Ver mis Productos
-            </button>
-
-            <!-- Opción: Perfil -->
-            <button
-              class="text-gray-700 flex items-center gap-2 px-4 py-2 text-sm w-full text-left hover:bg-gray-100"
-              role="menuitem"
-              (click)="toggleDropdown()"
-              routerLink="/my-product"
-            >
-              <lucide-icon [img]="Info" class="w-5 h-5"></lucide-icon>
-              Estatus de Productos
-            </button>
-
-            <!-- Opción: Logout -->
-            <button
-              (click)="logout()"
-              class="text-gray-700 flex items-center gap-2 px-4 py-2 text-sm w-full text-left hover:bg-gray-100"
-              role="menuitem"
-              (click)="toggleDropdown()"
-            >
-              <lucide-icon [img]="LogOut" class="w-5 h-5"></lucide-icon>
-              Logout
-            </button>
-          </div>
+      <!-- Dropdown -->
+      <div
+        *ngIf="dropdownOpen"
+        class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10"
+        role="menu"
+      >
+        <div class="py-1">
+          <button routerLink="/profile" (click)="toggleDropdown()" class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-100">
+            <lucide-icon [img]="User" class="w-5 h-5"></lucide-icon> Perfil
+          </button>
+          <button routerLink="/product-advertise" (click)="toggleDropdown()" class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-100">
+            <lucide-icon [img]="Package" class="w-5 h-5"></lucide-icon> Publicar Producto
+          </button>
+          <button routerLink="/my-product" (click)="toggleDropdown()" class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-100">
+            <lucide-icon [img]="Package" class="w-5 h-5"></lucide-icon> Ver mis Productos
+          </button>
+          <button routerLink="/my-product" (click)="toggleDropdown()" class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-100">
+            <lucide-icon [img]="Info" class="w-5 h-5"></lucide-icon> Estatus de Productos
+          </button>
+          <button (click)="logout(); toggleDropdown()" class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-100">
+            <lucide-icon [img]="LogOut" class="w-5 h-5"></lucide-icon> Logout
+          </button>
         </div>
       </div>
     </ng-container>
 
-    <!--  -->
     <ng-template #loggedOut>
       <div class="flex justify-end items-center gap-4">
-        <!-- Botón Iniciar Sesión (Acción primaria) -->
-        <button
-          routerLink="/auth/sign-in"
-          class="px-4 py-2 text-white bg-orange-600 rounded-lg shadow-md hover:bg-orange-700 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-orange-500"
-          aria-label="Iniciar Sesión"
-        >
-          Iniciar Sesión
-        </button>
-
-        <!-- Botón Registrarse (Acción secundaria, estilo outline) -->
-        <button
-          routerLink="/auth/sign-up"
-          class="px-4 py-2 text-orange-600 bg-white border border-orange-600 rounded-lg shadow-md hover:bg-orange-100 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-orange-500"
-          aria-label="Registrarse"
-        >
-          Registrarse
-        </button>
+        <button routerLink="/auth/sign-in" class="px-4 py-2 text-white bg-orange-600 rounded-lg shadow-md hover:bg-orange-700">Iniciar Sesión</button>
+        <button routerLink="/auth/sign-up" class="px-4 py-2 text-orange-600 bg-white border border-orange-600 rounded-lg shadow-md hover:bg-orange-100">Registrarse</button>
       </div>
     </ng-template>
   </div>
 </nav>
+
+<!-- Menú móvil visible en md o menor -->
+<div *ngIf="mobileMenuOpen" class="md:hidden bg-white shadow-md p-4 space-y-4">
+  <app-search-bar></app-search-bar>
+
+  <a routerLink="/calendar-orders" (click)="toggleMobileMenu()" class="flex items-center gap-2 px-3 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition">
+    <lucide-icon [img]="Calendar" class="w-5 h-5"></lucide-icon> <span>Calendario</span>
+  </a>
+
+  <ng-container *ngIf="isLoggedIn; else loggedOutMobile">
+    <button (click)="toggleDropdown()" class="w-full text-left px-4 py-2 rounded-md border border-gray-300">Hola, {{ getUserName() }}</button>
+    <div *ngIf="dropdownOpen" class="mt-2 space-y-2">
+      <button routerLink="/profile" (click)="toggleMobileMenu()" class="w-full text-left px-4 py-2 hover:bg-gray-100 rounded">Perfil</button>
+      <button routerLink="/product-advertise" (click)="toggleMobileMenu()" class="w-full text-left px-4 py-2 hover:bg-gray-100 rounded">Publicar Producto</button>
+      <button routerLink="/my-product" (click)="toggleMobileMenu()" class="w-full text-left px-4 py-2 hover:bg-gray-100 rounded">Ver mis Productos</button>
+      <button routerLink="/my-product" (click)="toggleMobileMenu()" class="w-full text-left px-4 py-2 hover:bg-gray-100 rounded">Estatus de Productos</button>
+      <button (click)="logout(); toggleMobileMenu()" class="w-full text-left px-4 py-2 hover:bg-gray-100 rounded">Logout</button>
+    </div>
+  </ng-container>
+
+  <ng-template #loggedOutMobile>
+    <button routerLink="/auth/sign-in" (click)="toggleMobileMenu()" class="w-full py-2 bg-orange-600 text-white rounded-lg">Iniciar Sesión</button>
+    <button routerLink="/auth/sign-up" (click)="toggleMobileMenu()" class="w-full py-2 border border-orange-600 text-orange-600 rounded-lg">Registrarse</button>
+  </ng-template>
+</div>

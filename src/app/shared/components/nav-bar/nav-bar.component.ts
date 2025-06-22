@@ -25,6 +25,7 @@ export class NavBarComponent implements OnInit {
   
   isLoggedIn: boolean = false;  
   dropdownOpen: boolean = false;  
+  mobileMenuOpen: boolean = false;
 
   ngOnInit(): void {
     this.isUserLogIn();
@@ -49,6 +50,15 @@ export class NavBarComponent implements OnInit {
 
   toggleDropdown() {
     this.dropdownOpen = !this.dropdownOpen;
+  }
+
+
+  
+  toggleMobileMenu(): void {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+    if (this.mobileMenuOpen) {
+      this.dropdownOpen = false;
+    }
   }
 
 }
