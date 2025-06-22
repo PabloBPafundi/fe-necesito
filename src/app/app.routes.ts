@@ -87,13 +87,15 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () => import('./pages/product/product-edit/product-edit.component')
       .then(m => m.ProductEditComponent),
+       data: { renderMode: 'no-prerender' }
   },
   {
     path: 'product-answer/:id',
     title: 'Contestar Consultas',
     canActivate: [authGuard],
     loadComponent: () => import('./pages/product/product-answer/product-answer.component')
-      .then(m => m.ProductAnswerComponent)
+      .then(m => m.ProductAnswerComponent),
+       data: { renderMode: 'no-prerender' }
   },
   {
     path: '**',

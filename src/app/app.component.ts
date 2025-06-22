@@ -34,18 +34,21 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(public authService: AuthService, private router: Router) {}
 
-  ngOnInit(): void {
 
-    this.isAuthScreen = this.router.url === '/auth';
 
-    this.userIsLogIn = this.authService.isAuthenticated();
+ngOnInit(): void {
+  this.updateAuthScreenState(this.router.url);
 
-    this.routerSubscription = this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe((event: NavigationEnd) => {
-        this.isAuthScreen = event.url.startsWith('/auth');
-      });
-  }
+  this.routerSubscription = this.router.events
+    .pipe(filter((event) => event instanceof NavigationEnd))
+    .subscribe((event: NavigationEnd) => {
+      this.updateAuthScreenState(event.urlAfterRedirects); 
+    });
+}
+
+private updateAuthScreenState(url: string) {
+  this.isAuthScreen = url.startsWith('/auth');
+}
 
   ngOnDestroy(): void {
     if (this.routerSubscription) {

@@ -68,6 +68,7 @@ export class ProductEditComponent implements OnInit {
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.productId = id;
     this.loadProductDetail(id);
     this.categories$ = this.categoryService.getCategories();
 
@@ -81,7 +82,7 @@ export class ProductEditComponent implements OnInit {
   }
 
   loadProductDetail(id: number): void {
-    this.productService.getIProductDetailResultById(this.productId).subscribe({
+    this.productService.getIProductDetailResultById(id).subscribe({
       next: (product) => {
         this.productDetail = product;
         this.form.patchValue({

@@ -1,5 +1,5 @@
 <header
-  *ngIf="!isAuthScreen && userIsLogIn"
+  *ngIf="!this.isAuthScreen && this.authService.isAuthenticated()"
   class="bg-gradient-to-r from-amber-100 via-orange-200 to-amber-300 fixed top-0 w-full z-50!"
 >
   <app-nav-bar />
@@ -7,15 +7,15 @@
   <app-nav-category />
 </header>
 
-<main class="" [ngClass]="{ ' bg-orange-100  pt-40': !isAuthScreen}">
+<main class="" [ngClass]="{ ' bg-orange-100  pt-40': !this.isAuthScreen}">
   <div
-    [ngClass]="{ 'text-center h-full  mx-auto container pb-4 ': !isAuthScreen }"
+    [ngClass]="{ 'text-center h-full  mx-auto container pb-4 ': !this.isAuthScreen }"
   >
     <router-outlet></router-outlet>
   </div>
 </main>
 
 
-<app-back-to-top-button *ngIf="!isAuthScreen && userIsLogIn" />
+<app-back-to-top-button *ngIf="!this.isAuthScreen && this.authService.isAuthenticated()" />
 
-<app-footer *ngIf="!isAuthScreen && userIsLogIn" />
+<app-footer *ngIf="!this.isAuthScreen && this.authService.isAuthenticated()" />

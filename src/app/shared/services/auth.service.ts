@@ -70,7 +70,6 @@ export class AuthService {
             this.userService.userName.set(usuario.nombre);
             this.userService.userId.set(usuario.id);
             this.userService.userId();
-            console.log('aaaa', this.isAuthenticated())
 
             if (this.isBrowser) {
               this.saveUserData(usuario, response.token);
