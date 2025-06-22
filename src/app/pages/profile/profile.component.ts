@@ -20,7 +20,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { LocalidadService } from '../../shared/services/localidad.service';
+import { ILocalidad } from '../../shared/types/ILocalidad.interface';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-profile',
@@ -28,12 +30,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   imports: [
     LucideAngularModule,
     NgIf,
+    NgFor,
     FormsModule,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    MatSelectModule
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css',
@@ -47,7 +51,7 @@ export class ProfileComponent implements OnInit {
   user: IUserProfile = {
     nombre: '',
     apellido: '',
-    georreferencias: '',
+    georreferencias: [],
     email: '',
   };
 
@@ -57,18 +61,26 @@ export class ProfileComponent implements OnInit {
 
   isLoading: boolean = true;
   isEditing: boolean = false;
-  editUserData: any = {};
+  editUserData: any = {
+    nombre: '',
+    apellido: '',
+    email: '',
+    georreferencias: []
+  };
+  localidades: ILocalidad[] = [];
 
   constructor(
     private snackbar: MatSnackBar,
     private userService: UserService,
     private profileService: ProfileService,
+    private localidadService: LocalidadService,
     private router: Router,
     private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     this.loadUserProfile();
+    this.loadLocalidades();
   }
 
   async deleteUserAccount(): Promise<void> {
@@ -91,9 +103,35 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  loadLocalidades() {
+    this.localidadService.getLocalidades().subscribe({
+      next: (res) => this.localidades = res,
+      error: () => console.error('Error al cargar localidades')
+    });
+  }
+
   startEditing(): void {
     this.isEditing = true;
-    this.editUserData = { ...this.user };
+    this.editUserData = {
+      ...this.user,
+      georreferencias: this.user.georreferencias.map(g => ({
+        ...g,
+        localidadId: g.localidad.id,
+      }))
+    };
+  }
+
+  addGeorreferencia() {
+    this.editUserData.georreferencias.push({
+      calle: '',
+      altura: '',
+      localidad: null,
+      nombre: ''
+    });
+  }
+
+  removeGeorreferencia(index: number) {
+    this.editUserData.georreferencias.splice(index, 1);
   }
 
   cancelEditing(): void {
@@ -105,11 +143,16 @@ export class ProfileComponent implements OnInit {
     try {
       const userId = this.userService.userId();
       if (userId) {
-        const dataToSend = Object.fromEntries(
-          Object.entries(this.editUserData).filter(
-            ([_, v]) => v !== '' && v !== undefined
-          )
-        );
+        const dataToSend = {
+          ...this.editUserData,
+          georreferencias: this.editUserData.georreferencias.map((geo: any) => ({
+            id: geo.id,
+            calle: geo.calle,
+            altura: geo.altura,
+            nombre: geo.nombre,
+            localidad: { id: geo.localidadId }
+          }))
+        };
         const updatedUser = await firstValueFrom(
           this.profileService.updateUserProfile(userId, dataToSend)
         );

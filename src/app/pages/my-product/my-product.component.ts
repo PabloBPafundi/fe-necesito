@@ -16,10 +16,10 @@ import {
   Trash,
   PlusCircle,
   PencilLine,
+  MessageCircle
 } from 'lucide-angular';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog.component';
-
 
 @Component({
   selector: 'app-my-product',
@@ -38,6 +38,7 @@ export class MyProductComponent implements OnInit {
   readonly Trash = Trash;
   readonly PlusCircle = PlusCircle;
   readonly PencilLine = PencilLine;
+  readonly MessageCircle = MessageCircle;
 
   products: IArticuloResponse[] = [];
   currentPage = 1;
@@ -60,6 +61,10 @@ export class MyProductComponent implements OnInit {
     this.fetchUserProduct();
   }
 
+  onAnswer(p: IArticuloResponse) {
+    this.router.navigate(['/product-answer', p.id]);
+  }
+  
   fetchUserProduct() {
     let params: IProductQueryParamsSearch = {};
 
@@ -89,29 +94,43 @@ export class MyProductComponent implements OnInit {
     });
   }
 
-  displayedColumns = ['nombre', 'precio', 'activo', 'acciones'];
+  displayedColumns = ['imagen', 'nombre', 'precio', 'activo', 'acciones'];
 
-  onEdit(p: IArticuloResponse) {
-    this.router.navigate(['/product', p.id]);
+  getProductThumbnail(product: IArticuloResponse): string {
+    const rawData = product.imagenes?.[0]?.data;
+    if (!rawData) {
+      return 'https://placehold.co/64x64/E0E0E0/666666?text=No+Image';
+    }
+    const isEscapedUrl = rawData.startsWith('https:\\');
+    if (isEscapedUrl) {
+      return rawData.replace('\\', '');
+    }
+    const isUrl = rawData.startsWith('http://') || rawData.startsWith('https://');
+    return isUrl ? rawData : `data:image/jpeg;base64,${rawData}`;
   }
 
-onDelete(p: IArticuloResponse) {
-  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-    data: {
-      title: '¿Estás seguro?',
-      message: `Vas a eliminar el producto "${p.nombre}". Esta acción no se puede deshacer.`,
-    },
-    panelClass: 'rounded-xl',
-  });
+  onEdit(p: IArticuloResponse) {
+    this.router.navigate(['/product/edit', p.id]);
+  }
 
-  dialogRef.afterClosed().subscribe((confirmed) => {
-    if (confirmed && p.id) {
-      this.productService.deleteIProductDetailResult(p.id).subscribe(() => {
-        this.fetchUserProduct();
-      });
-    }
-  });
-}
+  onDelete(p: IArticuloResponse) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: '¿Estás seguro?',
+        message: `Vas a eliminar el producto "${p.nombre}". Esta acción no se puede deshacer.`,
+      },
+      panelClass: 'rounded-xl',
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (confirmed && p.id) {
+        this.productService.deleteIProductDetailResult(p.id).subscribe(() => {
+          this.fetchUserProduct();
+        });
+      }
+    });
+  }
+
   onNew() {
     this.router.navigate(['/product-advertise']);
   }
