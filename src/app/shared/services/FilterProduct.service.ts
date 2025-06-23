@@ -1,3 +1,4 @@
+import { environment } from '../../../environments/environment';
 import {
   HttpClient,
 } from '@angular/common/http';
@@ -13,8 +14,8 @@ import { HandleErrorService } from './HandleError.service';
   providedIn: 'root',
 })
 export class FilterProductService {
-  private apiUrlLocalidades = 'http://127.0.0.1:8000/api/localidades';
-  private apiUrlProvincias = 'http://127.0.0.1:8000/api/provincias';
+  private apiUrlLocalidades = `${environment.apiBaseUrl}/localidades`;
+  private apiUrlProvincias = `${environment.apiBaseUrl}/provincias`;
 
 
   constructor(private http: HttpClient, private handleError: HandleErrorService) {}

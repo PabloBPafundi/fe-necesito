@@ -1,3 +1,4 @@
+import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable } from 'rxjs';
@@ -9,7 +10,7 @@ import { IReserva, IReservaResponse } from '../types/IOrder.interface';
   providedIn: 'root',
 })
 export class OrderService {
-  private apiUrlOrdenes = 'http://127.0.0.1:8000/api/ordenes';
+  private apiUrlOrdenes = `${environment.apiBaseUrl}/ordenes`;
 
   constructor(
     private http: HttpClient,
