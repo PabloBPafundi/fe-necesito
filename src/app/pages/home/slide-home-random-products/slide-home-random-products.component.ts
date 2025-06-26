@@ -9,6 +9,7 @@ import { interval, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { UserService } from '../../../shared/services/user.service';
 import { getBase64ImageUrl } from '../../../shared/utils/getImageType';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-slide-home-random-products',
@@ -27,7 +28,8 @@ export class SlideHomeRandomProductsComponent implements OnInit, OnDestroy {
 
   constructor(
     private productService: ProductService,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -38,6 +40,10 @@ export class SlideHomeRandomProductsComponent implements OnInit, OnDestroy {
     if (this.autoSlideSubscription) {
       this.autoSlideSubscription.unsubscribe();
     }
+  }
+
+  goToProductDetail(productId: number): void {
+    this.router.navigate(['/product', productId!]);
   }
 
   /**
@@ -83,7 +89,7 @@ export class SlideHomeRandomProductsComponent implements OnInit, OnDestroy {
 
   getProductImage(product: IArticuloResponse): string {
   if (product.imagenes && product.imagenes.length > 0 && product.imagenes[0].data) {
-    return getBase64ImageUrl(product.imagenes[0].data);
+    return product.imagenes[0].data;
   }
   return 'https://placehold.co/400x300/E0E0E0/666666?text=No+Image';
 }
