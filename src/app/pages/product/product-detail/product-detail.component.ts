@@ -137,8 +137,8 @@ export class ProductDetailComponent implements OnInit {
 
     const body = {
       articulo: this.productDetail.id!,
-      arrendador: this.productDetail.arrendador!,  // Asumí que está
-      arrendatario: Number(localStorage.getItem('userId')), // O cómo obtienes user id
+      arrendador: this.productDetail.arrendador!,
+      arrendatario: this.userService.userId(),
       fecha_desde: `${this.fechaDesde} 00:00:00`,
       fecha_hasta: `${this.fechaHasta} 00:00:00`,
       precio_total: this.precioTotal.toFixed(2),
