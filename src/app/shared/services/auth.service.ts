@@ -1,3 +1,4 @@
+
 import { Injectable, signal } from '@angular/core';
 import {
   HttpClient,
@@ -15,6 +16,7 @@ import { PLATFORM_ID, Inject } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { jwtDecode } from 'jwt-decode';
 import { IDecodedToken } from '../types/IDecodedToken';
+import { environment } from '../../../environments/environment';
 
 
 @Injectable({
@@ -22,7 +24,7 @@ import { IDecodedToken } from '../types/IDecodedToken';
 })
 export class AuthService {
   isAuthenticated = signal<boolean>(false);
-  private apiAuthUrl = 'http://localhost:8000/api/usuarios';
+  private apiAuthUrl = `${environment.apiBaseUrl}/usuarios`;
   private readonly STORAGE_USER_KEY = 'user_data';
   private isBrowser: boolean;
 

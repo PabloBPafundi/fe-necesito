@@ -1,3 +1,4 @@
+import { environment } from '../../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -8,7 +9,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class LocalidadService {
-  private apiUrl = 'http://127.0.0.1:8000/api/localidades';
+  private apiUrl = `${environment.apiBaseUrl}/localidades`;
 
   constructor(private http: HttpClient) {}
 
