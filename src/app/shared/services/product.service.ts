@@ -1,3 +1,4 @@
+import { environment } from '../../../environments/environment';
 import {
   HttpClient,
   HttpErrorResponse,
@@ -20,7 +21,7 @@ import {
   providedIn: 'root',
 })
 export class ProductService {
-  private apiUrl = 'http://127.0.0.1:8000/api/articulos';
+  private apiUrl = `${environment.apiBaseUrl}/articulos`;
 
   constructor(private http: HttpClient) {}
 
