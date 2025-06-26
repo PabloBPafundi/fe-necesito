@@ -66,7 +66,6 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () => import('./pages/my-product/my-product.component').then(m => m.MyProductComponent),
   },
-  
   {
     path: 'product/:id',
     title: 'Detalle de producto',
@@ -96,6 +95,13 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/product/product-answer/product-answer.component')
       .then(m => m.ProductAnswerComponent),
        data: { renderMode: 'no-prerender' }
+  },
+  {
+    path: 'orders',
+    title: 'Listado de Órdenes',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/order/order-list.component')
+      .then(m => m.OrderListComponent),
   },
   {
     path: '**',

@@ -8,8 +8,12 @@ export const serverRoutes: ServerRoute[] = [
     path: 'product-answer/:id', 
     renderMode: RenderMode.Client,
   },
-    {
+  {
     path: 'product/edit/:id', 
+    renderMode: RenderMode.Client,
+  },
+  {
+    path: 'orders', 
     renderMode: RenderMode.Client,
   },
   {
