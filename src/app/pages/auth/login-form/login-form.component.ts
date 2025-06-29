@@ -34,11 +34,13 @@ export class LoginFormComponent {
           if (response.success) {
             this.router.navigate(['/home']);
           } else {
-            this.errorMessage = response.error || 'Hubo un problema con el inicio de sesión';
+            if(response.message == "Invalid credentials."){
+              this.errorMessage = response.message;
+            }
+            else{
+              this.errorMessage = response.error || 'Hubo un problema con el inicio de sesión';
+            }
           }
-        },
-        error: () => {
-          this.errorMessage = 'Error en la comunicación con el servidor. Intenta nuevamente.';
         }
       });
     } else {

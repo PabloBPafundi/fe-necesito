@@ -157,7 +157,11 @@ export class ProductDetailComponent implements OnInit {
       },
       error: (err) => {
         this.isLoadingOrden = false;
-        this.ordenMensaje = 'Error al generar la orden: ' + err.message;
+        if (err.error && err.error.error) {
+          this.ordenMensaje = 'Error al generar la orden: ' + err.error.error;
+        } else {
+          this.ordenMensaje = 'Error inesperado al generar la orden.';
+        }
       },
     });
   }
