@@ -35,7 +35,7 @@ export class LoginFormComponent {
             this.router.navigate(['/home']);
           } else {
             if(response.message == "Invalid credentials."){
-              this.errorMessage = response.message;
+              this.errorMessage = "Credenciales inválidas, revise lo ingresado.";
             }
             else{
               this.errorMessage = response.error || 'Hubo un problema con el inicio de sesión';
