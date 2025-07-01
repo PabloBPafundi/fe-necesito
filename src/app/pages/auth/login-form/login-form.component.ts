@@ -33,13 +33,13 @@ export class LoginFormComponent {
         next: (response) => {
           if (response.success) {
             this.router.navigate(['/home']);
+          }
+        },
+        error: (err) => {
+          if (err.error?.message === "Invalid credentials.") {
+            this.errorMessage = "Credenciales inválidas, revise lo ingresado.";
           } else {
-            if(response.message == "Invalid credentials."){
-              this.errorMessage = "Credenciales inválidas, revise lo ingresado.";
-            }
-            else{
-              this.errorMessage = response.error || 'Hubo un problema con el inicio de sesión';
-            }
+            this.errorMessage = err.error?.error || 'Hubo un problema con el inicio de sesión.';
           }
         }
       });
