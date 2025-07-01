@@ -36,6 +36,7 @@ export class LoginFormComponent {
           }
         },
         error: (err) => {
+          console.log(err)
           if (err.error?.message === "Invalid credentials.") {
             this.errorMessage = "Credenciales inválidas, revise lo ingresado.";
           } else {
