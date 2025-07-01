@@ -36,11 +36,11 @@ export class LoginFormComponent {
           }
         },
         error: (err) => {
-          console.log(err)
-          if (err.error?.message === "Invalid credentials.") {
+          const mensaje = err.error?.message || err.message || '';
+          if (mensaje === "Invalid credentials.") {
             this.errorMessage = "Credenciales inválidas, revise lo ingresado.";
           } else {
-            this.errorMessage = err.error?.error || 'Hubo un problema con el inicio de sesión.';
+            this.errorMessage = 'Hubo un problema con el inicio de sesión.';
           }
         }
       });
