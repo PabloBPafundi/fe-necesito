@@ -40,7 +40,7 @@ export class OrderListComponent implements OnInit {
     };
     params[this.isArrendadorView ? 'arrendador' : 'arrendatario'] = this.userId;
 
-    this.orderService.getOrderFromUserWithData().subscribe({
+    this.orderService.getOrderFromUserWithData(params).subscribe({
       next: (res) => {
         this.orders = res.result;
         this.pages = res.pages;
