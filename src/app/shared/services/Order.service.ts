@@ -29,7 +29,7 @@ export class OrderService {
   getOrderFromUser(): Observable<IReserva[]> {
     const userId = this.userService.userId(); 
 
-    const url = `${this.apiUrlOrdenes}?arrendador=${userId}`;
+    const url = `${this.apiUrlOrdenes}?arrendador_arrendatario=${userId}`;
 
     return this.http.get<IReservaResponse>(url).pipe(
       map((response) => {
@@ -43,10 +43,9 @@ export class OrderService {
     );
   }
 
-  getOrderFromUserWithData(): Observable<IReservaResponse> {
-    const userId = this.userService.userId(); 
-
-    const url = `${this.apiUrlOrdenes}?arrendador=${userId}`;
+  getOrderFromUserWithData(params: any): Observable<IReservaResponse> {
+    const queryString = new URLSearchParams(params).toString();
+    const url = `${this.apiUrlOrdenes}?${queryString}`;
 
     return this.http.get<IReservaResponse>(url).pipe(
       map((response) => {
