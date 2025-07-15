@@ -43,22 +43,18 @@ export class OrderService {
     );
   }
 
-  getOrderFromUserWithData(): Observable<IReservaResponse> {
-    const userId = this.userService.userId(); 
-
-    const url = `${this.apiUrlOrdenes}?arrendador=${userId}`;
-
-    return this.http.get<IReservaResponse>(url).pipe(
-      map((response) => {
-        if (response.success) {
-          return response;
-        } else {
-          throw new Error('La respuesta de órdenes no fue exitosa.');
-        }
-      }),
-      catchError((err) => this.handleError.handleError(err))
-    );
-  }
+  getOrderFromUserWithData(params?: any): Observable<IReservaResponse> {
+  return this.http.get<IReservaResponse>(this.apiUrlOrdenes, { params }).pipe(
+    map((response) => {
+      if (response.success) {
+        return response;
+      } else {
+        throw new Error('La respuesta de órdenes no fue exitosa.');
+      }
+    }),
+    catchError((err) => this.handleError.handleError(err))
+  );
+}
 
   updateOrder(id: number, payload: any): Observable<any> {
     return this.http.patch(`${this.apiUrlOrdenes}/${id}`, payload);

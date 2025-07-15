@@ -3,9 +3,8 @@ import { CalendarOptions, EventInput } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { OrderService } from '../../shared/services/Order.service';
+import { UserService } from '../../shared/services/user.service';
 import { IReserva } from '../../shared/types/IOrder.interface';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
@@ -14,6 +13,7 @@ import { StateReservationColourEnum } from '../../shared/enums/StateReservationE
 import { normalizarEstado } from '../../shared/utils/normalizarEstado';
 import { MatDialog } from '@angular/material/dialog';
 import { OrderDetailsDialogComponent } from './order-details-dialog/order-details-dialog.component';
+
 @Component({
   selector: 'app-calendar-orders',
   standalone: true,
@@ -22,6 +22,8 @@ import { OrderDetailsDialogComponent } from './order-details-dialog/order-detail
 })
 export class CalendarOrdersComponent implements OnInit {
   stateCounts: Record<string, number> = {};
+  isArrendadorView = true;
+  userId: number | null = null; // ✅ Corregido
 
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin],
@@ -44,27 +46,27 @@ export class CalendarOrdersComponent implements OnInit {
     },
   };
 
-  events$: Observable<EventInput[]> = new Observable();
+  constructor(
+    private orderService: OrderService,
+    private userService: UserService, // ✅ Agregado
+    private dialog: MatDialog
+  ) {}
 
-  onEventClick(arg: any): void {
-    const event = arg.event;
-
-    this.dialog.open(OrderDetailsDialogComponent, {
-      data: {
-        title: event.title,
-        start: event.start,
-        end: event.end,
-        description: event.extendedProps?.description,
-      },
-      width: '400px', 
-      maxHeight: '80vh',
-      autoFocus: false,
-    });
+  ngOnInit(): void {
+    this.userId = this.userService.userId();
+    if (this.userId !== null) {
+      this.loadOrders();
+    }
   }
 
-  constructor(private orderService: OrderService, private dialog: MatDialog) {}
-  ngOnInit(): void {
-    this.orderService.getOrderFromUser().subscribe((ordenes: IReserva[]) => {
+  loadOrders(): void {
+    if (this.userId === null) return;
+
+    const params: any = {};
+    params[this.isArrendadorView ? 'arrendador' : 'arrendatario'] = this.userId;
+
+    this.orderService.getOrderFromUserWithData(params).subscribe((res) => {
+      const ordenes = res.result;
       this.stateCounts = this.contarEstados(ordenes);
 
       const events = this.mapOrdersToEvents(ordenes);
@@ -76,13 +78,34 @@ export class CalendarOrdersComponent implements OnInit {
     });
   }
 
+  toggleView(): void {
+    this.isArrendadorView = !this.isArrendadorView;
+    this.loadOrders();
+  }
+
+  onEventClick(arg: any): void {
+    const event = arg.event;
+
+    this.dialog.open(OrderDetailsDialogComponent, {
+      data: {
+        title: event.title,
+        start: event.start,
+        end: event.end,
+        description: event.extendedProps?.description,
+      },
+      width: '400px',
+      maxHeight: '80vh',
+      autoFocus: false,
+    });
+  }
+
   private mapOrdersToEvents(ordenes: IReserva[]): EventInput[] {
     return ordenes.map((orden) => {
       const estadoNormalizado = normalizarEstado(orden.estado.nombre);
       const color =
         StateReservationColourEnum[
           estadoNormalizado as keyof typeof StateReservationColourEnum
-        ] || '#9e9e9e'; // Gris por defecto
+        ] || '#9e9e9e';
 
       return {
         id: orden.id.toString(),
