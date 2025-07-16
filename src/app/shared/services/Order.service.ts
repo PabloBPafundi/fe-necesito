@@ -29,7 +29,7 @@ export class OrderService {
   getOrderFromUser(): Observable<IReserva[]> {
     const userId = this.userService.userId(); 
 
-    const url = `${this.apiUrlOrdenes}?arrendador_arrendatario=${userId}&maxResults=100&sort[id:DESC]`;
+    const url = `${this.apiUrlOrdenes}?arrendador_arrendatario=${userId}&maxResults=100&sort=[id:DESC]`;
 
     return this.http.get<IReservaResponse>(url).pipe(
       map((response) => {
