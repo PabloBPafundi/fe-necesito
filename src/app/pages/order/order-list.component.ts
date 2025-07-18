@@ -68,7 +68,7 @@ export class OrderListComponent implements OnInit {
   }
 
   markAsReturned(order: IReserva): void {
-    const data = { estado: 5 }; // CLOSED
+    const data = { estado: 4 }; // CLOSED
     this.orderService.updateOrder(order.id, data).subscribe(() => this.fetchOrders());
   }
 
