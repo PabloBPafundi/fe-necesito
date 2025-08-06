@@ -21,6 +21,10 @@ export class OrderService {
   crearOrden(body: any): Observable<IReservaResponse> {
     return this.http.post<IReservaResponse>(this.apiUrlOrdenes, body);
   }
+
+  deleteOrden(id: number): Observable<IReservaResponse> {
+      return this.http.delete<any>(this.apiUrlOrdenes + '/' + id);
+  }
   
   /**
    * Obtiene las órdenes asociadas al arrendador actual.
