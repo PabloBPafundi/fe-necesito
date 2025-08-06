@@ -41,6 +41,15 @@
           >
             Devuelto
           </button>
+
+          <button
+            *ngIf="isArrendadorView && !order.acepto_arrendador && !order.acepto_arrendatario"
+            mat-raised-button
+            color="warn"
+            (click)="deleteOrden(order.id)"
+          >
+            Eliminar
+          </button>
         </td>
       </tr>
     </tbody>
