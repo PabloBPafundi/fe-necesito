@@ -52,6 +52,10 @@ export class OrderListComponent implements OnInit {
     });
   }
 
+  deleteOrden(orderId: number): void {
+    this.orderService.deleteOrden(orderId).subscribe(() => this.fetchOrders());
+  }
+
   toggleView(): void {
     this.isArrendadorView = !this.isArrendadorView;
     this.page = 1;
